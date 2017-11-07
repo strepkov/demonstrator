@@ -1,6 +1,7 @@
 abstract class Rotation {
 
-    public static getMatrix(degree : number) {
+    // static ?
+    public getMatrix(degree : number) {
 
         let degreeRD : number = degree*(Math.PI/180);
         
