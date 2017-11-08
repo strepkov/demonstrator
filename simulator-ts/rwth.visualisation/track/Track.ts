@@ -47,271 +47,271 @@ abstract class Track {
         this.walls.push(new WallLinear(pointLeft, pointRight));
     }
 
-    private static void addWall2() {
-        RealVector pointLeft = new ArrayRealVector(2);
-        RealVector pointRight = new ArrayRealVector(2);
+    private static addWall2() {
+        let pointLeft : number[] = [0.0];
+        let pointRight : number[] = [0.0];
 
-        pointLeft.setEntry(1, 10);
-        pointLeft.setEntry(0, 58);
+        pointLeft[1] = 10;
+        pointLeft[0] = 58;
 
-        pointRight.setEntry(1, 10);
-        pointRight.setEntry(0, -122);
-
-        walls.add(new WallLinear(pointLeft, pointRight));
-    }
-
-    private static void addWall3() {
-        RealVector pointLeft = new ArrayRealVector(2);
-        RealVector pointRight = new ArrayRealVector(2);
-
-        pointLeft.setEntry(1, -36);
-        pointLeft.setEntry(0, 109);
-
-        pointRight.setEntry(1, -9.5);
-        pointRight.setEntry(0, 58);
+        pointRight[1] = 10;
+        pointRight[0] = -122;
 
         walls.add(new WallLinear(pointLeft, pointRight));
     }
 
-    private static void addWall4() {
-        RealVector pointLeft = new ArrayRealVector(2);
-        RealVector pointRight = new ArrayRealVector(2);
+    private static addWall3() {
+        let pointLeft : number[] = [0.0];
+        let pointRight : number[] = [0.0];
 
-        pointLeft.setEntry(1, -18);
-        pointLeft.setEntry(0, 114);
+        pointLeft[1] = -36;
+        pointLeft[0] = 109;
 
-        pointRight.setEntry(1, 10);
-        pointRight.setEntry(0, 58);
+        pointRight[1] = -9.5;
+        pointRight[0] = 58;
 
         walls.add(new WallLinear(pointLeft, pointRight));
     }
 
-    private static void addWall5() {
-        RealVector pointMiddle = new ArrayRealVector(2);
-        RealVector pointLower = new ArrayRealVector(2);
-        RealVector pointUpper = new ArrayRealVector(2);
+    private static addWall4() {
+        let pointLeft : number[] = [0.0];
+        let pointRight : number[] = [0.0];
 
-        double radius = 60;
+        pointLeft[1] = -18;
+        pointLeft[0] = 114;
 
-        pointMiddle.setEntry(1, 22);
-        pointMiddle.setEntry(0, 123);
+        pointRight[1] = 10;
+        pointRight[0] = 58;
 
-        pointLower.setEntry(1, 22);
-        pointLower.setEntry(0, 184);
+        walls.add(new WallLinear(pointLeft, pointRight));
+    }
 
-        pointUpper.setEntry(1, -36);
-        pointUpper.setEntry(0, 109);
+    private static addWall5() {
+        let pointMiddle : number[] = [0.0];
+        let pointLower : number[] = [0.0];
+        let pointUpper : number[] = [0.0];
+
+        let radius = 60;
+
+        pointMiddle[1] = 22;
+        pointMiddle[0] = 123;
+
+        pointLower[1] = 22;
+        pointLower[0] = 184;
+
+        pointUpper[1] = -36;
+        pointUpper[0] = 109;
 
         walls.add(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
     }
 
-    private static void addWall6() {
-        RealVector pointMiddle = new ArrayRealVector(2);
-        RealVector pointLower = new ArrayRealVector(2);
-        RealVector pointUpper = new ArrayRealVector(2);
+    private static addWall6() {
+        let pointMiddle : number[] = [0.0];
+        let pointLower : number[] = [0.0];
+        let pointUpper : number[] = [0.0];
 
-        double radius = 41;
+        let radius = 41;
 
-        pointMiddle.setEntry(1, 22);
-        pointMiddle.setEntry(0, 123);
+        pointMiddle[1] = 22;
+        pointMiddle[0] = 123;
 
-        pointLower.setEntry(1, 22);
-        pointLower.setEntry(0, 164);
+        pointLower[1] = 22;
+        pointLower[0] = 164;
 
-        pointUpper.setEntry(1, -18);
-        pointUpper.setEntry(0, 114);
-
-        walls.add(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
-    }
-
-    private static void addWall7() {
-        RealVector pointMiddle = new ArrayRealVector(2);
-        RealVector pointLower = new ArrayRealVector(2);
-        RealVector pointUpper = new ArrayRealVector(2);
-
-        double radius = 60;
-
-        pointMiddle.setEntry(1, 22);
-        pointMiddle.setEntry(0, 123);
-
-        pointLower.setEntry(1, 79);
-        pointLower.setEntry(0, 137.6);
-
-        pointUpper.setEntry(1, 22);
-        pointUpper.setEntry(0, 184);
+        pointUpper[1] = -18;
+        pointUpper[0] = 114;
 
         walls.add(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
     }
 
-    private static void addWall8() {
-        RealVector pointMiddle = new ArrayRealVector(2);
-        RealVector pointLower = new ArrayRealVector(2);
-        RealVector pointUpper = new ArrayRealVector(2);
+    private static addWall7() {
+        let pointMiddle : number[] = [0.0];
+        let pointLower : number[] = [0.0];
+        let pointUpper : number[] = [0.0];
 
-        double radius = 41;
+        let radius = 60;
 
-        pointMiddle.setEntry(1, 22);
-        pointMiddle.setEntry(0, 123);
+        pointMiddle[1] = 22;
+        pointMiddle[0] = 123;
 
-        pointLower.setEntry(1, 60.6);
-        pointLower.setEntry(0, 133);
+        pointLower[1] = 79;
+        pointLower[0] = 137.6;
 
-        pointUpper.setEntry(1, 22);
-        pointUpper.setEntry(0, 164);
-
-        walls.add(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
-    }
-
-    private static void addWall9() {
-        RealVector pointLeft = new ArrayRealVector(2);
-        RealVector pointRight = new ArrayRealVector(2);
-
-        pointLeft.setEntry(1, 79);
-        pointLeft.setEntry(0, 137.6);
-
-        pointRight.setEntry(1, 83.5);
-        pointRight.setEntry(0, 108);
-
-        walls.add(new WallLinear(pointLeft, pointRight));
-    }
-
-    private static void addWall10() {
-        RealVector pointLeft = new ArrayRealVector(2);
-        RealVector pointRight = new ArrayRealVector(2);
-
-        pointLeft.setEntry(1, 60.6);
-        pointLeft.setEntry(0, 133);
-
-        pointRight.setEntry(1, 65.8);
-        pointRight.setEntry(0, 98.5);
-
-        walls.add(new WallLinear(pointLeft, pointRight));
-    }
-
-    private static void addWall11() {
-        RealVector pointLeft = new ArrayRealVector(2);
-        RealVector pointRight = new ArrayRealVector(2);
-
-        pointLeft.setEntry(1, 83.5);
-        pointLeft.setEntry(0, 108);
-
-        pointRight.setEntry(1, 110);
-        pointRight.setEntry(0, 59);
-
-        walls.add(new WallLinear(pointLeft, pointRight));
-    }
-
-    private static void addWall12() {
-        RealVector pointLeft = new ArrayRealVector(2);
-        RealVector pointRight = new ArrayRealVector(2);
-
-        pointLeft.setEntry(1, 65.8);
-        pointLeft.setEntry(0, 98.5);
-
-        pointRight.setEntry(1, 90);
-        pointRight.setEntry(0, 58);
-
-        walls.add(new WallLinear(pointLeft, pointRight));
-    }
-
-    private static void addWall13() {
-        RealVector pointLeft = new ArrayRealVector(2);
-        RealVector pointRight = new ArrayRealVector(2);
-
-        pointLeft.setEntry(1, 110);
-        pointLeft.setEntry(0, 59);
-
-        pointRight.setEntry(1, 110);
-        pointRight.setEntry(0, -121);
-
-        walls.add(new WallLinear(pointLeft, pointRight));
-    }
-
-    private static void addWall14() {
-        RealVector pointLeft = new ArrayRealVector(2);
-        RealVector pointRight = new ArrayRealVector(2);
-
-        pointLeft.setEntry(1, 90);
-        pointLeft.setEntry(0, 58);
-
-        pointRight.setEntry(1, 90.8);
-        pointRight.setEntry(0, -122);
-
-        walls.add(new WallLinear(pointLeft, pointRight));
-    }
-
-    private static void addWall15() {
-        RealVector pointMiddle = new ArrayRealVector(2);
-        RealVector pointLower = new ArrayRealVector(2);
-        RealVector pointUpper = new ArrayRealVector(2);
-
-        double radius = 61;
-
-        pointMiddle.setEntry(1, 51.3);
-        pointMiddle.setEntry(0,  -123);
-
-        pointLower.setEntry(1, 110);
-        pointLower.setEntry(0, -121);
-
-        pointUpper.setEntry(1, 51.3);
-        pointUpper.setEntry(0, -183);
+        pointUpper[1] = 22;
+        pointUpper[0] = 184;
 
         walls.add(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
     }
 
-    private static void addWall16() {
-        RealVector pointMiddle = new ArrayRealVector(2);
-        RealVector pointLower = new ArrayRealVector(2);
-        RealVector pointUpper = new ArrayRealVector(2);
+    private static addWall8() {
+        let pointMiddle : number[] = [0.0];
+        let pointLower : number[] = [0.0];
+        let pointUpper : number[] = [0.0];
 
-        double radius = 41;
+        let radius = 41;
 
-        pointMiddle.setEntry(1, 51.3);
-        pointMiddle.setEntry(0, -123);
+        pointMiddle[1] = 22;
+        pointMiddle[0] = 123;
 
-        pointLower.setEntry(1, 90.8);
-        pointLower.setEntry(0, -123);
+        pointLower[1] = 60.6;
+        pointLower[0] = 133;
 
-        pointUpper.setEntry(1, 51.3);
-        pointUpper.setEntry(0, -164);
-
-        walls.add(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
-    }
-
-    private static void addWall17() {
-        RealVector pointMiddle = new ArrayRealVector(2);
-        RealVector pointLower = new ArrayRealVector(2);
-        RealVector pointUpper = new ArrayRealVector(2);
-
-        double radius = 61;
-
-        pointMiddle.setEntry(1, 51.3);
-        pointMiddle.setEntry(0, -123);
-
-        pointLower.setEntry(1, 51.3);
-        pointLower.setEntry(0, -183);
-
-        pointUpper.setEntry(1, -9.5);
-        pointUpper.setEntry(0, -122);
+        pointUpper[1] = 22;
+        pointUpper[0] = 164;
 
         walls.add(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
     }
 
-    private static void addWall18() {
-        RealVector pointMiddle = new ArrayRealVector(2);
-        RealVector pointLower = new ArrayRealVector(2);
-        RealVector pointUpper = new ArrayRealVector(2);
+    private static addWall9() {
+        let pointLeft : number[] = [0.0];
+        let pointRight : number[] = [0.0];
 
-        double radius = 41;
+        pointLeft[1] = 79;
+        pointLeft[0] = 137.6;
 
-        pointMiddle.setEntry(1, 51.3);
-        pointMiddle.setEntry(0, -123);
+        pointRight[1] = 83.5;
+        pointRight[0] = 108;
 
-        pointLower.setEntry(1, 51.3);
-        pointLower.setEntry(0, -164);
+        walls.add(new WallLinear(pointLeft, pointRight));
+    }
 
-        pointUpper.setEntry(1,  10);
-        pointUpper.setEntry(0, -122);
+    private static addWall10() {
+        let pointLeft : number[] = [0.0];
+        let pointRight : number[] = [0.0];
+
+        pointLeft[1] = 60.6;
+        pointLeft[0] = 133;
+
+        pointRight[1] = 65.8;
+        pointRight[0] = 98.5;
+
+        walls.add(new WallLinear(pointLeft, pointRight));
+    }
+
+    private static addWall11() {
+        let pointLeft : number[] = [0.0];
+        let pointRight : number[] = [0.0];
+
+        pointLeft[1] = 83.5;
+        pointLeft[0] = 108;
+
+        pointRight[1] = 110;
+        pointRight[0] = 59;
+
+        walls.add(new WallLinear(pointLeft, pointRight));
+    }
+
+    private static addWall12() {
+        let pointLeft : number[] = [0.0];
+        let pointRight : number[] = [0.0];
+
+        pointLeft[1] = 65.8;
+        pointLeft[0] = 98.5;
+
+        pointRight[1] = 90;
+        pointRight[0] = 58;
+
+        walls.add(new WallLinear(pointLeft, pointRight));
+    }
+
+    private static addWall13() {
+        let pointLeft : number[] = [0.0];
+        let pointRight : number[] = [0.0];
+
+        pointLeft[1] = 110;
+        pointLeft[0] = 59;
+
+        pointRight[1] = 110;
+        pointRight[0] = -121;
+
+        walls.add(new WallLinear(pointLeft, pointRight));
+    }
+
+    private static addWall14() {
+        let pointLeft : number[] = [0.0];
+        let pointRight : number[] = [0.0];
+
+        pointLeft[1] = 90;
+        pointLeft[0] = 58;
+
+        pointRight[1] = 90.8;
+        pointRight[0] = -122;
+
+        walls.add(new WallLinear(pointLeft, pointRight));
+    }
+
+    private static addWall15() {
+        let pointMiddle : number[] = [0.0];
+        let pointLower : number[] = [0.0];
+        let pointUpper : number[] = [0.0];
+
+        let radius = 61;
+
+        pointMiddle[1] = 51.3;
+        pointMiddle[0] =  -123;
+
+        pointLower[1] = 110;
+        pointLower[0] = -121;
+
+        pointUpper[1] = 51.3;
+        pointUpper[0] = -183;
+
+        walls.add(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
+    }
+
+    private static addWall16() {
+        let pointMiddle : number[] = [0.0];
+        let pointLower : number[] = [0.0];
+        let pointUpper : number[] = [0.0];
+
+        let radius = 41;
+
+        pointMiddle[1] = 51.3;
+        pointMiddle[0] = -123;
+
+        pointLower[1] = 90.8;
+        pointLower[0] = -123;
+
+        pointUpper[1] = 51.3;
+        pointUpper[0] = -164;
+
+        walls.add(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
+    }
+
+    private static addWall17() {
+        let pointMiddle : number[] = [0.0];
+        let pointLower : number[] = [0.0];
+        let pointUpper : number[] = [0.0];
+
+        let radius = 61;
+
+        pointMiddle[1] = 51.3;
+        pointMiddle[0] = -123;
+
+        pointLower[1] = 51.3;
+        pointLower[0] = -183;
+
+        pointUpper[1] = -9.5;
+        pointUpper[0] = -122;
+
+        walls.add(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
+    }
+
+    private static addWall18() {
+        let pointMiddle : number[] = [0.0];
+        let pointLower : number[] = [0.0];
+        let pointUpper : number[] = [0.0];
+
+        let radius = 41;
+
+        pointMiddle[1] = 51.3;
+        pointMiddle[0] = -123;
+
+        pointLower[1] = 51.3;
+        pointLower[0] = -164;
+
+        pointUpper[1] = 10;
+        pointUpper[0] -122;
 
         walls.add(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
     }
