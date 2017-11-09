@@ -1,6 +1,7 @@
 import {Wall} from "./Wall";
 import {WallCurved} from "./WallCurved";
 import {WallLinear} from "./WallLinear";
+import {Vector} from 'ts-vector';
 
 export {Track}
 //abstract
@@ -42,8 +43,8 @@ abstract class Track {
 
     private static addWall1(){
 
-        let pointLeft : number[] = [0,0];
-        let pointRight : number[] = [0.0];
+        let pointLeft : Vector = new Vector(2);
+        let pointRight : Vector = new Vector(2);
 
         pointLeft[1] = -9.5;
         pointLeft[0] = 58;
@@ -55,8 +56,8 @@ abstract class Track {
     }
 
     private static addWall2() {
-        let pointLeft : number[] = [0.0];
-        let pointRight : number[] = [0.0];
+        let pointLeft : Vector = new Vector(2);
+        let pointRight : Vector = new Vector(2);
 
         pointLeft[1] = 10;
         pointLeft[0] = 58;
@@ -68,8 +69,8 @@ abstract class Track {
     }
 
     private static addWall3() {
-        let pointLeft : number[] = [0.0];
-        let pointRight : number[] = [0.0];
+        let pointLeft : Vector = new Vector(2);
+        let pointRight : Vector = new Vector(2);
 
         pointLeft[1] = -36;
         pointLeft[0] = 109;
@@ -81,8 +82,8 @@ abstract class Track {
     }
 
     private static addWall4() {
-        let pointLeft : number[] = [0.0];
-        let pointRight : number[] = [0.0];
+        let pointLeft : Vector = new Vector(2);
+        let pointRight : Vector = new Vector(2);
 
         pointLeft[1] = -18;
         pointLeft[0] = 114;
@@ -94,9 +95,9 @@ abstract class Track {
     }
 
     private static addWall5() {
-        let pointMiddle : number[] = [0.0];
-        let pointLower : number[] = [0.0];
-        let pointUpper : number[] = [0.0];
+        let pointMiddle : Vector = new Vector(2);
+        let pointLower : Vector = new Vector(2);
+        let pointUpper : Vector = new Vector(2);
 
         let radius = 60;
 
@@ -113,9 +114,9 @@ abstract class Track {
     }
 
     private static addWall6() {
-        let pointMiddle : number[] = [0.0];
-        let pointLower : number[] = [0.0];
-        let pointUpper : number[] = [0.0];
+        let pointMiddle : Vector = new Vector(2);
+        let pointLower : Vector = new Vector(2);
+        let pointUpper : Vector = new Vector(2);
 
         let radius = 41;
 
@@ -132,9 +133,9 @@ abstract class Track {
     }
 
     private static addWall7() {
-        let pointMiddle : number[] = [0.0];
-        let pointLower : number[] = [0.0];
-        let pointUpper : number[] = [0.0];
+        let pointMiddle : Vector = new Vector(2);
+        let pointLower : Vector = new Vector(2);
+        let pointUpper : Vector = new Vector(2);
 
         let radius = 60;
 
@@ -151,9 +152,9 @@ abstract class Track {
     }
 
     private static addWall8() {
-        let pointMiddle : number[] = [0.0];
-        let pointLower : number[] = [0.0];
-        let pointUpper : number[] = [0.0];
+        let pointMiddle : Vector = new Vector(2);
+        let pointLower : Vector = new Vector(2);
+        let pointUpper : Vector = new Vector(2);
 
         let radius = 41;
 
@@ -170,8 +171,8 @@ abstract class Track {
     }
 
     private static addWall9() {
-        let pointLeft : number[] = [0.0];
-        let pointRight : number[] = [0.0];
+        let pointLeft : Vector = new Vector(2);
+        let pointRight : Vector = new Vector(2);
 
         pointLeft[1] = 79;
         pointLeft[0] = 137.6;
@@ -183,8 +184,8 @@ abstract class Track {
     }
 
     private static addWall10() {
-        let pointLeft : number[] = [0.0];
-        let pointRight : number[] = [0.0];
+        let pointLeft : Vector = new Vector(2);
+        let pointRight : Vector = new Vector(2);
 
         pointLeft[1] = 60.6;
         pointLeft[0] = 133;
@@ -196,8 +197,8 @@ abstract class Track {
     }
 
     private static addWall11() {
-        let pointLeft : number[] = [0.0];
-        let pointRight : number[] = [0.0];
+        let pointLeft : Vector = new Vector(2);
+        let pointRight : Vector = new Vector(2);
 
         pointLeft[1] = 83.5;
         pointLeft[0] = 108;
@@ -209,8 +210,8 @@ abstract class Track {
     }
 
     private static addWall12() {
-        let pointLeft : number[] = [0.0];
-        let pointRight : number[] = [0.0];
+        let pointLeft : Vector = new Vector(2);
+        let pointRight : Vector = new Vector(2);
 
         pointLeft[1] = 65.8;
         pointLeft[0] = 98.5;
@@ -222,8 +223,8 @@ abstract class Track {
     }
 
     private static addWall13() {
-        let pointLeft : number[] = [0.0];
-        let pointRight : number[] = [0.0];
+        let pointLeft : Vector = new Vector(2);
+        let pointRight : Vector = new Vector(2);
 
         pointLeft[1] = 110;
         pointLeft[0] = 59;
@@ -235,8 +236,8 @@ abstract class Track {
     }
 
     private static addWall14() {
-        let pointLeft : number[] = [0.0];
-        let pointRight : number[] = [0.0];
+        let pointLeft : Vector = new Vector(2);
+        let pointRight : Vector = new Vector(2);
 
         pointLeft[1] = 90;
         pointLeft[0] = 58;
@@ -248,9 +249,9 @@ abstract class Track {
     }
 
     private static addWall15() {
-        let pointMiddle : number[] = [0.0];
-        let pointLower : number[] = [0.0];
-        let pointUpper : number[] = [0.0];
+        let pointMiddle : Vector = new Vector(2);
+        let pointLower : Vector = new Vector(2);
+        let pointUpper : Vector = new Vector(2);
 
         let radius = 61;
 
@@ -267,9 +268,9 @@ abstract class Track {
     }
 
     private static addWall16() {
-        let pointMiddle : number[] = [0.0];
-        let pointLower : number[] = [0.0];
-        let pointUpper : number[] = [0.0];
+        let pointMiddle : Vector = new Vector(2);
+        let pointLower : Vector = new Vector(2);
+        let pointUpper : Vector = new Vector(2);
 
         let radius = 41;
 
@@ -286,9 +287,9 @@ abstract class Track {
     }
 
     private static addWall17() {
-        let pointMiddle : number[] = [0.0];
-        let pointLower : number[] = [0.0];
-        let pointUpper : number[] = [0.0];
+        let pointMiddle : Vector = new Vector(2);
+        let pointLower : Vector = new Vector(2);
+        let pointUpper : Vector = new Vector(2);
 
         let radius = 61;
 
@@ -305,9 +306,9 @@ abstract class Track {
     }
 
     private static addWall18() {
-        let pointMiddle : number[] = [0.0];
-        let pointLower : number[] = [0.0];
-        let pointUpper : number[] = [0.0];
+        let pointMiddle : Vector = new Vector(2);
+        let pointLower : Vector = new Vector(2);
+        let pointUpper : Vector = new Vector(2);
 
         let radius = 41;
 

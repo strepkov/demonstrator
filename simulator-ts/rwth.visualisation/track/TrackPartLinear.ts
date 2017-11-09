@@ -1,15 +1,17 @@
 import {TrackPart} from "./TrackPart";
+import {Vector} from 'ts-vector';
+
 export {TrackPartLinear};
 
 class TrackPartLinear extends TrackPart {
     
-    public pointUpperLeft : number[];
-    public pointUpperRight : number[];
-    public pointLowerLeft : number[];
-    public pointLowerRight : number[];
+    public pointUpperLeft : Vector;
+    public pointUpperRight : Vector;
+    public pointLowerLeft : Vector;
+    public pointLowerRight : Vector;
 
-    public constructor (pointUpperLeft : number[], pointUpperRight : number[]
-                        , pointLowerLeft : number[], pointLowerRight : number[]) {
+    public constructor (pointUpperLeft : Vector, pointUpperRight : Vector
+                        , pointLowerLeft : Vector, pointLowerRight : Vector) {
         
         super();
         this.pointUpperLeft = pointUpperLeft;
