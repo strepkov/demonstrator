@@ -1,9 +1,9 @@
 import de.CoordHelper;
-import de.rwth.visualization.coord.Rotation;
-import de.rwth.visualization.track.Track;
+import {Rotation} from "../coord/Rotation";
+import {Track} from "../track/Track";
 import {Wall} from "../track/Wall";
-import de.rwth.visualization.track.WallCurved;
-import de.rwth.visualization.track.WallLinear;
+import {WallCurved} from "../track/WallCurved";
+import {WallLinear} from "../track/WallLinear";
 
 public class Sensor {
     private offset : number[];
@@ -40,7 +40,7 @@ public class Sensor {
     //             this.offset, this.direction, this.getDirection(), this.getPosition());
     // }
 
-    public getIntersections(wall : Wall) {
+    public List<RealVector> getIntersections(wall : Wall) {
         if(wall instanceof WallLinear) {
             return this.getIntersections((WallLinear)wall);
         } else if(wall instanceof WallCurved) {
@@ -49,21 +49,24 @@ public class Sensor {
         return new ArrayList<>();
     }
 
-    public List<RealVector> getIntersections(WallLinear wall) {
-        List<RealVector> result = new ArrayList<>();
+    public List<RealVector> getIntersections(wall : WallLinear) {
+        
+        let result = new Array<number[]>();
 
         try {
-            RealVector position = this.getPosition();
-            RealVector direction = this.getDirection();
-            RealVector intersection =
-                    CoordHelper.getIntersectionLine(wall.pointLeft, wall.pointRight, position, direction);
+            let position = this.getPosition();
+            let direction = this.getDirection();
+            let intersection = CoordHelper.getIntersectionLine(wall.pointLeft, wall.pointRight, position, direction);
 
             if(wall.inBoundaries(intersection)) {
-                result.add(intersection);
+
+                result.push(intersection);
             }
 
             return result;
+
         } catch(Exception exception) {
+            // need to add some log here
             return result;
         }
     }
@@ -72,9 +75,9 @@ public class Sensor {
         List<RealVector> result = new ArrayList<>();
 
         try {
-            RealVector position = this.getPosition();
-            RealVector direction = this.getDirection();
-            List<RealVector> intersections =
+            let position = this.getPosition();
+            let direction = this.getDirection();
+            let intersections : Array<number[]> =
                     CoordHelper.getIntersectionCircle(position, direction, wall.pointMiddle, wall.radius);
 
             for(RealVector intersection : intersections) {

@@ -2,6 +2,7 @@ import {Wall} from "./Wall";
 import {WallCurved} from "./WallCurved";
 import {WallLinear} from "./WallLinear";
 
+export {Track}
 //abstract
 abstract class Track {
     
