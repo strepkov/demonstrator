@@ -1,4 +1,5 @@
 import {Wall} from "./Wall";
+import {Vector} from 'ts-vector';
 
 export {WallCurved};
 
@@ -9,12 +10,12 @@ class WallCurved extends Wall {
     }
 
 
-    public pointMiddle : number[];
+    public pointMiddle : Vector;
     public radius : number;
-    public pointLower : number[];
-    public pointUpper : number[];
+    public pointLower : Vector;
+    public pointUpper : Vector;
 
-    public constructor (pointMiddle : number[], radius : number, pointLower : number[], pointUpper : number[]) {
+    public constructor (pointMiddle : Vector, radius : number, pointLower : Vector, pointUpper : Vector) {
         
         super();
         this.pointMiddle = pointMiddle;
@@ -23,28 +24,28 @@ class WallCurved extends Wall {
         this.pointUpper = pointUpper;
     }
 
-    public inBoundaries(point : number[]) {
+    public inBoundaries(point : Vector) {
         return super.inBoundaries(this.pointLower, point, this.pointUpper);
     }
 
 
     public static Builder = class Builder {
         
-        private pointMiddle : number[];
+        private pointMiddle : Vector;
         private radius : number;
-        private pointLower : number[];
-        private pointUpper : number[];
+        private pointLower : Vector;
+        private pointUpper : Vector;
 
         Builder() {
-            this.pointMiddle = [0,0];
-            this.pointLower = [0,0];
-            this.pointUpper = [0,0];
+            this.pointMiddle = new Vector(2);
+            this.pointLower = new Vector(2);
+            this.pointUpper = new Vector(2);
         }
         
         // Using setPointMiddle like an object ({x,y});
         public setPointMiddle(x : {x1 : number, y1 : number});
-        // Using setPointMiddle like an Array
-        public setPointMiddle(x : number[]);
+        // Using setPointMiddle like an Vector
+        public setPointMiddle(x : Vector);
         public setPointMiddle(x) : any{
             
             if (typeof x == "object"){
@@ -53,7 +54,7 @@ class WallCurved extends Wall {
                 this.pointMiddle[1] = x.y1;
                 return this;
             }
-            else if (x instanceof Array)
+            else if (x instanceof Vector)
             {
                 this.pointMiddle = x;
                 return this;
@@ -67,8 +68,8 @@ class WallCurved extends Wall {
 
         // Using setPointUpper like an object ({x,y});
         public setPointUpper(x : {x1 : number, y1 : number});
-        // Using setPointUpper like an Array
-        public setPointUpper(x : number[]);
+        // Using setPointUpper like an Vector
+        public setPointUpper(x : Vector);
         public setPointUpper(x) : any {
         
             if (typeof x == "object"){
@@ -77,7 +78,7 @@ class WallCurved extends Wall {
                 this.pointUpper[1] = x.y1;
                 return this;
             }
-            else if(x instanceof Array){
+            else if(x instanceof Vector){
                 
                 this.pointUpper = x;
                 return this;
@@ -86,8 +87,8 @@ class WallCurved extends Wall {
 
         // Using setPointLower like an object ({x,y});
         public setPointLower(x : {x1 : number, y1 : number});
-        // Using setPointLower like an Array
-        public setPointLower(x : number[]);
+        // Using setPointLower like an Vector
+        public setPointLower(x : Vector);
         public setPointLower(x) : any {
         
             if (typeof x == "object"){
@@ -96,7 +97,7 @@ class WallCurved extends Wall {
                 this.pointLower[1] = x.y1;
                 return this;
             }
-            else if (x instanceof Array)
+            else if (x instanceof Vector)
             {
                 this.pointLower = x;
                 return this;
