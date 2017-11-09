@@ -1,3 +1,7 @@
+import {Wall} from "./Wall";
+
+export {WallLinear};
+
 class WallLinear extends Wall {
     
     public static getBuilder() {

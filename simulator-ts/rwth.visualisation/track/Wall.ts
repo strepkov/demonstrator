@@ -1,3 +1,5 @@
+export {Wall};
+
 abstract class Wall {
 
     // static ?

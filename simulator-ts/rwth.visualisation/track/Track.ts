@@ -1,36 +1,42 @@
+import {Wall} from "./Wall";
+import {WallCurved} from "./WallCurved";
+import {WallLinear} from "./WallLinear";
+
+//abstract
 abstract class Track {
     
     //static ?
-    public walls : Array<Wall>;
-
-    // static {
-    //     init();
-    // }
-
+    // the init() has to be called and fill with walls the walls' array 
+    // then we have to pass inside init() for the each addWall tmp_walls
+    public static walls = Track.init();
+    
     // inits the whole track,
     // the indices can be look up at Three.js/Self-Driving Car/images/racingtrack.gif
+    //static ?
     private static init() {
-        
-        let walls = new Array<Wall>();
 
-        addWall1();
-        addWall2();
-        addWall3();
-        addWall4();
-        addWall5();
-        addWall6();
-        addWall7();
-        addWall8();
-        addWall9();
-        addWall10();
-        addWall11();
-        addWall12();
-        addWall13();
-        addWall14();
-        addWall15();
-        addWall16();
-        addWall17();
-        addWall18();
+        let tmp_walls = new Array<Wall>()
+
+        Track.addWall1();
+        Track.addWall2();
+        Track.addWall3();
+        Track.addWall4();
+        Track.addWall5();
+        Track.addWall6();
+        Track.addWall7();
+        Track.addWall8();
+        Track.addWall9();
+        Track.addWall10();
+        Track.addWall11();
+        Track.addWall12();
+        Track.addWall13();
+        Track.addWall14();
+        Track.addWall15();
+        Track.addWall16();
+        Track.addWall17();
+        Track.addWall18();
+
+        return tmp_walls;
     }
 
     private static addWall1(){
@@ -57,7 +63,7 @@ abstract class Track {
         pointRight[1] = 10;
         pointRight[0] = -122;
 
-        walls.add(new WallLinear(pointLeft, pointRight));
+        this.walls.push(new WallLinear(pointLeft, pointRight));
     }
 
     private static addWall3() {
@@ -70,7 +76,7 @@ abstract class Track {
         pointRight[1] = -9.5;
         pointRight[0] = 58;
 
-        walls.add(new WallLinear(pointLeft, pointRight));
+        this.walls.push(new WallLinear(pointLeft, pointRight));
     }
 
     private static addWall4() {
@@ -83,7 +89,7 @@ abstract class Track {
         pointRight[1] = 10;
         pointRight[0] = 58;
 
-        walls.add(new WallLinear(pointLeft, pointRight));
+        this.walls.push(new WallLinear(pointLeft, pointRight));
     }
 
     private static addWall5() {
@@ -102,7 +108,7 @@ abstract class Track {
         pointUpper[1] = -36;
         pointUpper[0] = 109;
 
-        walls.add(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
+        this.walls.push(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
     }
 
     private static addWall6() {
@@ -121,7 +127,7 @@ abstract class Track {
         pointUpper[1] = -18;
         pointUpper[0] = 114;
 
-        walls.add(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
+        this.walls.push(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
     }
 
     private static addWall7() {
@@ -140,7 +146,7 @@ abstract class Track {
         pointUpper[1] = 22;
         pointUpper[0] = 184;
 
-        walls.add(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
+        this.walls.push(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
     }
 
     private static addWall8() {
@@ -159,7 +165,7 @@ abstract class Track {
         pointUpper[1] = 22;
         pointUpper[0] = 164;
 
-        walls.add(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
+        this.walls.push(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
     }
 
     private static addWall9() {
@@ -172,7 +178,7 @@ abstract class Track {
         pointRight[1] = 83.5;
         pointRight[0] = 108;
 
-        walls.add(new WallLinear(pointLeft, pointRight));
+        this.walls.push(new WallLinear(pointLeft, pointRight));
     }
 
     private static addWall10() {
@@ -185,7 +191,7 @@ abstract class Track {
         pointRight[1] = 65.8;
         pointRight[0] = 98.5;
 
-        walls.add(new WallLinear(pointLeft, pointRight));
+        this.walls.push(new WallLinear(pointLeft, pointRight));
     }
 
     private static addWall11() {
@@ -198,7 +204,7 @@ abstract class Track {
         pointRight[1] = 110;
         pointRight[0] = 59;
 
-        walls.add(new WallLinear(pointLeft, pointRight));
+        this.walls.push(new WallLinear(pointLeft, pointRight));
     }
 
     private static addWall12() {
@@ -211,7 +217,7 @@ abstract class Track {
         pointRight[1] = 90;
         pointRight[0] = 58;
 
-        walls.add(new WallLinear(pointLeft, pointRight));
+        this.walls.push(new WallLinear(pointLeft, pointRight));
     }
 
     private static addWall13() {
@@ -224,7 +230,7 @@ abstract class Track {
         pointRight[1] = 110;
         pointRight[0] = -121;
 
-        walls.add(new WallLinear(pointLeft, pointRight));
+        this.walls.push(new WallLinear(pointLeft, pointRight));
     }
 
     private static addWall14() {
@@ -237,7 +243,7 @@ abstract class Track {
         pointRight[1] = 90.8;
         pointRight[0] = -122;
 
-        walls.add(new WallLinear(pointLeft, pointRight));
+        this.walls.push(new WallLinear(pointLeft, pointRight));
     }
 
     private static addWall15() {
@@ -256,7 +262,7 @@ abstract class Track {
         pointUpper[1] = 51.3;
         pointUpper[0] = -183;
 
-        walls.add(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
+        this.walls.push(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
     }
 
     private static addWall16() {
@@ -275,7 +281,7 @@ abstract class Track {
         pointUpper[1] = 51.3;
         pointUpper[0] = -164;
 
-        walls.add(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
+        this.walls.push(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
     }
 
     private static addWall17() {
@@ -294,7 +300,7 @@ abstract class Track {
         pointUpper[1] = -9.5;
         pointUpper[0] = -122;
 
-        walls.add(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
+        this.walls.push(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
     }
 
     private static addWall18() {
@@ -313,7 +319,7 @@ abstract class Track {
         pointUpper[1] = 10;
         pointUpper[0] -122;
 
-        walls.add(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
+        this.walls.push(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
     }
 
 

@@ -1,3 +1,7 @@
+import {Wall} from "./Wall";
+
+export {WallCurved};
+
 class WallCurved extends Wall {
     
     public static getBuilder() {

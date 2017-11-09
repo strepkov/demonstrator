@@ -1,3 +1,5 @@
+export {Rotation};
+
 abstract class Rotation {
 
     // static ?
