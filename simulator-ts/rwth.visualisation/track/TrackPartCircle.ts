@@ -1,3 +1,6 @@
+import {TrackPart} from "./TrackPart";
+export {TrackPartCircle};
+
 class TrackPartCircle extends TrackPart {
     
     public point : number[];

@@ -1,3 +1,6 @@
+import {TrackPart} from "./TrackPart";
+export {TrackPartLinear};
+
 class TrackPartLinear extends TrackPart {
     
     public pointUpperLeft : number[];
