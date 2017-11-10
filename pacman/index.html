@@ -1,0 +1,49 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<html lang="en-US" xmlns="http://www.w3.org/1999/html">
+<head>
+    <style>
+        #source {
+            width: 400px;
+            height: 600px;
+        }
+        div {
+            margin-left: 50px;
+        }
+    </style>
+
+    <title>EMA Demonstrator</title>
+</head>
+<body>
+<div id="main">
+    <h2>Insert EmbeddedMontiarcCode here:</h2>
+    <p>package has to be "demonstrator", component name has to be Main</p>
+    <textarea id="source">package demonstrator;&#10;&#10;component Main {&#10;}</textarea>
+    </p>
+	<button id="submit" onclick="sendData()">Submit</button>
+
+    <script type="text/javascript">
+        function sendData() {
+            var text = document.getElementById('source').value;
+
+            $.ajax({
+                type: "POST",
+                url: "137.226.168.11:80",
+                dataType: 'text',
+                data: 'text='+text,
+                success: function(msg) {
+                    alert(msg);
+                },
+                error: function(msg) {
+                    alert(msg);
+                }
+            });
+        }
+    </script>
+</div>
+<div id="picture">
+    <script type="text/javascript">
+        
+    </script>
+</div>
+</body>
+</html>
