@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - Car Visualization</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				font-family: Monospace;
+				background-color: #000000;
+				margin: 0px;
+				overflow: hidden;
+			}
+			#info {
+				color: #fff;
+				position: absolute;
+				top: 8px;
+				width: 100%;
+				text-align: center;
+				z-index: 100;
+				display:block;
+			}
+			a { color: red }
+		</style>
+	</head>
+	
+	<body>
+		<div align="center">
+			<button id="blue-material">Blue</button>
+			<button id="silver-material">Pure Chrome</button>
+			<button id="black-material">Black</button>
+			<button id="red-material">Red</button>
+			<button id="move"></button>
+		
+		<!--<button onClick="showGameOverScreen()" style="position: absolute; top:50%;" id="restart_trigger">Trigger</button>-->
+		<div style="display: none; position: absolute; top: 0; bottom: 0; left: 0; right: 0; background-color: #000000; opacity: 1;" id="close_layer">
+			<div style="margin-top: 20%;" id="restart_layout_content">
+				<p style="font-family: Helvetica; font-size: 250%; font-weight: bold; color: red;" >Game Over - you left the world!</p> <!--style="font-size: 200%; display: block; position: absolute; top:50%;"-->
+				<button id="close-server">Close Server</button>
+			</div>
+		</div>
+		</div>
+	
+		
+		<script src="build/three.js"></script>
+		<script src="js/OrbitControls.js"></script>
+		<script src="js/loaders/AssimpJSONLoader.js"></script>
+		<script src="js/Detector.js"></script>
+		<script src="js/libs/stats.min.js"></script>
+		
+		<script>	
+			if ( ! Detector.webgl ) {
+				Detector.addGetWebGLMessage();
+			}
+
+			var container, stats;
+			var camera, scene, renderer, objects;
+			var clock = new THREE.Clock();
+			var controls;
+			var directionalLight, pointLight;
+			
+			// init scene
+			init();
+		
+			var onProgress = function ( xhr ) {
+				if ( xhr.lengthComputable ) {
+					var percentComplete = xhr.loaded / xhr.total * 100;
+					console.log( Math.round(percentComplete, 2) + '% downloaded' );
+				}
+			};
+			
+			var onError = function ( xhr ) {
+			};			
+
+			// Global Car Variable
+			var currentCar = new THREE.Object3D();
+
+			var body = new THREE.Object3D();
+			var backPlate2 = new THREE.Object3D();
+			var backPlate = new THREE.Object3D();
+			
+			var wipers = new THREE.Object3D();
+			
+			var leftDoor = new THREE.Object3D();
+			var rightDoor = new THREE.Object3D();
+			var leftMirror = new THREE.Object3D();
+			var rightMirror = new THREE.Object3D();	
+			
+			var backlights = new THREE.Object3D();
+			var frontlights = new THREE.Object3D();
+			
+			var rightFrontIndicator = new THREE.Object3D();
+			var leftFrontIndicator = new THREE.Object3D();
+			var rightBackIndicator = new THREE.Object3D();
+			var leftBackIndicator = new THREE.Object3D();
+			
+			var rightBrakeLight = new THREE.Object3D();
+			var leftBrakeLight = new THREE.Object3D();
+			
+			var wheelFrontRight = new THREE.Object3D();
+			var wheelFrontLeft = new THREE.Object3D();
+			var wheelBackRight = new THREE.Object3D();
+			var wheelBackLeft = new THREE.Object3D();
+			
+			var tireFrontRight = new THREE.Object3D();
+			var tireFrontLeft = new THREE.Object3D();
+			var tireBackRight = new THREE.Object3D();
+			var tireBackLeft = new THREE.Object3D();
+
+			// Load the Car Object here
+			var carLoader = new THREE.AssimpJSONLoader(); 
+			carLoader.load( 'models/assimp/AudiAvus.json', function ( object ) {
+				currentCar = object;
+				currentCar.position.y = 0.2;
+				
+				currentCar.updateMatrixWorld();
+				var vector = new THREE.Vector3();
+				vector.setFromMatrixPosition( leftFrontIndicator.matrixWorld );
+				console.log(vector);
+				
+				// Children Car IDs
+				body = object.getObjectByName("3DSMesh_6", true);
+				steel = object.getObjectByName("3DSMesh_31", true);
+				logo = object.getObjectByName("3DSMesh_34", true);
+				pipes = object.getObjectByName("3DSMesh_26", true);
+				bumper = object.getObjectByName("3DSMesh_25", true);
+				engine = object.getObjectByName("3DSMesh_35", true);
+				dashboard = object.getObjectByName("3DSMesh_42", true);
+				dashboardDisplay = object.getObjectByName("3DSMesh_41", true);
+				steeringWheel = object.getObjectByName("3DSMesh_43");
+				wipers = object.getObjectByName("3DSMesh_52", true);
+				
+				leftDoor = object.getObjectByName("3DSMesh_10", true);
+				rightDoor = object.getObjectByName("3DSMesh_12", true);
+				rightMirror = object.getObjectByName("3DSMesh_51", true);
+				leftMirror = object.getObjectByName("3DSMesh_27", true);
+				
+				backlights = object.getObjectByName("3DSMesh_28", true);
+				frontlights = object.getObjectByName("3DSMesh_40", true);
+				rightFrontIndicator = object.getObjectByName("3DSMesh_48", true);
+				leftFrontIndicator = object.getObjectByName("3DSMesh_2", true);
+				rightBackIndicator = object.getObjectByName("3DSMesh_0", true);
+				leftBackIndicator = object.getObjectByName("3DSMesh_50", true);
+				
+				rightBrakeLight = object.getObjectByName("3DSMesh_1", true);
+				leftBrakeLight = object.getObjectByName("3DSMesh_49", true);
+				
+				carGlass = object.getObjectByName("3DSMesh_33", true);
+				leftWindow = object.getObjectByName("3DSMesh_9", true);
+				rightWindow = object.getObjectByName("3DSMesh_11", true);
+				
+				wheelFrontRight = object.getObjectByName("3DSMesh_19", true);
+				wheelFrontLeft = object.getObjectByName("3DSMesh_21", true);
+				wheelBackRight = object.getObjectByName("3DSMesh_17", true);
+				wheelBackLeft = object.getObjectByName("3DSMesh_23", true);		
+				
+				tireFrontRight = object.getObjectByName("3DSMesh_20", true);
+				tireFrontLeft = object.getObjectByName("3DSMesh_22", true);
+				tireBackRight = object.getObjectByName("3DSMesh_18", true);
+				tireBackLeft = object.getObjectByName("3DSMesh_24", true);
+				
+				backPlate2 = object.getObjectByName("3DSMesh_45", true);
+				backPlate = object.getObjectByName("3DSMesh_46", true);
+				
+				seatRight = object.getObjectByName("3DSMesh_13", true);
+				seatLeft = object.getObjectByName("3DSMesh_15", true);
+				carpet = object.getObjectByName("3DSMesh_30", true);
+				currentCar.add(rightDoor);
+				/* 
+				// Initial Color of Car Housing -> Shiny Blue
+				// Set metallic parts to a steel material -> PuredarkChrome
+				// Set textil objects to fabric color -> Rough Red
+				*/
+				var housing = [body, rightDoor, leftDoor, backPlate2, backPlate];
+				for(var i = 0; i<housing.length; i++){
+					setColor(materialRed, housing[i]);
+				}
+				
+				var darkChromeObjects = [dashboardDisplay, rightMirror, leftMirror, engine, pipes, logo, steel, wheelBackLeft, wheelBackRight, wheelFrontLeft, wheelFrontRight ]
+				for(var i = 0; i<darkChromeObjects.length; i++){
+					setColor(pureChrome, darkChromeObjects[i]);
+				}
+				
+				var blackObjects = [steeringWheel, wipers, dashboard, bumper, tireBackLeft,tireBackRight, tireFrontLeft, tireFrontRight];
+				for(var i = 0; i<blackObjects.length; i++){
+					setColor(blackRough, blackObjects[i]);
+				}
+				var redObjects = [carpet, seatLeft, seatRight];
+				for(var i = 0; i<redObjects.length; i++){
+					setColor(redRough, redObjects[i]);
+				}
+				
+				// Set glass material
+				var blueGlassMaterial = [carGlass, rightWindow, leftWindow];
+				for(var i = 0; i<blueGlassMaterial.length; i++){
+					setColor(blueGlass, blueGlassMaterial[i]);
+				}
+				setColor(redGlass, backlights);
+				setColor(yellowGlass, frontlights);
+				
+			}, onProgress, onError );
+			
+			function showGameOverScreen(){
+				document.getElementById('close_layer').style.display = 'inline';
+			}
+
+			var track = new THREE.Object3D();
+			// Load the race track
+			var trackLoader = new THREE.AssimpJSONLoader();
+			trackLoader.load( 'models/assimp/interior/track.json', function ( object ) {//interior/track.json
+				track = object;
+				scene.add( object );
+				object.position.x = 40;
+				
+				object.scale.multiplyScalar(1.2);
+				object.rotation.z = Math.PI/2;
+				setColor(pureChrome, object);
+			}, onProgress, onError );
+			
+			
+			// Load some buildings
+			var buildingLoader = new THREE.AssimpJSONLoader();
+			buildingLoader.load( 'models/assimp/interior/build.json', function ( object ) {
+				scene.add( object );
+				// Adapt the position of the building to the Environment
+				object.position.x = -35;
+				object.position.z += 35;
+				object.scale.multiplyScalar(0.3);
+				
+				// Set the material of the building
+				windows = object.getObjectByName("Cube", true);
+				setColor(pureChrome, windows);
+				
+				roof = object.getObjectByName("Cube_2", true);
+				garage = object.getObjectByName("Cube_1", true);
+				grid1 = object.getObjectByName("Cube_", true);
+				grid2 = object.getObjectByName("Cylindre_0", true);
+				grid3 = object.getObjectByName("Cube_2_0_1", true);
+				grid4 = object.getObjectByName("Cube_1_0_1", true);
+				pillar = object.getObjectByName("Cylindre_5", true);
+				
+				var building = [pillar,roof,garage,grid1,grid2,grid3,grid4,];
+				for(var i = 0; i<building.length; i++){
+					setColor(greyRough, building[i]);
+				}			
+				
+				// Duplicate the building and set it to the neighborhood
+				var obj2 = object.clone();
+				scene.add(obj2);
+				obj2.position.z -=60;
+				
+				var obj3 = obj2.clone();
+				scene.add(obj3);
+				obj3.position.z -=60;
+				
+			}, onProgress, onError );
+			
+			// CubeMap
+			var path = "textures/cube/Bridge2/";//textures/cube/SwedishRoyalCastle/
+			var format = '.jpg';
+			var urls = [
+					path + 'px' + format, path + 'nx' + format,
+					path + 'py' + format, path + 'ny' + format,
+					path + 'pz' + format, path + 'nz' + format
+					];
+			var reflectionCube = new THREE.CubeTextureLoader().load( urls );
+			reflectionCube.format = THREE.RGBFormat;
+			scene.background = reflectionCube;
+						
+			animate();
+			
+			function init() {
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+				
+				// Camera
+				camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 2000 );
+				camera.position.set( 0, 20, 0 );
+				
+				// Scene
+				scene = new THREE.Scene();	
+
+				// LIGHTS
+				var ambient = new THREE.AmbientLight( 0x050505 );
+				scene.add( ambient );
+				
+				directionalLight = new THREE.DirectionalLight( 0xffffff, 2 );
+				directionalLight.position.set( 2, 1.2, 10 ).normalize();
+				scene.add( directionalLight );
+				
+				directionalLight = new THREE.DirectionalLight( 0xffffff, 1 );
+				directionalLight.position.set( -2, 1.2, -10 ).normalize();
+				scene.add( directionalLight );
+
+				/*
+				pointLight = new THREE.PointLight( 0xffaa00, 2 );
+				pointLight.position.set( 2000, 1200, 10000 );
+				scene.add( pointLight );
+				*/
+
+				// Renderer
+				renderer = new THREE.WebGLRenderer();
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				container.appendChild( renderer.domElement );
+				
+				// Stats
+				stats = new Stats();
+				container.appendChild( stats.dom );
+
+				// Events
+				window.addEventListener( 'resize', onWindowResize, false );
+				
+				camera.lookAt( scene.position );
+				
+				/* OrbitControls
+				// How far you can orbit vertically, upper and lower limits.
+				// Range is 0 to Math.PI radians.
+				*/
+				controls = new THREE.OrbitControls( camera, renderer.domElement );
+				controls.minPolarAngle = 0;
+				controls.maxPolarAngle = Math.PI/2;
+
+				controls.target.set( 0, 2, 0 );
+				controls.update();
+				
+				/* Set the ground
+				// First Ground: Grass
+				// Second Ground: Asphalt
+				*/
+				var floorTexture = new THREE.ImageUtils.loadTexture( 'images/wall.jpg' );
+				floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping; 
+				floorTexture.repeat.set( 100, 100 );
+				var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
+				var floorGeometry = new THREE.PlaneGeometry(220,375, 10, 10);
+				var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+				floor.position.y = 0.2;
+				floor.position.x += 40;
+				floor.rotation.x = Math.PI / 2;
+				floor.castShadow = true;
+				floor.receiveShadow = true;
+				scene.add(floor);
+				
+				var floor2Texture = new THREE.ImageUtils.loadTexture( 'images/gras.jpg' );//sand-512//checkerboard.jpg
+				floor2Texture.wrapS = floor2Texture.wrapT = THREE.RepeatWrapping; 
+				floor2Texture.repeat.set( 100, 100 );
+				var floor2Material = new THREE.MeshBasicMaterial( { map: floor2Texture, side: THREE.DoubleSide } );
+				var floor2Geometry = new THREE.PlaneGeometry(300,400, 100, 100);
+				var floor2 = new THREE.Mesh(floor2Geometry, floor2Material);
+				floor.position.y -=0.02;
+				floor.position.x-=30;
+				floor2.rotation.x = Math.PI / 2;
+				floor2.castShadow = true;
+				floor2.receiveShadow = true;
+				scene.add(floor2);
+			}
+			
+			function onWindowResize( event ) {
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+			}
+			
+			// MATERIAL FUNCTIONS
+			
+			// Help function to set the material/color
+			function setColor(color, object){
+				object.traverse(function (child) {
+                    if (child instanceof THREE.Mesh) {
+                        child.material = color;
+                    }
+                });
+			}
+			
+			// Materials
+			var materialBlue = new THREE.MeshLambertMaterial( { color: 0x001133, envMap: reflectionCube, combine: THREE.MultiplyOperation } );
+			var materialBlack = new THREE.MeshLambertMaterial( { color: 0x000000, envMap: reflectionCube, combine: THREE.MixOperation, reflectivity: 0.15 } );
+			var materialRed = new THREE.MeshLambertMaterial( { color: 0x660000, envMap: reflectionCube, combine: THREE.MixOperation, reflectivity: 0.25 } );
+			
+			var darkChrome = new THREE.MeshLambertMaterial( { color: 0x444444, envMap: reflectionCube } );//darkdarkChrome
+			var pureChrome = new THREE.MeshLambertMaterial( { color: 0xffffff, envMap: reflectionCube } );
+			
+			var lightGlass = new THREE.MeshBasicMaterial( { color: 0x223344, envMap: reflectionCube, opacity: 0.25, transparent: true, combine: THREE.MixOperation, reflectivity: 0.25 } );
+			var blueGlass = new THREE.MeshLambertMaterial({color: 0x668899, envMap: reflectionCube, opacity: 0.75, transparent: true});	
+			var yellowGlass = new THREE.MeshLambertMaterial({color: 0xffffaa, opacity: 0.75, transparent: true});
+			var redGlass = new THREE.MeshLambertMaterial({color: 0xff0000, opacity: 0.75, transparent: true});
+			
+			var blackRough = new THREE.MeshLambertMaterial( { color: 0x050505 } );//tire
+			var greyRough = new THREE.MeshLambertMaterial( { color: 0x1D1D1D } );
+			var redRough = new THREE.MeshLambertMaterial( { color: 0x330500 } );//seats
+
+			function setBlue(){
+				var housing = [body, rightDoor, leftDoor, backPlate2, backPlate];
+				for(var i = 0; i<housing.length; i++){
+					setColor(materialBlue, housing[i]);
+				}
+			}
+			var blueButton = document.getElementById('blue-material');
+			blueButton.addEventListener('click', function(){
+				setBlue();
+			});
+
+			function setSilver(){
+				var housing = [body, rightDoor, leftDoor, backPlate2, backPlate];
+				for(var i = 0; i<housing.length; i++){
+					setColor(pureChrome, housing[i]);
+				}
+			}
+			var silverButton = document.getElementById('silver-material');
+			silverButton.addEventListener('click', function(){
+				setSilver();
+			});
+
+			function setBlack(){
+				var housing = [body, rightDoor, leftDoor, backPlate2, backPlate];
+				for(var i = 0; i<housing.length; i++){
+					setColor(materialBlack, housing[i]);
+				}
+			}
+			var blackButton = document.getElementById('black-material');
+			blackButton.addEventListener('click', function(){
+				setBlack();
+			});
+			
+			function setRed(){
+				var housing = [body, rightDoor, leftDoor, backPlate2, backPlate];
+				for(var i = 0; i<housing.length; i++){
+					setColor(materialRed, housing[i]);
+				}
+			}
+			var redButton = document.getElementById('red-material');
+			redButton.addEventListener('click', function(){
+				setRed();
+			});
+
+			var moveButton = document.getElementById('move');
+			moveButton.addEventListener('click', function(){
+				move();
+			});
+
+            var closeButton = document.getElementById('close-server');
+            closeButton.addEventListener('click', function(){
+                webSocket.onclose();
+            });
+
+			/* Helping functions of driving
+			// 
+			//
+			*/
+			var angle = 0; // Current direction of the car pi/2=90°
+
+			//update Global Position
+			function setPosition(object,x1,y1,z1){
+			    object.position.x = x1;
+				object.position.y = y1;
+				object.position.z = z1;
+                //moveForward();
+
+                //setTimeout(moveBackward, 800);
+            }
+
+			//var carDegree = 0.0;
+
+			// rotate car with a smooth flow
+			/*
+			function rotateCar(object, angleDeg){
+				//degree to radians
+				if(Math.abs(angleDeg - carDegree) > 0.0000001) {
+					var angleRad = angleDeg*(Math.PI/180);
+					var offsetRad = angleRad + object.rotation.z;
+					var offsetRadP = offsetRad / 100.0;
+					var index = 0;
+					
+					var onUpdate = function() {
+						object.rotation.z -= offsetRadP;
+						index++;
+						
+						if(index < 100) {
+							window.setTimeout(onUpdate, 0);
+						}
+					};
+					
+					window.setTimeout(onUpdate, 0);
+					carDegree = angleDeg;
+				}
+			}*/
+			
+
+			function rotateCar(object, angleDeg){
+				var angleRad = angleDeg*(Math.PI/180);
+				
+				object.rotation.z = -angleRad;
+				angle = -angleDeg;
+			}
+			
+			function moveForward(){
+			    if(angle===0) {
+                    currentCar.position.x += 1/20 * Math.sin(-angle);
+                    currentCar.position.z += 1/20 * Math.cos(-angle);
+				}
+				else if(angle>0) {
+                    currentCar.position.z -= 1/20 * Math.sin(-angle);
+                    currentCar.position.x -= 1/20 * Math.cos(-angle);
+                }
+                else{
+                    currentCar.position.x -= 1/20 * Math.sin(-angle);
+                    currentCar.position.z -= 1/20 * Math.cos(-angle);
+
+				}
+				requestAnimationFrame( moveForward );
+			}	
+
+			function moveBackward(){
+                if(angle===0) {
+                    currentCar.position.x -= 1/20 * Math.sin(-angle);
+                    currentCar.position.z -= 1/20 * Math.cos(-angle);
+                }
+                else if(angle>0) {
+                    currentCar.position.z += 1/20 * Math.sin(-angle);
+                    currentCar.position.x += 1/20 * Math.cos(-angle);
+                }
+                else{
+                    currentCar.position.x += 1/20 * Math.sin(-angle);
+                    currentCar.position.z += 1/20 * Math.cos(-angle);
+                }
+                requestAnimationFrame( moveBackward );
+
+			}	
+
+			// DOOR FUNCTIONS
+			var rightDoorStatus = false;// Right Door is closed
+			var leftDoorStatus = false;// Left Door is closed
+						
+			function openRightDoor(){
+				
+				var wholeRightDoor = [rightDoor, rightMirror, rightWindow];
+				if(rightDoorStatus == false){
+					for(var i = 0; i<wholeRightDoor.length; i++){
+						wholeRightDoor[i].rotateZ(0.5);
+						wholeRightDoor[i].position.x -=1.6; 
+						wholeRightDoor[i].position.y +=0.5;
+					}
+					rightDoorStatus = true;// now it's open
+				}
+			}
+
+			function closeRightDoor(){
+				var wholeRightDoor = [rightDoor, rightMirror, rightWindow];
+				if(rightDoorStatus == true){
+					for(var i = 0; i<wholeRightDoor.length; i++){
+						wholeRightDoor[i].rotateZ(-0.5);
+						wholeRightDoor[i].position.x +=1.6; 
+						wholeRightDoor[i].position.y -=0.5;
+					}
+					rightDoorStatus = false;
+				}
+			}
+			
+			function openLeftDoor(){
+				var wholeLeftDoor = [leftDoor, leftMirror, leftWindow];
+				if(leftDoorStatus == false){
+					for(var i = 0; i<wholeLeftDoor.length; i++){
+						wholeLeftDoor[i].rotateZ(-0.5);
+						wholeLeftDoor[i].position.x +=1.6; 
+						wholeLeftDoor[i].position.y +=0.5;
+					}
+					leftDoorStatus = true;// now it's open
+				}
+			}
+
+			function closeLeftDoor(){
+				var wholeLeftDoor = [leftDoor, leftMirror, leftWindow];
+				if(leftDoorStatus == true){
+					for(var i = 0; i<wholeLeftDoor.length; i++){
+						wholeLeftDoor[i].rotateZ(0.5);
+						wholeLeftDoor[i].position.x -=1.6; 
+						wholeLeftDoor[i].position.y -=0.5;
+					}
+					leftDoorStatus = false;
+				}
+			}
+
+			/*
+			// Light functions
+			// Frontlights, backlights, blinking, hazard lights
+			*/
+			
+			// Front and Back Lights
+			var red1,red2,red3,red4,red5,red6,red7;
+			var yellow1,yellow2,yellow3,yellow4,yellow5,yellow6,yellow7;
+			
+			red1 = new THREE.MeshLambertMaterial( { color: 0xff7f7f, opacity: 0.75, transparent: true} );
+			red2 = new THREE.MeshLambertMaterial( { color: 0xff4c4c, opacity: 0.75, transparent: true} );
+			red3 = new THREE.MeshLambertMaterial( { color: 0xff1919, opacity: 0.75, transparent: true} );
+			red4 = new THREE.MeshLambertMaterial( { color: 0xff0000, opacity: 0.75, transparent: true} );
+			red5 = new THREE.MeshLambertMaterial( { color: 0xe50000, opacity: 0.75, transparent: true} );
+			red6 = new THREE.MeshLambertMaterial( { color: 0xb20000, opacity: 0.75, transparent: true} );
+			red7 = new THREE.MeshLambertMaterial( { color: 0x990000, opacity: 0.75, transparent: true} );
+		
+			yellow1 = new THREE.MeshLambertMaterial( { color: 0xffce00, opacity: 0.75, transparent: true} );
+			yellow2 = new THREE.MeshLambertMaterial( { color: 0xffdb00, opacity: 0.75, transparent: true} );
+			yellow3 = new THREE.MeshLambertMaterial( { color: 0xffffcc, opacity: 0.75, transparent: true} );
+			yellow4 = new THREE.MeshLambertMaterial( { color: 0xffff99, opacity: 0.75, transparent: true} );
+			yellow5 = new THREE.MeshLambertMaterial( { color: 0xffff66, opacity: 0.75, transparent: true} );
+			yellow6 = new THREE.MeshLambertMaterial( { color: 0xffff32, opacity: 0.75, transparent: true} );
+			yellow7 = new THREE.MeshLambertMaterial( { color: 0xffff00, opacity: 0.75, transparent: true} );
+
+			var timerid = 0;
+            var defaultMat = undefined;
+
+			var blinkRightStatus = false;
+			var blinkLeftStatus = false;
+			
+			function blinkRight(){
+				var rightIndicator = [rightBackIndicator, rightFrontIndicator];
+                var lightsOn = false;
+
+				if(blinkLeftStatus === false && blinkRightStatus === false){
+				timerid = window.setInterval(function() {
+				    if(lightsOn === false) {
+                        for (var i = 0; i < rightIndicator.length; i++) {
+                            rightIndicator[i].traverse(function (child) {
+                                if (child instanceof THREE.Mesh) {
+                                   defaultMat = child.material;
+                                   child.material = yellow1;
+                               	}
+                            });
+                        }
+                        lightsOn = true;
+                    }
+                    else{
+                        for (var i = 0; i < rightIndicator.length; i++) {
+                            rightIndicator[i].traverse(function (child) {
+                                if (child instanceof THREE.Mesh) {
+                                    child.material = defaultMat;
+                                }
+                            });
+                        }
+                        lightsOn = false;
+					}
+                }, 500);
+				blinkRightStatus = true;
+				}
+			}
+			
+			function turnFlashlightsOn(frontOrBack, direction){
+				if(frontOrBack === 'front' && direction === 'right'){
+					rightFrontIndicator.traverse(function (child) {
+                        if (child instanceof THREE.Mesh) {
+                            defaultMat = child.material;
+							child.material = yellow1;
+                      	}
+                    });
+				}
+				else if(frontOrBack === 'back' && direction === 'right'){
+					rightBackIndicator.traverse(function (child) {
+                        if (child instanceof THREE.Mesh) {
+                            defaultMat = child.material;
+							child.material = yellow1;
+                      	}
+                    });
+				}
+				else if(frontOrBack === 'front' && direction === 'left'){
+					leftFrontIndicator.traverse(function (child) {
+                        if (child instanceof THREE.Mesh) {
+                            defaultMat = child.material;
+							child.material = yellow1;
+                      	}
+                    });
+				}
+				else if(frontOrBack === 'back' && direction === 'left'){
+					leftBackIndicator.traverse(function (child) {
+                        if (child instanceof THREE.Mesh) {
+                            defaultMat = child.material;
+							child.material = yellow1;
+                      	}
+                    });
+				}
+				else{
+					console.log("FrontOrBack or direction is not defined");
+				}
+			}
+			
+			function turnFlashlightsOff(frontOrBack, direction){
+				if(frontOrBack === 'front' && direction === 'right'){
+					setColor(defaultMat, rightFrontIndicator);
+				}
+				else if(frontOrBack === 'back' && direction === 'right'){
+					setColor(defaultMat, rightBackIndicator);
+				}
+				else if(frontOrBack === 'front' && direction === 'left'){
+					setColor(defaultMat, leftFrontIndicator);
+				}
+				else if(frontOrBack === 'back' && direction === 'left'){
+					setColor(defaultMat, leftFrontIndicator);
+				}
+				else{
+					console.log("FrontOrBack or direction is not defined");
+				}
+			}
+			
+			var defaultMatBrakeLight = undefined;
+			
+			function turnBrakeLightOn(){
+				var brakeLights = [rightBrakeLight, leftBrakeLight];
+				for (var i = 0; i < brakeLights.length; i++) {
+					brakeLights[i].traverse(function (child) {
+						if (child instanceof THREE.Mesh) {
+						   defaultMatBrakeLight = child.material;
+						   child.material = red2;
+						}
+					});
+				}
+			}
+			
+			function turnBrakeLightOff(){
+				setColor(defaultMatBrakeLight, rightBrakeLight);
+				setColor(defaultMatBrakeLight, leftBrakeLight);
+			}
+			
+			
+			// just stop the blinking if it blinks!TODO	
+			function stopBlinkRight(){
+				if(defaultMat !== undefined){
+					var rightIndicator = [rightBackIndicator, rightFrontIndicator];
+					for (var i = 0; i < rightIndicator.length; i++) {
+						rightIndicator[i].traverse(function (child) {
+							if (child instanceof THREE.Mesh) {
+								child.material = defaultMat;
+							}
+						});
+					}
+			    window.clearInterval(timerid);
+				blinkRightStatus = false;
+				}
+			}
+
+			function blinkLeft(){
+				var leftIndicator = [leftBackIndicator, leftFrontIndicator];
+                var lightsOn = false;
+				
+				if(blinkLeftStatus === false && blinkRightStatus === false){
+					timerid = window.setInterval(function() {
+						if(lightsOn === false) {
+							for (var i = 0; i < leftIndicator.length; i++) {
+								leftIndicator[i].traverse(function (child) {
+									if (child instanceof THREE.Mesh) {
+										defaultMat = child.material;
+										child.material = yellow1;
+									}
+								});
+							}
+							lightsOn = true;
+						}
+						else{
+							for (var i = 0; i < leftIndicator.length; i++) {
+								leftIndicator[i].traverse(function (child) {
+									if (child instanceof THREE.Mesh) {
+										child.material = defaultMat;
+									}
+								});
+							}
+							lightsOn = false;
+						}
+					}, 500);
+					blinkLeftStatus = true;
+				}
+			}
+			
+			function stopBlinkLeft(){
+				if(defaultMat !== undefined){
+					var leftIndicator = [leftBackIndicator, leftFrontIndicator];
+					for (var i = 0; i < leftIndicator.length; i++) {
+						leftIndicator[i].traverse(function (child) {
+							if (child instanceof THREE.Mesh) {
+								child.material = defaultMat;
+							}
+						});
+					}
+			    window.clearInterval(timerid);
+				blinkLeftStatus = false;
+				}
+			}
+			
+			function turnBacklightsOn(){//color
+				setColor(red2, backlights);
+			}
+
+			function turnBacklightsOff(){//color
+				backlights.traverse( function ( child ) {
+					if ( child instanceof THREE.Mesh ) {
+					child.material = redGlass;//color
+					}	
+				} );
+			}
+
+			
+			function turnFrontlightsOn(){//color
+				setColor(yellow7, frontlights);
+			}
+
+			function turnFrontlightsOff(){
+				setColor(yellowGlass, frontlights);
+			}
+			
+
+			// var t = 0;
+			function animate() {
+				requestAnimationFrame( animate );
+				render();
+				stats.update();
+			}
+			
+			//
+			function render() {
+				scene.add(currentCar);
+				renderer.render( scene, camera );
+				stats.update();
+			}
+
+			var i = 0;
+			function move(){
+				setTimeout(testmove, 10);
+			}
+
+			function testmove(){
+				setPosition(currentCar, 0, 0.2, i);
+			 	i=i+0.1;
+			 	setTimeout(move, 10);
+			}
+			
+			/**
+			 * 3D Visualization API
+			 * -> Websocket HTML5
+			 * Client Part
+			 */
+
+
+
+			// Handle incoming messages
+
+			    //console.log(msg);
+				// parse the message data back into JSON
+				//var data = JSON.parse(msg.data);
+				//rotateCar(currentCar, data.angle);
+
+				// mapping of the data of x will map to z axis of Three.js
+				// data of y will map to x axis of Three.js
+			//	for (var i = 0; i < 1000; i++){
+
+			//};
+		</script>
+	</body>
+</html>
