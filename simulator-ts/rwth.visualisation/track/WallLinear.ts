@@ -1,44 +1,43 @@
 import {Wall} from "./Wall";
-import {Vector} from 'ts-vector';
+import * as math from '../../libs/math';
 
 export {WallLinear};
 
 class WallLinear extends Wall {
     
-    public static getBuilder() {
+    public getBuilder() {
         
-        return new WallLinear.Builder();
+        return new this.Builder();
     }
 
-    public pointLeft : Vector;
-    public pointRight : Vector;
+    public pointLeft  = math.matrix();
+    public pointRight = math.matrix();
 
-    public constructor (pointLeft : Vector, pointRight : Vector) {
+    public constructor (pointLeft, pointRight) {
         
         super();
         this.pointLeft = pointLeft;
         this.pointRight = pointRight;
     }
 
-    public inBoundaries(point : Vector) {
+    public inBoundaries(point) {
         
         return super.inBoundaries(this.pointLeft, point, this.pointRight);
     }
 
-    public static Builder = class Builder {
+    public Builder = class Builder {
         
-        private pointLeft : Vector;
-        private pointRight : Vector;
+        private pointLeft = math.matrix();
+        private pointRight = math.matrix();
 
-        Builder() {
-            this.pointLeft = new Vector(2);
-            this.pointRight = new Vector(2);
+        public constructor() {
+            this.pointLeft = math.matrix();
+            this.pointRight = math.matrix();
         }
 
         // Using setPointLeft({x,y});
         public setPointLeft(x: {x1 : number, y1 : number}) : Builder;
         // Using setPointLeft(point);
-        public setPointLeft(x : Vector) : Builder;
         public setPointLeft(x) : any{
             if (typeof x == "object")
                 {
@@ -46,7 +45,7 @@ class WallLinear extends Wall {
                     this.pointLeft[1] = x.y1;
                     return this;
                 }
-            else if (x instanceof Vector)
+            else if (x instanceof math.matrix)
                 {
                     this.pointLeft = x;
                     return this;
@@ -56,7 +55,6 @@ class WallLinear extends Wall {
         // Using setPointRight({x,y});
         public setPointRight(x: {x1 : number, y1 : number}) : Builder;
         // Using setPointRight(point);
-        public setPointRight(x : Vector) : Builder;
         public setPointRight(x) : any{
             if (typeof x == "object")
                 {
@@ -64,7 +62,7 @@ class WallLinear extends Wall {
                     this.pointRight[1] = x.y1;
                     return this;
                 }
-            else if (x instanceof Vector)
+            else if (x instanceof math.matrix)
                 {
                     this.pointRight = x;
                     return this;

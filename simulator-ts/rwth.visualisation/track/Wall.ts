@@ -1,10 +1,9 @@
-import {Vector} from 'ts-vector';
+import * as math from '../../libs/math';
 export {Wall};
 
 abstract class Wall {
 
-    // static ?
-    public inBoundaries(pointLeft : Vector, point : Vector, pointRight : Vector) {
+    public inBoundaries(pointLeft, point, pointRight) {
         
         let xPointLeft = pointLeft[1];
         let xPointRight = pointRight[1];
