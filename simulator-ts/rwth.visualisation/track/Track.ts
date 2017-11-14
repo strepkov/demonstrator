@@ -1,50 +1,45 @@
 import {Wall} from "./Wall";
 import {WallCurved} from "./WallCurved";
 import {WallLinear} from "./WallLinear";
-import {Vector} from 'ts-vector';
+import * as math from "../../libs/math.js";
 
 export {Track}
-//abstract
-abstract class Track {
+
+//abstract ?
+class Track {
     
-    //static ?
-    // the init() has to be called and fill with walls the walls' array 
-    // then we have to pass inside init() for the each addWall tmp_walls
-    public static walls = Track.init();
+    public walls = new Array<Wall>();
+
+    public constructor() {
+        this.init();
+    }
     
-    // inits the whole track,
-    // the indices can be look up at Three.js/Self-Driving Car/images/racingtrack.gif
-    //static ?
-    private static init() {
+    private init() {
 
-        let tmp_walls = new Array<Wall>()
-
-        Track.addWall1();
-        Track.addWall2();
-        Track.addWall3();
-        Track.addWall4();
-        Track.addWall5();
-        Track.addWall6();
-        Track.addWall7();
-        Track.addWall8();
-        Track.addWall9();
-        Track.addWall10();
-        Track.addWall11();
-        Track.addWall12();
-        Track.addWall13();
-        Track.addWall14();
-        Track.addWall15();
-        Track.addWall16();
-        Track.addWall17();
-        Track.addWall18();
-
-        return tmp_walls;
+        this.addWall1();
+        this.addWall2();
+        this.addWall3();
+        this.addWall4();
+        this.addWall5();
+        this.addWall6();
+        this.addWall7();
+        this.addWall8();
+        this.addWall9();
+        this.addWall10();
+        this.addWall11();
+        this.addWall12();
+        this.addWall13();
+        this.addWall14();
+        this.addWall15();
+        this.addWall16();
+        this.addWall17();
+        this.addWall18();
     }
 
-    private static addWall1(){
+    private addWall1(){
 
-        let pointLeft : Vector = new Vector(2);
-        let pointRight : Vector = new Vector(2);
+        let pointLeft = math.matrix();;
+        let pointRight = math.matrix();;
 
         pointLeft[1] = -9.5;
         pointLeft[0] = 58;
@@ -55,9 +50,9 @@ abstract class Track {
         this.walls.push(new WallLinear(pointLeft, pointRight));
     }
 
-    private static addWall2() {
-        let pointLeft : Vector = new Vector(2);
-        let pointRight : Vector = new Vector(2);
+    private addWall2() {
+        let pointLeft = math.matrix();
+        let pointRight = math.matrix();
 
         pointLeft[1] = 10;
         pointLeft[0] = 58;
@@ -68,9 +63,9 @@ abstract class Track {
         this.walls.push(new WallLinear(pointLeft, pointRight));
     }
 
-    private static addWall3() {
-        let pointLeft : Vector = new Vector(2);
-        let pointRight : Vector = new Vector(2);
+    private addWall3() {
+        let pointLeft = math.matrix();
+        let pointRight = math.matrix();
 
         pointLeft[1] = -36;
         pointLeft[0] = 109;
@@ -81,9 +76,9 @@ abstract class Track {
         this.walls.push(new WallLinear(pointLeft, pointRight));
     }
 
-    private static addWall4() {
-        let pointLeft : Vector = new Vector(2);
-        let pointRight : Vector = new Vector(2);
+    private addWall4() {
+        let pointLeft = math.matrix();
+        let pointRight = math.matrix();
 
         pointLeft[1] = -18;
         pointLeft[0] = 114;
@@ -94,10 +89,10 @@ abstract class Track {
         this.walls.push(new WallLinear(pointLeft, pointRight));
     }
 
-    private static addWall5() {
-        let pointMiddle : Vector = new Vector(2);
-        let pointLower : Vector = new Vector(2);
-        let pointUpper : Vector = new Vector(2);
+    private addWall5() {
+        let pointMiddle = math.matrix();
+        let pointLower = math.matrix();
+        let pointUpper = math.matrix();
 
         let radius = 60;
 
@@ -113,10 +108,10 @@ abstract class Track {
         this.walls.push(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
     }
 
-    private static addWall6() {
-        let pointMiddle : Vector = new Vector(2);
-        let pointLower : Vector = new Vector(2);
-        let pointUpper : Vector = new Vector(2);
+    private addWall6() {
+        let pointMiddle = math.matrix();
+        let pointLower = math.matrix();
+        let pointUpper = math.matrix();
 
         let radius = 41;
 
@@ -132,10 +127,10 @@ abstract class Track {
         this.walls.push(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
     }
 
-    private static addWall7() {
-        let pointMiddle : Vector = new Vector(2);
-        let pointLower : Vector = new Vector(2);
-        let pointUpper : Vector = new Vector(2);
+    private addWall7() {
+        let pointMiddle = math.matrix();
+        let pointLower = math.matrix();
+        let pointUpper = math.matrix();
 
         let radius = 60;
 
@@ -151,10 +146,10 @@ abstract class Track {
         this.walls.push(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
     }
 
-    private static addWall8() {
-        let pointMiddle : Vector = new Vector(2);
-        let pointLower : Vector = new Vector(2);
-        let pointUpper : Vector = new Vector(2);
+    private addWall8() {
+        let pointMiddle = math.matrix();
+        let pointLower = math.matrix();
+        let pointUpper = math.matrix();
 
         let radius = 41;
 
@@ -170,9 +165,9 @@ abstract class Track {
         this.walls.push(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
     }
 
-    private static addWall9() {
-        let pointLeft : Vector = new Vector(2);
-        let pointRight : Vector = new Vector(2);
+    private addWall9() {
+        let pointLeft = math.matrix();
+        let pointRight = math.matrix();
 
         pointLeft[1] = 79;
         pointLeft[0] = 137.6;
@@ -183,9 +178,9 @@ abstract class Track {
         this.walls.push(new WallLinear(pointLeft, pointRight));
     }
 
-    private static addWall10() {
-        let pointLeft : Vector = new Vector(2);
-        let pointRight : Vector = new Vector(2);
+    private addWall10() {
+        let pointLeft = math.matrix();
+        let pointRight = math.matrix();
 
         pointLeft[1] = 60.6;
         pointLeft[0] = 133;
@@ -196,9 +191,9 @@ abstract class Track {
         this.walls.push(new WallLinear(pointLeft, pointRight));
     }
 
-    private static addWall11() {
-        let pointLeft : Vector = new Vector(2);
-        let pointRight : Vector = new Vector(2);
+    private addWall11() {
+        let pointLeft = math.matrix();
+        let pointRight = math.matrix();
 
         pointLeft[1] = 83.5;
         pointLeft[0] = 108;
@@ -209,9 +204,9 @@ abstract class Track {
         this.walls.push(new WallLinear(pointLeft, pointRight));
     }
 
-    private static addWall12() {
-        let pointLeft : Vector = new Vector(2);
-        let pointRight : Vector = new Vector(2);
+    private addWall12() {
+        let pointLeft = math.matrix();
+        let pointRight = math.matrix();
 
         pointLeft[1] = 65.8;
         pointLeft[0] = 98.5;
@@ -222,9 +217,9 @@ abstract class Track {
         this.walls.push(new WallLinear(pointLeft, pointRight));
     }
 
-    private static addWall13() {
-        let pointLeft : Vector = new Vector(2);
-        let pointRight : Vector = new Vector(2);
+    private addWall13() {
+        let pointLeft = math.matrix();
+        let pointRight = math.matrix();
 
         pointLeft[1] = 110;
         pointLeft[0] = 59;
@@ -235,9 +230,9 @@ abstract class Track {
         this.walls.push(new WallLinear(pointLeft, pointRight));
     }
 
-    private static addWall14() {
-        let pointLeft : Vector = new Vector(2);
-        let pointRight : Vector = new Vector(2);
+    private addWall14() {
+        let pointLeft = math.matrix();
+        let pointRight = math.matrix();
 
         pointLeft[1] = 90;
         pointLeft[0] = 58;
@@ -248,10 +243,10 @@ abstract class Track {
         this.walls.push(new WallLinear(pointLeft, pointRight));
     }
 
-    private static addWall15() {
-        let pointMiddle : Vector = new Vector(2);
-        let pointLower : Vector = new Vector(2);
-        let pointUpper : Vector = new Vector(2);
+    private addWall15() {
+        let pointMiddle = math.matrix();
+        let pointLower = math.matrix();
+        let pointUpper = math.matrix();
 
         let radius = 61;
 
@@ -267,10 +262,10 @@ abstract class Track {
         this.walls.push(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
     }
 
-    private static addWall16() {
-        let pointMiddle : Vector = new Vector(2);
-        let pointLower : Vector = new Vector(2);
-        let pointUpper : Vector = new Vector(2);
+    private addWall16() {
+        let pointMiddle = math.matrix();
+        let pointLower = math.matrix();
+        let pointUpper = math.matrix();
 
         let radius = 41;
 
@@ -286,10 +281,10 @@ abstract class Track {
         this.walls.push(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
     }
 
-    private static addWall17() {
-        let pointMiddle : Vector = new Vector(2);
-        let pointLower : Vector = new Vector(2);
-        let pointUpper : Vector = new Vector(2);
+    private addWall17() {
+        let pointMiddle = math.matrix();
+        let pointLower = math.matrix();
+        let pointUpper = math.matrix();
 
         let radius = 61;
 
@@ -305,10 +300,10 @@ abstract class Track {
         this.walls.push(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
     }
 
-    private static addWall18() {
-        let pointMiddle : Vector = new Vector(2);
-        let pointLower : Vector = new Vector(2);
-        let pointUpper : Vector = new Vector(2);
+    private addWall18() {
+        let pointMiddle = math.matrix();
+        let pointLower = math.matrix();
+        let pointUpper = math.matrix();
 
         let radius = 41;
 
@@ -323,154 +318,4 @@ abstract class Track {
 
         this.walls.push(new WallCurved(pointMiddle, radius, pointLower, pointUpper));
     }
-
-
-    /*private static void initParts() {
-        parts = new ArrayList<>();
-
-        TrackPart firstLinear = Track.createFirstLinear();
-        TrackPart secondLinear = Track.createSecondLinear();
-        TrackPart firstCircle = Track.createFirstCircle();
-        TrackPart thirdLinear = Track.createThirdLinear();
-        TrackPart fourthLinear = Track.createFourthLinear();
-        TrackPart fifthLinear = Track.createFifthLinear();
-        TrackPart secondCircle = Track.createSecondCircle();
-
-        parts.add(firstLinear);
-        parts.add(secondLinear);
-        parts.add(firstCircle);
-        parts.add(thirdLinear);
-        parts.add(fourthLinear);
-        parts.add(fifthLinear);
-        parts.add(secondCircle);
-    }
-
-    private static TrackPart createFirstLinear() {
-        RealVector pointUpperLeft = new ArrayRealVector(2);
-        RealVector pointUpperRight = new ArrayRealVector(2);
-        RealVector pointLowerLeft = new ArrayRealVector(2);
-        RealVector pointLowerRight = new ArrayRealVector(2);
-
-        pointUpperLeft.setEntry(0, -9.5);
-        pointUpperLeft.setEntry(1, 58);
-
-        pointUpperRight.setEntry(0, -9.5);
-        pointUpperRight.setEntry(1, -122);
-
-        pointLowerLeft.setEntry(0, 10);
-        pointLowerLeft.setEntry(1, 58);
-
-        pointLowerRight.setEntry(0, 10);
-        pointLowerRight.setEntry(1, -122);
-
-        return new TrackPartLinear(pointUpperLeft, pointUpperRight, pointLowerLeft, pointLowerRight);
-    }
-
-    private static TrackPart createSecondLinear() {
-        RealVector pointUpperLeft = new ArrayRealVector(2);
-        RealVector pointUpperRight = new ArrayRealVector(2);
-        RealVector pointLowerLeft = new ArrayRealVector(2);
-        RealVector pointLowerRight = new ArrayRealVector(2);
-
-        pointUpperLeft.setEntry(0, -36);
-        pointUpperLeft.setEntry(1, 109);
-
-        pointUpperRight.setEntry(0, -9.5);
-        pointUpperRight.setEntry(1, 58);
-
-        pointLowerLeft.setEntry(0, -18);
-        pointLowerLeft.setEntry(1, 114);
-
-        pointLowerRight.setEntry(0, 10);
-        pointLowerRight.setEntry(1, 58);
-
-        return new TrackPartLinear(pointUpperLeft, pointUpperRight, pointLowerLeft, pointLowerRight);
-    }
-
-    private static TrackPart createFirstCircle() {
-        RealVector point = new ArrayRealVector(2);
-
-        point.setEntry(0, 22);
-        point.setEntry(1, 123);
-
-        double radiusInner = 41;
-        double radiusOuter = 60;
-
-        return new TrackPartCircle(point, radiusInner, radiusOuter);
-    }
-
-    private static TrackPart createThirdLinear() {
-        RealVector pointUpperLeft = new ArrayRealVector(2);
-        RealVector pointUpperRight = new ArrayRealVector(2);
-        RealVector pointLowerLeft = new ArrayRealVector(2);
-        RealVector pointLowerRight = new ArrayRealVector(2);
-
-        pointUpperLeft.setEntry(0, 60.6);
-        pointUpperLeft.setEntry(1, 133);
-
-        pointUpperRight.setEntry(0, 65.8);
-        pointUpperRight.setEntry(1, 98.5);
-
-        pointLowerLeft.setEntry(0, 79);
-        pointLowerLeft.setEntry(1, 137.6);
-
-        pointLowerRight.setEntry(0, 83.5);
-        pointLowerRight.setEntry(1, 108);
-
-        return new TrackPartLinear(pointUpperLeft, pointUpperRight, pointLowerLeft, pointLowerRight);
-    }
-
-    private static TrackPart createFourthLinear() {
-        RealVector pointUpperLeft = new ArrayRealVector(2);
-        RealVector pointUpperRight = new ArrayRealVector(2);
-        RealVector pointLowerLeft = new ArrayRealVector(2);
-        RealVector pointLowerRight = new ArrayRealVector(2);
-
-        pointUpperLeft.setEntry(0, 65.8);
-        pointUpperLeft.setEntry(1, 98.5);
-
-        pointUpperRight.setEntry(0, 90);
-        pointUpperRight.setEntry(1, 58);
-
-        pointLowerLeft.setEntry(0, 83.5);
-        pointLowerLeft.setEntry(1, 108);
-
-        pointLowerRight.setEntry(0, 110);
-        pointLowerRight.setEntry(1, 59);
-
-        return new TrackPartLinear(pointUpperLeft, pointUpperRight, pointLowerLeft, pointLowerRight);
-    }
-
-    private static TrackPart createFifthLinear() {
-        RealVector pointUpperLeft = new ArrayRealVector(2);
-        RealVector pointUpperRight = new ArrayRealVector(2);
-        RealVector pointLowerLeft = new ArrayRealVector(2);
-        RealVector pointLowerRight = new ArrayRealVector(2);
-
-        pointUpperLeft.setEntry(0, 90);
-        pointUpperLeft.setEntry(1, 58);
-
-        pointUpperRight.setEntry(0, 90.8);
-        pointUpperRight.setEntry(1, -122);
-
-        pointLowerLeft.setEntry(0, 110);
-        pointLowerLeft.setEntry(1, 59);
-
-        pointLowerRight.setEntry(0, 110);
-        pointLowerRight.setEntry(1, -121);
-
-        return new TrackPartLinear(pointUpperLeft, pointUpperRight, pointLowerLeft, pointLowerRight);
-    }
-
-    private static TrackPart createSecondCircle() {
-        RealVector point = new ArrayRealVector(2);
-
-        point.setEntry(0, 51.3);
-        point.setEntry(1, -123);
-
-        double radiusInner = 41;
-        double radiusOuter = 61;
-
-        return new TrackPartCircle(point, radiusInner, radiusOuter);
-    }*/
 }

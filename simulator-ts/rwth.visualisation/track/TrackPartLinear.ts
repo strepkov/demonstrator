@@ -1,19 +1,19 @@
 import {TrackPart} from "./TrackPart";
-import {Vector} from 'ts-vector';
+import * as math from "../../libs/math.js";
 
 export {TrackPartLinear};
 
 class TrackPartLinear extends TrackPart {
     
-    public pointUpperLeft : Vector;
-    public pointUpperRight : Vector;
-    public pointLowerLeft : Vector;
-    public pointLowerRight : Vector;
+    public pointUpperLeft = math.matrix();
+    public pointUpperRight = math.matrix();
+    public pointLowerLeft = math.matrix();
+    public pointLowerRight = math.matrix();
 
-    public constructor (pointUpperLeft : Vector, pointUpperRight : Vector
-                        , pointLowerLeft : Vector, pointLowerRight : Vector) {
-        
+    public constructor (pointUpperLeft, pointUpperRight, pointLowerLeft, pointLowerRight) {
+
         super();
+        
         this.pointUpperLeft = pointUpperLeft;
         this.pointUpperRight = pointUpperRight;
         this.pointLowerLeft = pointLowerLeft;

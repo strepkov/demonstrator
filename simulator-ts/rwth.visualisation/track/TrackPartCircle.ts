@@ -1,15 +1,15 @@
 import {TrackPart} from "./TrackPart";
-import {Vector} from 'ts-vector';
+import * as math from "../../libs/math.js";
 
 export {TrackPartCircle};
 
 class TrackPartCircle extends TrackPart {
     
-    public point : Vector;
+    public point = math.matrix();
     public radiusInner : number;
     public radiusOuter : number;
 
-    public TrackPartCircle(point : Vector, radiusInner : number, radiusOuter : number) {
+    public TrackPartCircle(point, radiusInner, radiusOuter) {
         
         this.point = point;
         this.radiusInner = radiusInner;
