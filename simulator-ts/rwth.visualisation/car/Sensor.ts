@@ -6,8 +6,9 @@ import {Track} from "../track/Track";
 import {Wall} from "../track/Wall";
 import {WallCurved} from "../track/WallCurved";
 import {WallLinear} from "../track/WallLinear";
+import {Car} from "./Car";
 
-public class Sensor {
+class Sensor {
     private offset : Vector;
     private direction : Vector;
 

@@ -1,53 +1,35 @@
-package de.rwth.visualization.car;
+// package de.rwth.visualization.car;
 
-import com.sun.org.apache.regexp.internal.RE;
-import de.rwth.visualization.coord.Orientation;
-import org.apache.commons.math3.linear.ArrayRealVector;
-import org.apache.commons.math3.linear.RealVector;
+// import com.sun.org.apache.regexp.internal.RE;
+// import de.rwth.visualization.coord.Orientation;
+// import org.apache.commons.math3.linear.ArrayRealVector;
+// import org.apache.commons.math3.linear.RealVector;
 
-import java.util.HashMap;
-import java.util.Map;
+// import java.util.HashMap;
+// import java.util.Map;
 
-public class Car {
-    private static Car instance;
+import {Orientation} from "../coord/Orientation";
+import * as math from "../../libs/math.js";
 
-    public static Car getInstance() {
-        if(instance == null) {
-            instance = new Car(0, 0);
+export {Car}
+
+class Car {
+
+    private instance : Car;
+    private position = math.matrix();
+    private degree : number;
+    private sensors : Map<Orientation, Sensor>;
+
+
+    public getInstance() {
+        if(this.instance == null) {
+            this.instance = new Car(0, 0);
         }
-        return instance;
+        return this.instance;
     }
 
-    public static void setPosition(double x, double y) {
-        getInstance().doSetPosition(x, y);
-    }
-
-    public static void setPosition(RealVector position) {
-        getInstance().doSetPosition(position);
-    }
-
-    public static RealVector getPosition() {
-        return getInstance().doGetPosition();
-    }
-
-    public static void setDegree(double degree) {
-        getInstance().doSetDegree(degree);
-    }
-
-    public static double getDegree() {
-        return getInstance().doGetDegree();
-    }
-
-    public static Sensor getSensor(Orientation orientation) {
-        return getInstance().doGetSensor(orientation);
-    }
-
-
-    private RealVector position;
-    private double degree;
-    private Map<Orientation, Sensor> sensors;
-
-    public Car(double x, double y) {
+    public constructor(x : number, y : number) {
+        
         this.sensors = new HashMap<>();
 
         doInitSensorFrontLeft();
@@ -61,12 +43,43 @@ public class Car {
         doInitPosition(x, y);
     }
 
-    protected void doSetPosition(double x, double y) {
-        this.position.setEntry(0, x);
-        this.position.setEntry(1, y);
+    public setPosition(x : number, y : number) {
+
+        getInstance().doSetPosition(x, y);
     }
 
-    protected void doSetPosition(RealVector position) {
+    public setPosition(RealVector position) {
+        
+        getInstance().doSetPosition(position);
+    }
+
+    public getPosition() {
+        
+        return getInstance().doGetPosition();
+    }
+
+    public setDegree(degree : number) {
+
+        getInstance().doSetDegree(degree);
+    }
+
+    public getDegree() {
+        
+        return getInstance().doGetDegree();
+    }
+
+    public getSensor(orientation : Orientation) {
+        
+        return getInstance().doGetSensor(orientation);
+    }
+
+    // protected doSetPosition(position : {x : number,y : number} {
+
+    //     this.position[0] = position.x;
+    //     this.position.setEntry(1, y);
+    // }
+
+    protected doSetPosition(position) {
         this.position = position;
     }
 
@@ -86,9 +99,10 @@ public class Car {
         return this.sensors.get(orientation);
     }
 
-    protected void doInitSensorFrontLeft() {
-        RealVector direction = new ArrayRealVector(2);
-        RealVector offset = new ArrayRealVector(2);
+    protected doInitSensorFrontLeft() {
+        
+        let direction = math.matrix();
+        let offset = math.matrix();
 
         direction.setEntry(1, 0);
         direction.setEntry(0, 1);
@@ -100,7 +114,7 @@ public class Car {
                 new Sensor(offset, direction));
     }
 
-    protected void doInitSensorFrontLeftSide() {
+    protected doInitSensorFrontLeftSide() {
         RealVector direction = new ArrayRealVector(2);
         RealVector offset = new ArrayRealVector(2);
 
@@ -114,7 +128,7 @@ public class Car {
                 new Sensor(offset, direction));
     }
 
-    protected void doInitSensorFrontRight() {
+    protected doInitSensorFrontRight() {
         RealVector direction = new ArrayRealVector(2);
         RealVector offset = new ArrayRealVector(2);
 
@@ -128,7 +142,7 @@ public class Car {
                 new Sensor(offset, direction));
     }
 
-    protected void doInitSensorFrontRightSide() {
+    protected doInitSensorFrontRightSide() {
         RealVector direction = new ArrayRealVector(2);
         RealVector offset = new ArrayRealVector(2);
 
@@ -142,7 +156,7 @@ public class Car {
                 new Sensor(offset, direction));
     }
 
-    protected void doInitSensorBackLeft() {
+    protected doInitSensorBackLeft() {
         RealVector direction = new ArrayRealVector(2);
         RealVector offset = new ArrayRealVector(2);
 
@@ -156,7 +170,7 @@ public class Car {
                 new Sensor(offset, direction));
     }
 
-    protected void doInitSensorBackLeftSide() {
+    protected doInitSensorBackLeftSide() {
         RealVector direction = new ArrayRealVector(2);
         RealVector offset = new ArrayRealVector(2);
 
@@ -170,7 +184,7 @@ public class Car {
                 new Sensor(offset, direction));
     }
 
-    protected void doInitSensorBackRight() {
+    protected doInitSensorBackRight() {
         RealVector direction = new ArrayRealVector(2);
         RealVector offset = new ArrayRealVector(2);
 
@@ -184,7 +198,7 @@ public class Car {
                 new Sensor(offset, direction));
     }
 
-    protected void doInitSensorBackRightSide() {
+    protected doInitSensorBackRightSide() {
         RealVector direction = new ArrayRealVector(2);
         RealVector offset = new ArrayRealVector(2);
 
@@ -198,7 +212,7 @@ public class Car {
                 new Sensor(offset, direction));
     }
 
-    protected void doInitPosition(double x, double y) {
+    protected doInitPosition(double x, double y) {
         this.position = new ArrayRealVector(2);
 
         this.position.setEntry(0, x);
