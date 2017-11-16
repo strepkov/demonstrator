@@ -1,9 +1,8 @@
-import * as math from '../../libs/math';
 export {Wall};
 
 abstract class Wall {
 
-    public inBoundaries(pointLeft, point, pointRight) {
+    public inBoundaries(pointLeft: number[], point: number[], pointRight: number[]): boolean {
         
         let xPointLeft = pointLeft[1];
         let xPointRight = pointRight[1];

@@ -1,5 +1,4 @@
 import {Wall} from "./Wall";
-import * as math from '../../libs/math';
 
 export {WallLinear};
 
@@ -10,34 +9,35 @@ class WallLinear extends Wall {
         return new this.Builder();
     }
 
-    public pointLeft  = math.matrix();
-    public pointRight = math.matrix();
+    public pointLeft  : number[];
+    public pointRight : number[];
 
-    public constructor (pointLeft, pointRight) {
+    public constructor (pointLeft: number[], pointRight: number[]) {
         
         super();
         this.pointLeft = pointLeft;
         this.pointRight = pointRight;
     }
 
-    public inBoundaries(point) {
+    public inBoundaries(point: number[]): boolean {
         
         return super.inBoundaries(this.pointLeft, point, this.pointRight);
     }
 
     public Builder = class Builder {
         
-        private pointLeft = math.matrix();
-        private pointRight = math.matrix();
+        private pointLeft : number[];
+        private pointRight : number[];
 
         public constructor() {
-            this.pointLeft = math.matrix();
-            this.pointRight = math.matrix();
+            this.pointLeft = [0,0];
+            this.pointRight = [0,0];
         }
 
         // Using setPointLeft({x,y});
         public setPointLeft(x: {x1 : number, y1 : number}) : Builder;
         // Using setPointLeft(point);
+        public setPointLeft(x : number[]): Builder;
         public setPointLeft(x) : any{
             if (typeof x == "object")
                 {
@@ -45,7 +45,7 @@ class WallLinear extends Wall {
                     this.pointLeft[1] = x.y1;
                     return this;
                 }
-            else if (x instanceof math.matrix)
+            else if (x instanceof Array)
                 {
                     this.pointLeft = x;
                     return this;
@@ -55,6 +55,7 @@ class WallLinear extends Wall {
         // Using setPointRight({x,y});
         public setPointRight(x: {x1 : number, y1 : number}) : Builder;
         // Using setPointRight(point);
+        public setPointRight(x : number[]): Builder;
         public setPointRight(x) : any{
             if (typeof x == "object")
                 {
@@ -62,14 +63,14 @@ class WallLinear extends Wall {
                     this.pointRight[1] = x.y1;
                     return this;
                 }
-            else if (x instanceof math.matrix)
+            else if (x instanceof Array)
                 {
                     this.pointRight = x;
                     return this;
                 }
         }
 
-        public build() {
+        public build(): WallLinear {
             
             return new WallLinear(this.pointLeft, this.pointRight);
         }

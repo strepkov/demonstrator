@@ -1,5 +1,4 @@
 import {Wall} from "./Wall";
-import * as math from '../../libs/math';
 
 export {WallCurved};
 
@@ -9,42 +8,42 @@ class WallCurved extends Wall {
         return new this.Builder();
     }
 
-
-    public pointMiddle = math.matrix();
-    public pointLower = math.matrix();
-    public pointUpper = math.matrix();
+    public pointMiddle : number[];
+    public pointLower : number[];
+    public pointUpper : number[];
     public radius : number;
 
-    public constructor (pointMiddle, radius, pointLower, pointUpper) {
+    public constructor (pointMiddle, radius, pointLower, pointUpper){
         
         super();
-        this.pointMiddle = pointMiddle;
-        this.radius = radius;
-        this.pointLower = pointLower;
-        this.pointUpper = pointUpper;
+        this.pointMiddle = [0,0];
+        this.radius = 0;
+        this.pointLower = [0,0];
+        this.pointUpper = [0,0];
     }
 
-    public inBoundaries(point) {
+    public inBoundaries(point: number[]) {
         return super.inBoundaries(this.pointLower, point, this.pointUpper);
     }
 
 
     public Builder = class Builder {
         
-        private pointMiddle = math.matrix();
-        private pointLower = math.matrix();
-        private pointUpper = math.matrix();
+        private pointMiddle : number[];
+        private pointLower : number[];
+        private pointUpper : number[];
         private radius : number;
 
         public constructor() {
-            this.pointMiddle = math.matrix();
-            this.pointLower = math.matrix();
-            this.pointUpper = math.matrix();
+            this.pointMiddle = [0,0];
+            this.pointLower = [0,0];
+            this.pointUpper = [0,0];
         }
         
         // Using setPointMiddle like an object ({x,y});
-        public setPointMiddle(x : {x1 : number, y1 : number});
+        public setPointMiddle(x : {x1 : number, y1 : number}) : WallCurved;
         // Using setPointMiddle like an Vector
+        public setPointMiddle(x : number[]): WallCurved;
         public setPointMiddle(x) : any{
             
             if (typeof x == "object"){
@@ -53,7 +52,7 @@ class WallCurved extends Wall {
                 this.pointMiddle[1] = x.y1;
                 return this;
             }
-            else if (x instanceof math.matrix)
+            else if (x instanceof Array)
             {
                 this.pointMiddle = x;
                 return this;
@@ -66,8 +65,9 @@ class WallCurved extends Wall {
         }
 
         // Using setPointUpper like an object ({x,y});
-        public setPointUpper(x : {x1 : number, y1 : number});
+        public setPointUpper(x : {x1 : number, y1 : number}): WallCurved;
         // Using setPointUpper like an Vector
+        public setPointUpper(x : number[]): WallCurved;
         public setPointUpper(x) : any {
         
             if (typeof x == "object"){
@@ -76,7 +76,7 @@ class WallCurved extends Wall {
                 this.pointUpper[1] = x.y1;
                 return this;
             }
-            else if(x instanceof math.matrix){
+            else if(x instanceof Array){
                 
                 this.pointUpper = x;
                 return this;
@@ -84,8 +84,9 @@ class WallCurved extends Wall {
         }
 
         // Using setPointLower like an object ({x,y});
-        public setPointLower(x : {x1 : number, y1 : number});
+        public setPointLower(x : {x1 : number, y1 : number}): WallCurved;
         // Using setPointLower like an Vector
+        public setPointLower(x : number[]): WallCurved;
         public setPointLower(x) : any {
         
             if (typeof x == "object"){
@@ -94,14 +95,14 @@ class WallCurved extends Wall {
                 this.pointLower[1] = x.y1;
                 return this;
             }
-            else if (x instanceof math.matrix)
+            else if (x instanceof Array)
             {
                 this.pointLower = x;
                 return this;
             }
         }
 
-        public build() {
+        public build(): WallCurved  {
             return new WallCurved(this.pointMiddle, this.radius, this.pointLower, this.pointUpper);
         }
     }
