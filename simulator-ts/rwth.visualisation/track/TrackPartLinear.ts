@@ -5,12 +5,13 @@ export {TrackPartLinear};
 
 class TrackPartLinear extends TrackPart {
     
-    public pointUpperLeft = math.matrix();
-    public pointUpperRight = math.matrix();
-    public pointLowerLeft = math.matrix();
-    public pointLowerRight = math.matrix();
+    public pointUpperLeft : number[];
+    public pointUpperRight : number[];
+    public pointLowerLeft : number[];
+    public pointLowerRight : number[];
 
-    public constructor (pointUpperLeft, pointUpperRight, pointLowerLeft, pointLowerRight) {
+    public constructor (pointUpperLeft : number[], pointUpperRight: number[],
+        pointLowerLeft: number[], pointLowerRight: number[]) {
 
         super();
         

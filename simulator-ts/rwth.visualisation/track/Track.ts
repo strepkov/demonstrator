@@ -1,11 +1,9 @@
 import {Wall} from "./Wall";
 import {WallCurved} from "./WallCurved";
 import {WallLinear} from "./WallLinear";
-import * as math from "../../libs/math.js";
 
 export {Track}
 
-//abstract ?
 class Track {
     
     public walls = new Array<Wall>();
@@ -38,8 +36,8 @@ class Track {
 
     private addWall1(){
 
-        let pointLeft = math.matrix();;
-        let pointRight = math.matrix();;
+        let pointLeft : number[];
+        let pointRight : number[];
 
         pointLeft[1] = -9.5;
         pointLeft[0] = 58;
@@ -51,8 +49,8 @@ class Track {
     }
 
     private addWall2() {
-        let pointLeft = math.matrix();
-        let pointRight = math.matrix();
+        let pointLeft : number[];
+        let pointRight : number[];
 
         pointLeft[1] = 10;
         pointLeft[0] = 58;
@@ -64,8 +62,8 @@ class Track {
     }
 
     private addWall3() {
-        let pointLeft = math.matrix();
-        let pointRight = math.matrix();
+        let pointLeft : number[];
+        let pointRight : number[];
 
         pointLeft[1] = -36;
         pointLeft[0] = 109;
@@ -77,8 +75,8 @@ class Track {
     }
 
     private addWall4() {
-        let pointLeft = math.matrix();
-        let pointRight = math.matrix();
+        let pointLeft : number[];
+        let pointRight : number[];
 
         pointLeft[1] = -18;
         pointLeft[0] = 114;
@@ -90,9 +88,9 @@ class Track {
     }
 
     private addWall5() {
-        let pointMiddle = math.matrix();
-        let pointLower = math.matrix();
-        let pointUpper = math.matrix();
+        let pointMiddle : number[];
+        let pointLower : number[];
+        let pointUpper : number[];
 
         let radius = 60;
 
@@ -109,9 +107,9 @@ class Track {
     }
 
     private addWall6() {
-        let pointMiddle = math.matrix();
-        let pointLower = math.matrix();
-        let pointUpper = math.matrix();
+        let pointMiddle : number[];
+        let pointLower : number[];
+        let pointUpper : number[];
 
         let radius = 41;
 
@@ -128,9 +126,9 @@ class Track {
     }
 
     private addWall7() {
-        let pointMiddle = math.matrix();
-        let pointLower = math.matrix();
-        let pointUpper = math.matrix();
+        let pointMiddle : number[];
+        let pointLower : number[];
+        let pointUpper : number[];
 
         let radius = 60;
 
@@ -147,9 +145,9 @@ class Track {
     }
 
     private addWall8() {
-        let pointMiddle = math.matrix();
-        let pointLower = math.matrix();
-        let pointUpper = math.matrix();
+        let pointMiddle : number[];
+        let pointLower : number[];
+        let pointUpper : number[];
 
         let radius = 41;
 
@@ -166,8 +164,8 @@ class Track {
     }
 
     private addWall9() {
-        let pointLeft = math.matrix();
-        let pointRight = math.matrix();
+        let pointLeft : number[];
+        let pointRight : number[];
 
         pointLeft[1] = 79;
         pointLeft[0] = 137.6;
@@ -179,8 +177,8 @@ class Track {
     }
 
     private addWall10() {
-        let pointLeft = math.matrix();
-        let pointRight = math.matrix();
+        let pointLeft : number[];
+        let pointRight : number[];
 
         pointLeft[1] = 60.6;
         pointLeft[0] = 133;
@@ -192,8 +190,8 @@ class Track {
     }
 
     private addWall11() {
-        let pointLeft = math.matrix();
-        let pointRight = math.matrix();
+        let pointLeft : number[];
+        let pointRight : number[];
 
         pointLeft[1] = 83.5;
         pointLeft[0] = 108;
@@ -205,8 +203,8 @@ class Track {
     }
 
     private addWall12() {
-        let pointLeft = math.matrix();
-        let pointRight = math.matrix();
+        let pointLeft : number[];
+        let pointRight : number[];
 
         pointLeft[1] = 65.8;
         pointLeft[0] = 98.5;
@@ -218,8 +216,8 @@ class Track {
     }
 
     private addWall13() {
-        let pointLeft = math.matrix();
-        let pointRight = math.matrix();
+        let pointLeft : number[];
+        let pointRight : number[];
 
         pointLeft[1] = 110;
         pointLeft[0] = 59;
@@ -231,8 +229,8 @@ class Track {
     }
 
     private addWall14() {
-        let pointLeft = math.matrix();
-        let pointRight = math.matrix();
+        let pointLeft : number[];
+        let pointRight : number[];
 
         pointLeft[1] = 90;
         pointLeft[0] = 58;
@@ -244,9 +242,9 @@ class Track {
     }
 
     private addWall15() {
-        let pointMiddle = math.matrix();
-        let pointLower = math.matrix();
-        let pointUpper = math.matrix();
+        let pointMiddle : number[];
+        let pointLower : number[];
+        let pointUpper : number[];
 
         let radius = 61;
 
@@ -263,9 +261,9 @@ class Track {
     }
 
     private addWall16() {
-        let pointMiddle = math.matrix();
-        let pointLower = math.matrix();
-        let pointUpper = math.matrix();
+        let pointMiddle : number[];
+        let pointLower : number[];
+        let pointUpper : number[];
 
         let radius = 41;
 
@@ -282,9 +280,9 @@ class Track {
     }
 
     private addWall17() {
-        let pointMiddle = math.matrix();
-        let pointLower = math.matrix();
-        let pointUpper = math.matrix();
+        let pointMiddle : number[];
+        let pointLower : number[];
+        let pointUpper : number[];
 
         let radius = 61;
 
@@ -301,9 +299,9 @@ class Track {
     }
 
     private addWall18() {
-        let pointMiddle = math.matrix();
-        let pointLower = math.matrix();
-        let pointUpper = math.matrix();
+        let pointMiddle : number[];
+        let pointLower : number[];
+        let pointUpper : number[];
 
         let radius = 41;
 

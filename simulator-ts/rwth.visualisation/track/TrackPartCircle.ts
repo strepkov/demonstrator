@@ -1,15 +1,14 @@
 import {TrackPart} from "./TrackPart";
-import * as math from "../../libs/math.js";
 
 export {TrackPartCircle};
 
 class TrackPartCircle extends TrackPart {
     
-    public point = math.matrix();
+    public point : number[];
     public radiusInner : number;
     public radiusOuter : number;
 
-    public TrackPartCircle(point, radiusInner, radiusOuter) {
+    public TrackPartCircle(point: number[], radiusInner: number, radiusOuter: number) {
         
         this.point = point;
         this.radiusInner = radiusInner;
