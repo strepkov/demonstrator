@@ -8,46 +8,26 @@ import org.apache.commons.math3.linear.RealVector;
 import java.util.HashMap;
 import java.util.Map;
 
+import {Orientation} from "../coord/Orientation";
+import {Sensor} from "./Sensor";
+
 public class Car {
-    private static Car instance;
 
-    public static Car getInstance() {
-        if(instance == null) {
-            instance = new Car(0, 0);
+    private static instance : Car;
+
+    // TODO: Static?
+    public getInstance(): Car {
+        if(Car.instance == null) {
+            Car.instance = new Car(0, 0);
         }
-        return instance;
+        return Car.instance;
     }
 
-    public static void setPosition(double x, double y) {
-        getInstance().doSetPosition(x, y);
-    }
+    private position: number[];
+    private degree: number;
+    private sensors: Map<Orientation, Sensor>;
 
-    public static void setPosition(RealVector position) {
-        getInstance().doSetPosition(position);
-    }
-
-    public static RealVector getPosition() {
-        return getInstance().doGetPosition();
-    }
-
-    public static void setDegree(double degree) {
-        getInstance().doSetDegree(degree);
-    }
-
-    public static double getDegree() {
-        return getInstance().doGetDegree();
-    }
-
-    public static Sensor getSensor(Orientation orientation) {
-        return getInstance().doGetSensor(orientation);
-    }
-
-
-    private RealVector position;
-    private double degree;
-    private Map<Orientation, Sensor> sensors;
-
-    public Car(double x, double y) {
+    public constructor(x: number, y:number) {
         this.sensors = new HashMap<>();
 
         doInitSensorFrontLeft();
@@ -59,6 +39,33 @@ public class Car {
         doInitSensorBackLeftSide();
         doInitSensorBackRightSide();
         doInitPosition(x, y);
+    }
+    
+    public setPosition(x: number, y: number) {
+        this.getInstance().doSetPosition(x, y);
+    }
+
+    public setPosition(position : number[]) {
+        this.getInstance().doSetPosition(position);
+    }
+
+    public getPosition(): number[] {
+        return this.getInstance().doGetPosition();
+    }
+
+
+
+
+    public setDegree(double degree) {
+        getInstance().doSetDegree(degree);
+    }
+
+    public static double getDegree() {
+        return getInstance().doGetDegree();
+    }
+
+    public static Sensor getSensor(Orientation orientation) {
+        return getInstance().doGetSensor(orientation);
     }
 
     protected void doSetPosition(double x, double y) {
@@ -86,8 +93,8 @@ public class Car {
         return this.sensors.get(orientation);
     }
 
-    protected void doInitSensorFrontLeft() {
-        RealVector direction = new ArrayRealVector(2);
+    protected doInitSensorFrontLeft() {
+        direction: number[] = new ArrayRealVector(2);
         RealVector offset = new ArrayRealVector(2);
 
         direction.setEntry(1, 0);

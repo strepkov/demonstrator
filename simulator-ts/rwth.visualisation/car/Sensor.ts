@@ -1,17 +1,17 @@
 //import de.CoordHelper;
-//import '../../libs/ts-vector-0.1.0.js';
-import { Vector } from 'ts-vector';
 import {Rotation} from "../coord/Rotation";
 import {Track} from "../track/Track";
 import {Wall} from "../track/Wall";
 import {WallCurved} from "../track/WallCurved";
 import {WallLinear} from "../track/WallLinear";
 
-public class Sensor {
-    private offset : Vector;
-    private direction : Vector;
+export {Sensor}
 
-    public constructor (offset : Vector, direction : Vector) {
+class Sensor {
+    private offset : number[];
+    private direction : number[];
+
+    public constructor (offset : number[], direction : number[]) {
         this.offset = offset;
         this.direction = direction;
     }
@@ -20,7 +20,8 @@ public class Sensor {
         
         let degree : number = Car.getDegree();
         let rotationMatrix : number[][] = Rotation.getMatrix(degree);
-        let rotatedDirection : Vector = rotationMatrix.operate(this.direction);
+        // TODO: fix operate
+        let rotatedDirection : number[] = rotationMatrix.operate(this.direction);
         
         return rotatedDirection;
     }
@@ -28,14 +29,14 @@ public class Sensor {
     public getPosition() {
 
         let degree : number = Car.getDegree();
-        let rotationMatrix : number[][]= Rotation.getMatrix(degree);
-        let position : Vector = Car.getPosition();
+        let rotationMatrix : number[][] = Rotation.getMatrix(degree);
+        let position : number[] = Car.getPosition();
         
         // type of offset ?
-        let offset : Vector = position.add(this.offset).subtract(position);
+        let offset : number[] = position.add(this.offset).subtract(position);
         
         // Should be a vector, because we need to add vectors inside the vector
-        let rotatedOffset :Vector = rotationMatrix.operate(offset);
+        let rotatedOffset :number[] = rotationMatrix.operate(offset);
 
         return rotatedOffset.add(position);
     }
@@ -64,12 +65,12 @@ public class Sensor {
         
         if (wall instanceof WallLinear){
 
-            let result = new Array<Vector>();
+            let result = new Array<number[]>();
             
             try {
-                    let position : Vector = this.getPosition();
-                    let direction : Vector = this.getDirection();
-                    let intersection : Vector 
+                    let position : number[] = this.getPosition();
+                    let direction : number[] = this.getDirection();
+                    let intersection : number[] 
                         = CoordHelper.getIntersectionLine(wall.pointLeft, wall.pointRight, position, direction);
             
                     if(wall.inBoundaries(intersection)) {
@@ -80,19 +81,19 @@ public class Sensor {
                     return result;   
                 } 
                 
-            catch(exception : Exception) {
+            catch { 
                     // need to add some log here
                     return result;
                 }
         }
         else if (wall instanceof WallCurved){
 
-            let result = new Array<Vector>();
+            let result = new Array<number[]>();
             
             try {
-                    let position : Vector = this.getPosition();
-                    let direction : Vector = this.getDirection();
-                    let intersections : Array<Vector>
+                    let position : number[] = this.getPosition();
+                    let direction : number[] = this.getDirection();
+                    let intersections : Array<number[]>
                         = CoordHelper.getIntersectionCircle(position, direction, wall.pointMiddle, wall.radius);
             
                     for( let intersection of intersections) {
@@ -106,7 +107,7 @@ public class Sensor {
                     return result;
                 } 
                 
-            catch(exception : Exception) {
+            catch {
                     // add extra logging
                     return result;
                 }
@@ -118,12 +119,12 @@ public class Sensor {
     public getParameters(wall : Wall) {
         
         let parameters = new Array<number>();
-        let intersections : Array<Vector> = this.getIntersections(wall);
+        let intersections : Array<number[]> = this.getIntersections(wall);
 
         for(let intersection of intersections) {
 
-            let position : Vector = this.getPosition();
-            let direction : Vector = this.getDirection();
+            let position : number[] = this.getPosition();
+            let direction : number[] = this.getDirection();
 
             // Add a constant 
             let scalar : number = (direction[0] < 0.0001 && direction[0]>-0.0001) ?
@@ -139,14 +140,14 @@ public class Sensor {
     public getDistances(wall : Wall) {
 
         let distances = new Array<number>();
-        let intersections : Array<Vector> = this.getIntersections(wall);
+        let intersections : Array<number[]> = this.getIntersections(wall);
 
         for(let intersection of intersections) {
             
             //Should be a vector
-            let position : Vector = this.getPosition();
-            // TODO: distance between vectors
-            let distance : number = position. getDistance(intersection);
+            let position : number[] = this.getPosition();
+            // TODO: distance between vectors calculate
+            let distance : number = position.getDistance(intersection);
 
             distances.push(distance);
         }
