@@ -1,0 +1,29 @@
+#source {
+    flex-grow: 1;
+    width: 400px;
+    height: calc(100% - 200px);
+    position: relative;
+}
+div {
+    margin-left: 50px;
+}
+.container{
+    display: flex;
+}
+.textarea, .picture{
+    display: inline;
+    float: left;
+    margin: 10px;
+}
+/*.main{*/
+    /*flex-grow: .5;*/
+    /*float: left;*/
+/*}*/
+.picture{
+    /*top: 500px;*/
+    width: 800px;
+    height: 600px;
+}
+.submit{
+    margin: 10px;
+}
