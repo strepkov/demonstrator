@@ -30,23 +30,23 @@ public class Car {
     public constructor(x: number, y:number) {
         this.sensors = new Map<>();
 
-        doInitSensorFrontLeft();
-        doInitSensorFrontRight();
-        doInitSensorFrontLeftSide();
-        doInitSensorFrontRightSide();
-        doInitSensorBackLeft();
-        doInitSensorBackRight();
-        doInitSensorBackLeftSide();
-        doInitSensorBackRightSide();
-        doInitPosition(x, y);
+        this.doInitSensorFrontLeft();
+        this.doInitSensorFrontRight();
+        this.doInitSensorFrontLeftSide();
+        this.doInitSensorFrontRightSide();
+        this.doInitSensorBackLeft();
+        this.doInitSensorBackRight();
+        this.doInitSensorBackLeftSide();
+        this.doInitSensorBackRightSide();
+        this.doInitPosition(x, y);
     }
     
+    // TODO overloading
     public setPosition(position: {x: number, y: number});
     public setPosition(position: number[]);
     public getPosition(x : any): number[];
     public setPosition(x: any){
     
-    // overloading
     {
         this.getInstance().doSetPosition(x, y);
     }
@@ -63,24 +63,26 @@ public class Car {
 
 
     public setDegree(degree: number) {
-        getInstance().doSetDegree(degree);
+        this.getInstance().doSetDegree(degree);
     }
 
     public getDegree(): number {
-        return getInstance().doGetDegree();
+        return this.getInstance().doGetDegree();
     }
 
 
 
     public getSensor(orientation: Orientation): Sensor {
-        return getInstance().doGetSensor(orientation);
+        return this.getInstance().doGetSensor(orientation);
     }
 
+
+    // Overloading
     protected doSetPosition(x: number, y: number) {
         this.position[0] = x;
         this.position[1] = y;
     }
-
+    //
     protected doSetPosition(position: number[]) {
         this.position = position;
     }
@@ -151,28 +153,18 @@ public class Car {
         let direction: number[] = [-1,0];
         let offset: number[] = [-4.15, -1.85];
 
-        this.sensors.put(Orientation.BACK_RIGHT,
-                new Sensor(offset, direction));
+        this.sensors.put(Orientation.BACK_RIGHT, new Sensor(offset, direction));
     }
 
-    protected void doInitSensorBackRightSide() {
-        let direction: number[] = [0,1];
-        let offset: number[] = [4.15, 1.85];
+    protected doInitSensorBackRightSide() {
+        let direction: number[] = [0,-1];
+        let offset: number[] = [-4.15, -1.85];
 
-        direction.setEntry(1, -1);
-        direction.setEntry(0, 0);
-
-        offset.setEntry(1, -1.85);
-        offset.setEntry(0, -4.15);
-
-        this.sensors.put(Orientation.BACK_RIGHT_SIDE,
-                new Sensor(offset, direction));
+        this.sensors.put(Orientation.BACK_RIGHT_SIDE, new Sensor(offset, direction));
     }
 
-    protected void doInitPosition(double x, double y) {
-        this.position = new ArrayRealVector(2);
+    protected doInitPosition(x: number, y: number) {
 
-        this.position.setEntry(0, x);
-        this.position.setEntry(1, y);
+        this.position = [x,y];
     }
 }
