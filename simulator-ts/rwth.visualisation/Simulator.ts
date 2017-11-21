@@ -47,6 +47,10 @@ class Simulator {
         this.car = new Car(0,0); // TODO: initial position?
     }
 
+    public getTime(){
+        return this.time;
+    }
+
     // private SOutput output; //stores the output data(new positions, degree, velocity etc.)
 
     public SOutput getOutput() {
@@ -79,29 +83,28 @@ class Simulator {
     }
 
     // Updates the time, velocity, degree of car and new positions x,y
-    public void calculate(SInput input) {
+    public calculate(SInput input) {
         
         // time = t+(1/20)s, for t=0s
-        let time = math.add(this.time, this.fpsTime);
-        this.time = time;
+        let time_local = math.add(this.time, this.fpsTime);
+        this.time = time_local;
 
         // velocity = v+(input)acceleration*(1/20)s, for v=0 m/ss
-        let velocity = thie.velocity.plus(input.acceleration.times(fpsTime));
-        v = velocity;
+        let velocity_local = math.add(this.velocity, math.multiply(input.acceleration, this.fpsTime));  // TODO input
+        this.velocity = velocity_local;
 
         let degree: number;
         let nullVelocity = math.unit('0 m/s');
         
 
         // calculation of car rotation
-        if(velocity.equals(nullVelocity)){
-             degree = Car.getDegree();
+        if(velocity_local.equals(nullVelocity)){
+             degree = this.car.getDegree();
         }
         else{
-            degree = Car.getDegree() +
-                    (input.steering.doubleValue(DEGREE_ANGLE));
+            degree = this.car.getDegree() + input.steering.doubleValue(DEGREE_ANGLE);
         }
-        Amount<Angle> degree1 = Amount.valueOf(degree, DEGREE_ANGLE);
+        Amount<Angle> degree1 = Amount.valueOf(degree, DEGREE_ANGLE); // Angle in degrees
 
          // x=(input)x+v*t*cos((rad)degree)
         Amount<Length> x = input.x0.plus(v.times(fpsTime).times(Math.cos(Math.toRadians(degree))));
@@ -110,6 +113,7 @@ class Simulator {
 
         output = new SOutput(v, x, y, t, degree1, input.doorStatus,
                 input.indicatorStatus, input.lightTimerStatus, input.triggerStatus);
+
         System.out.println("Output: v: "+Math.round(100.0*v.doubleValue(METERS_PER_SECOND))/100.0
                 +", x: "+Math.round(100.0*x.doubleValue(METER))/100.0
                 +" ,y: "+Math.round(100.0*y.doubleValue(METER))/100.0
@@ -118,37 +122,37 @@ class Simulator {
     }
 
     // send the updated position and the degree to the visualization as JSON package
-    private void transmit() {
-        try {
-            if(session.isPresent()) {
-                JSONObject data = createJSON(output);
-                String dataString = data.toString();
-                session.get().getRemote().sendString(dataString);
-            }
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
-    }
+    // private void transmit() {
+    //     try {
+    //         if(session.isPresent()) {
+    //             JSONObject data = createJSON(output);
+    //             String dataString = data.toString();
+    //             session.get().getRemote().sendString(dataString);
+    //         }
+    //     } catch (IOException exception) {
+    //         exception.printStackTrace();
+    //     }
+    // }
 
-    private JSONObject createJSON(SOutput output) {
-        JSONObject result = new JSONObject();
+    // private JSONObject createJSON(SOutput output) {
+    //     JSONObject result = new JSONObject();
 
-        // Send the client "x=10" instead of "x=10 m"
-        double xi = output.xi.doubleValue(METER);
-        double yi = output.yi.doubleValue(METER);
-        double deg = output.degree.doubleValue(DEGREE_ANGLE);
+    //     // Send the client "x=10" instead of "x=10 m"
+    //     double xi = output.xi.doubleValue(METER);
+    //     double yi = output.yi.doubleValue(METER);
+    //     double deg = output.degree.doubleValue(DEGREE_ANGLE);
 
-        result.put("x", xi);
-        result.put("y", yi);
-        result.put("angle", deg);
+    //     result.put("x", xi);
+    //     result.put("y", yi);
+    //     result.put("angle", deg);
 
-        result.put("doorStatus", output.doorStatus);
-        result.put("indicatorStatus", output.indicatorStatus);
-        result.put("lightTimerStatus", output.lightTimerStatus);
-        result.put("triggerStatus", output.triggerStatus);
+    //     result.put("doorStatus", output.doorStatus);
+    //     result.put("indicatorStatus", output.indicatorStatus);
+    //     result.put("lightTimerStatus", output.lightTimerStatus);
+    //     result.put("triggerStatus", output.triggerStatus);
 
-        return result;
-    }
+    //     return result;
+    // }
 
     private getDistancesFromSensors(): number[]{
         
@@ -181,10 +185,6 @@ class Simulator {
         res.put("velocity", cmp.getIncomingPort("velocity").orElse(null));
 
         return res;
-    }
-
-    public getTime(){
-        return this.time;
     }
 
     private Map<String, NamedStreamSymbol> getNamedStreamSymbols(double[] distances, Map<String, PortSymbol> portSymbols, double ti, double v, double xi, double yi){
