@@ -11,6 +11,8 @@ import java.util.Map;
 import {Orientation} from "../coord/Orientation";
 import {Sensor} from "./Sensor";
 
+export {Car}
+
 public class Car {
 
     private static instance : Car;

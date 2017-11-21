@@ -1,44 +1,51 @@
-package de;
+// import com.google.common.collect.Lists;
+// import de.ma2cfg.simulator.BasicSimulator;
+// import de.monticore.lang.montiarc.montiarc._symboltable.ComponentSymbol;
+// import de.monticore.lang.montiarc.montiarc._symboltable.ExpandedComponentInstanceSymbol;
+// import de.monticore.lang.montiarc.montiarc._symboltable.PortSymbol;
+// import de.monticore.lang.montiarc.stream._symboltable.NamedStreamSymbol;
+// import de.rwth.simulink2montiarc.montiarcadapter.Resolver;
+// import de.se_rwth.commons.logging.Log;
+// import org.jscience.physics.amount.Amount;
+// import org.json.JSONObject;
 
-import com.google.common.collect.Lists;
-import de.ma2cfg.simulator.BasicSimulator;
-import de.monticore.lang.montiarc.montiarc._symboltable.ComponentSymbol;
-import de.monticore.lang.montiarc.montiarc._symboltable.ExpandedComponentInstanceSymbol;
-import de.monticore.lang.montiarc.montiarc._symboltable.PortSymbol;
-import de.monticore.lang.montiarc.stream._symboltable.NamedStreamSymbol;
-import de.rwth.simulink2montiarc.montiarcadapter.Resolver;
-import de.rwth.visualization.car.Car;
-import de.rwth.visualization.coord.Orientation;
-import de.se_rwth.commons.logging.Log;
-import org.eclipse.jetty.websocket.api.Session;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
-import org.eclipse.jetty.websocket.api.annotations.WebSocket;
-import org.jscience.physics.amount.Amount;
-import org.json.JSONObject;
+// import javax.measure.quantity.*;
+// import java.io.IOException;
+// import java.net.URISyntaxException;
+// import java.net.URL;
+// import java.nio.file.Path;
+// import java.nio.file.Paths;
+// import java.util.HashMap;
+// import java.util.Map;
+// import java.util.Optional;
 
-import javax.measure.quantity.*;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+// import static javax.measure.unit.NonSI.DEGREE_ANGLE;
+// import static javax.measure.unit.SI.*;
 
-import static javax.measure.unit.NonSI.DEGREE_ANGLE;
-import static javax.measure.unit.SI.*;
+import * as math from "../libs/math.js";
+import {Car} from "./car/Car";
+import {Orientation} from "./coord/Orientation";
 
 //@WebSocket
 class Simulator {
 
-    private MontiarcToJavaGenerator generator;
-    // protected Optional<Session> session;// for WebSockets
+    private generator: MontiarcToJavaGenerator;
 
     // fps = 1/s -> fpsTime is 1/fps
-    public final Amount<javax.measure.quantity.Duration> fpsTime = Amount.valueOf(1.0, SECOND);
+    public fpsTime;
+    private velocity;
+    private time;
+    private car: Car;
+
+    public constructor() {
+
+        // Initial velocity is 0 m/s, Initial time is 0 s
+        this.velocity = math.unit('0 m/s'); // v
+        this.time = math.unit('0 sec');
+        this.fpsTime = math.unit('1 sec');
+
+        this.car = new Car(0,0); // TODO: initial position?
+    }
 
     // private SOutput output; //stores the output data(new positions, degree, velocity etc.)
 
@@ -46,33 +53,23 @@ class Simulator {
         return output;
     }
 
-    //TODO find methods with similar type
-    private Amount<Velocity> v;
-    private Amount<javax.measure.quantity.Duration> t;
+    // private resolver: Resolver;
 
-    public constructor() {
-        // Initial velocity is 0 m/s, Initial time is 0 s
-        v = Amount.valueOf(0, METERS_PER_SECOND);
-        t = Amount.valueOf(0, SECOND);
-    }
+    //  static {
+    //     Path rPath = null;
+    //     URL srcLocation = Simulator.class.getProtectionDomain().getCodeSource().getLocation();
+    //     try {
+    //         rPath = Paths.get(srcLocation.toURI());
+    //     } catch (URISyntaxException e) {
+    //         Log.error("Could not initialize Trigger resolver at location " + srcLocation);
+    //     }
+    //     resolver = Resolver.get(rPath);
+    // }
 
-    private resolver: Resolver;
-
-     static {
-        Path rPath = null;
-        URL srcLocation = Simulator.class.getProtectionDomain().getCodeSource().getLocation();
-        try {
-            rPath = Paths.get(srcLocation.toURI());
-        } catch (URISyntaxException e) {
-            Log.error("Could not initialize Trigger resolver at location " + srcLocation);
-        }
-        resolver = Resolver.get(rPath);
-    }
-
-    public constructor(Path baseDirectory, Path generationDirectory, Path compileDirectory, ExpandedComponentInstanceSymbol inst) {
-        this();
-         this.generator = new MontiarcToJavaGenerator(baseDirectory, generationDirectory, compileDirectory, inst);
-    }
+    // public constructor(Path baseDirectory, Path generationDirectory, Path compileDirectory, ExpandedComponentInstanceSymbol inst) {
+    //     this();
+    //      this.generator = new MontiarcToJavaGenerator(baseDirectory, generationDirectory, compileDirectory, inst);
+    // }
 
 
     // update the new positions after accelerate with a and direction with steering s
@@ -83,16 +80,20 @@ class Simulator {
 
     // Updates the time, velocity, degree of car and new positions x,y
     public void calculate(SInput input) {
+        
         // time = t+(1/20)s, for t=0s
-        Amount<Duration> time = t.plus(fpsTime);
-        t = time;
+        let time = math.add(this.time, this.fpsTime);
+        this.time = time;
 
         // velocity = v+(input)acceleration*(1/20)s, for v=0 m/ss
-        Amount<Velocity> velocity = v.plus(input.acceleration.times(fpsTime));
+        let velocity = thie.velocity.plus(input.acceleration.times(fpsTime));
         v = velocity;
 
-        double degree;
-        Amount<Velocity> nullVelocity = Amount.valueOf(0,METERS_PER_SECOND);
+        let degree: number;
+        let nullVelocity = math.unit('0 m/s');
+        
+
+        // calculation of car rotation
         if(velocity.equals(nullVelocity)){
              degree = Car.getDegree();
         }
@@ -149,25 +150,21 @@ class Simulator {
         return result;
     }
 
-
-    //TODO: In advanced a car instance has to be created
     private getDistancesFromSensors(): number[]{
         
-        let result : number[] = [
-         /*flDistance*/
-                Car.getSensor(Orientation.FRONT_LEFT).getMinDistance();
-        /*frDistance*/ res[1] =
-                Car.getSensor(Orientation.FRONT_RIGHT).getMinDistance();
-        /*slfDistance*/ res[2] =
-                Car.getSensor(Orientation.FRONT_LEFT_SIDE).getMinDistance();
-        /*slbDistance*/ res[3] =
-                Car.getSensor(Orientation.BACK_LEFT_SIDE).getMinDistance();
-        /*srfDistance*/ res[4] =
-                Car.getSensor(Orientation.FRONT_RIGHT_SIDE).getMinDistance();
-        /*srbDistance*/ res[5] =
-                Car.getSensor(Orientation.BACK_RIGHT_SIDE).getMinDistance();
-
-        return res;
+        return [
+            /*flDistance*/
+                this.car.getSensor(Orientation.FRONT_LEFT).getMinDistance(),
+            /*frDistance*/
+                this.car.getSensor(Orientation.FRONT_RIGHT).getMinDistance(),
+            /*slfDistance*/
+                this.car.getSensor(Orientation.FRONT_LEFT_SIDE).getMinDistance(),
+            /*slbDistance*/
+                this.car.getSensor(Orientation.BACK_LEFT_SIDE).getMinDistance(),
+            /*srfDistance*/
+                this.car.getSensor(Orientation.FRONT_RIGHT_SIDE).getMinDistance(),
+            /*srbDistance*/
+                this.car.getSensor(Orientation.BACK_RIGHT_SIDE).getMinDistance()];
     }
 
     private Map<String, PortSymbol> getPortSymbols(ComponentSymbol cmp){
@@ -186,8 +183,8 @@ class Simulator {
         return res;
     }
 
-    public Amount<javax.measure.quantity.Duration> getTime(){
-        return t;
+    public getTime(){
+        return this.time;
     }
 
     private Map<String, NamedStreamSymbol> getNamedStreamSymbols(double[] distances, Map<String, PortSymbol> portSymbols, double ti, double v, double xi, double yi){
@@ -315,10 +312,10 @@ class Simulator {
         }
     }
 
-    @OnWebSocketClose
-    public void closed(Session   session, int statusCode, String reason) {
-        this.session = Optional.empty();
-    }
+    // @OnWebSocketClose
+    // public void closed(Session   session, int statusCode, String reason) {
+    //     this.session = Optional.empty();
+    // }
 
     @OnWebSocketMessage
     public void message(Session session, String message) throws IOException {

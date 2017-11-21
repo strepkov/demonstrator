@@ -1,5 +1,4 @@
 import {TrackPart} from "./TrackPart";
-import * as math from "../../libs/math.js";
 
 export {TrackPartLinear};
 
