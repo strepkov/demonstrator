@@ -171,62 +171,62 @@ class Simulator {
                 this.car.getSensor(Orientation.BACK_RIGHT_SIDE).getMinDistance()];
     }
 
-    private Map<String, PortSymbol> getPortSymbols(ComponentSymbol cmp){
-        Map<String, PortSymbol> res = new HashMap<String, PortSymbol>();
-        res.put("time", cmp.getIncomingPort("time").orElse(null));
-        res.put("fl", cmp.getIncomingPort("fl").orElse(null));
-        res.put("fr", cmp.getIncomingPort("fr").orElse(null));
-        res.put("slf", cmp.getIncomingPort("slf").orElse(null));
-        res.put("slb", cmp.getIncomingPort("slb").orElse(null));
-        res.put("srf", cmp.getIncomingPort("srf").orElse(null));
-        res.put("srb", cmp.getIncomingPort("srb").orElse(null));
-        res.put("x_i", cmp.getIncomingPort("x").orElse(null));
-        res.put("y_i", cmp.getIncomingPort("y").orElse(null));
-        res.put("velocity", cmp.getIncomingPort("velocity").orElse(null));
+    // private Map<String, PortSymbol> getPortSymbols(ComponentSymbol cmp){
+    //     Map<String, PortSymbol> res = new HashMap<String, PortSymbol>();
+    //     res.put("time", cmp.getIncomingPort("time").orElse(null));
+    //     res.put("fl", cmp.getIncomingPort("fl").orElse(null));
+    //     res.put("fr", cmp.getIncomingPort("fr").orElse(null));
+    //     res.put("slf", cmp.getIncomingPort("slf").orElse(null));
+    //     res.put("slb", cmp.getIncomingPort("slb").orElse(null));
+    //     res.put("srf", cmp.getIncomingPort("srf").orElse(null));
+    //     res.put("srb", cmp.getIncomingPort("srb").orElse(null));
+    //     res.put("x_i", cmp.getIncomingPort("x").orElse(null));
+    //     res.put("y_i", cmp.getIncomingPort("y").orElse(null));
+    //     res.put("velocity", cmp.getIncomingPort("velocity").orElse(null));
 
-        return res;
-    }
+    //     return res;
+    // }
 
-    private Map<String, NamedStreamSymbol> getNamedStreamSymbols(double[] distances, Map<String, PortSymbol> portSymbols, double ti, double v, double xi, double yi){
-        Map<String, NamedStreamSymbol> res = new HashMap<String, NamedStreamSymbol>();
-        res.put("timeSymbol",
-                portSymbols.get("time").addStream(0, true, Lists.newArrayList(ti)));
-        res.put("flSymbol",
-                portSymbols.get("fl").addStream(0, true, Lists.newArrayList(distances[0])));
-        res.put("frSymbol",
-                portSymbols.get("fr").addStream(0, true, Lists.newArrayList(distances[1])));
-        res.put("slfSymbol",
-                portSymbols.get("slf").addStream(0, true, Lists.newArrayList(distances[2])));
-        res.put("slbSymbol",
-                portSymbols.get("slb").addStream(0, true, Lists.newArrayList(distances[3])));
-        res.put("srfSymbol",
-                portSymbols.get("srf").addStream(0, true, Lists.newArrayList(distances[4])));
-        res.put("srbSymbol",
-                portSymbols.get("srb").addStream(0, true, Lists.newArrayList(distances[5])));
-        res.put("velocitySymbol",
-                portSymbols.get("velocity").addStream(0, true, Lists.newArrayList(v)));
-        res.put("xSymbol",
-                portSymbols.get("x_i").addStream(0, true, Lists.newArrayList(xi)));
-        res.put("ySymbol",
-                portSymbols.get("y_i").addStream(0, true, Lists.newArrayList(yi)));
+    // private Map<String, NamedStreamSymbol> getNamedStreamSymbols(double[] distances, Map<String, PortSymbol> portSymbols, double ti, double v, double xi, double yi){
+    //     Map<String, NamedStreamSymbol> res = new HashMap<String, NamedStreamSymbol>();
+    //     res.put("timeSymbol",
+    //             portSymbols.get("time").addStream(0, true, Lists.newArrayList(ti)));
+    //     res.put("flSymbol",
+    //             portSymbols.get("fl").addStream(0, true, Lists.newArrayList(distances[0])));
+    //     res.put("frSymbol",
+    //             portSymbols.get("fr").addStream(0, true, Lists.newArrayList(distances[1])));
+    //     res.put("slfSymbol",
+    //             portSymbols.get("slf").addStream(0, true, Lists.newArrayList(distances[2])));
+    //     res.put("slbSymbol",
+    //             portSymbols.get("slb").addStream(0, true, Lists.newArrayList(distances[3])));
+    //     res.put("srfSymbol",
+    //             portSymbols.get("srf").addStream(0, true, Lists.newArrayList(distances[4])));
+    //     res.put("srbSymbol",
+    //             portSymbols.get("srb").addStream(0, true, Lists.newArrayList(distances[5])));
+    //     res.put("velocitySymbol",
+    //             portSymbols.get("velocity").addStream(0, true, Lists.newArrayList(v)));
+    //     res.put("xSymbol",
+    //             portSymbols.get("x_i").addStream(0, true, Lists.newArrayList(xi)));
+    //     res.put("ySymbol",
+    //             portSymbols.get("y_i").addStream(0, true, Lists.newArrayList(yi)));
 
-        return res;
-    }
+    //     return res;
+    // }
 
-    private Map<String, PortSymbol> removeStreamsFromPortSymbols(Map<String, PortSymbol> portSymbols,
-                                                                Map<String, NamedStreamSymbol> namedStreamSymbols){
-        portSymbols.get("time").removeStream(namedStreamSymbols.get("timeSymbol"));
-        portSymbols.get("fl").removeStream(namedStreamSymbols.get("flSymbol"));
-        portSymbols.get("fr").removeStream(namedStreamSymbols.get("frSymbol"));
-        portSymbols.get("slf").removeStream(namedStreamSymbols.get("slfSymbol"));
-        portSymbols.get("slb").removeStream(namedStreamSymbols.get("slbSymbol"));
-        portSymbols.get("srf").removeStream(namedStreamSymbols.get("srfSymbol"));
-        portSymbols.get("srb").removeStream(namedStreamSymbols.get("srbSymbol"));
-        portSymbols.get("velocity").removeStream(namedStreamSymbols.get("velocitySymbol"));
-        portSymbols.get("x_i").removeStream(namedStreamSymbols.get("xSymbol"));
-        portSymbols.get("y_i").removeStream(namedStreamSymbols.get("ySymbol"));
-        return portSymbols;
-    }
+    // private Map<String, PortSymbol> removeStreamsFromPortSymbols(Map<String, PortSymbol> portSymbols,
+    //                                                             Map<String, NamedStreamSymbol> namedStreamSymbols){
+    //     portSymbols.get("time").removeStream(namedStreamSymbols.get("timeSymbol"));
+    //     portSymbols.get("fl").removeStream(namedStreamSymbols.get("flSymbol"));
+    //     portSymbols.get("fr").removeStream(namedStreamSymbols.get("frSymbol"));
+    //     portSymbols.get("slf").removeStream(namedStreamSymbols.get("slfSymbol"));
+    //     portSymbols.get("slb").removeStream(namedStreamSymbols.get("slbSymbol"));
+    //     portSymbols.get("srf").removeStream(namedStreamSymbols.get("srfSymbol"));
+    //     portSymbols.get("srb").removeStream(namedStreamSymbols.get("srbSymbol"));
+    //     portSymbols.get("velocity").removeStream(namedStreamSymbols.get("velocitySymbol"));
+    //     portSymbols.get("x_i").removeStream(namedStreamSymbols.get("xSymbol"));
+    //     portSymbols.get("y_i").removeStream(namedStreamSymbols.get("ySymbol"));
+    //     return portSymbols;
+    // }
 
 
     @OnWebSocketConnect
