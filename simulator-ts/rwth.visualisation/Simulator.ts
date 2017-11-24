@@ -25,11 +25,13 @@
 import * as math from "../libs/math.js";
 import {Car} from "./car/Car";
 import {Orientation} from "./coord/Orientation";
+import {Sinput} from "./Sinput"
+import {Soutput} from "./Soutput"
 
 //@WebSocket
 class Simulator {
 
-    private generator: MontiarcToJavaGenerator;
+//private generator: MontiarcToJavaGenerator;
 
     // fps = 1/s -> fpsTime is 1/fps
     public fpsTime;
@@ -51,10 +53,27 @@ class Simulator {
         return this.time;
     }
 
-    // private SOutput output; //stores the output data(new positions, degree, velocity etc.)
+    private getDistancesFromSensors(): number[]{
+        
+        return [
+            /*flDistance*/
+                this.car.getSensor(Orientation.FRONT_LEFT).getMinDistance(),
+            /*frDistance*/
+                this.car.getSensor(Orientation.FRONT_RIGHT).getMinDistance(),
+            /*slfDistance*/
+                this.car.getSensor(Orientation.FRONT_LEFT_SIDE).getMinDistance(),
+            /*slbDistance*/
+                this.car.getSensor(Orientation.BACK_LEFT_SIDE).getMinDistance(),
+            /*srfDistance*/
+                this.car.getSensor(Orientation.FRONT_RIGHT_SIDE).getMinDistance(),
+            /*srbDistance*/
+                this.car.getSensor(Orientation.BACK_RIGHT_SIDE).getMinDistance()];
+    }
 
-    public SOutput getOutput() {
-        return output;
+    private output: Soutput; //stores the output data(new positions, degree, velocity etc.)
+
+    public getOutput(): Soutput {
+        return this.output;
     }
 
     // private resolver: Resolver;
@@ -77,13 +96,14 @@ class Simulator {
 
 
     // update the new positions after accelerate with a and direction with steering s
-    public void update(SInput input){
-        calculate(input);
-        transmit();
+    public update(input: Sinput){
+        
+        this.calculate(input);
+        //this.transmit();
     }
 
     // Updates the time, velocity, degree of car and new positions x,y
-    public calculate(SInput input) {
+    public calculate(input: Sinput): Soutput {
         
         // time = t+(1/20)s, for t=0s
         let time_local = math.add(this.time, this.fpsTime);
@@ -102,23 +122,28 @@ class Simulator {
              degree = this.car.getDegree();
         }
         else{
-            degree = this.car.getDegree() + input.steering.doubleValue(DEGREE_ANGLE);
+            degree = this.car.getDegree() + input.steering; // adjust steeriing angle
         }
-        Amount<Angle> degree1 = Amount.valueOf(degree, DEGREE_ANGLE); // Angle in degrees
 
-         // x=(input)x+v*t*cos((rad)degree)
-        Amount<Length> x = input.x0.plus(v.times(fpsTime).times(Math.cos(Math.toRadians(degree))));
-        // y=(input)y+v*t*sin((rad)degree)
-        Amount<Length> y = input.y0.minus(v.times(fpsTime).times(Math.sin(Math.toRadians(degree))));
+        let degree1 = math.unit(degree, 'deg');
 
-        output = new SOutput(v, x, y, t, degree1, input.doorStatus,
+        //Calculate positioin of the car
+
+        // x=(input)x+v*t*cos((rad)degree) // degree * Math.PI / 180 - radian conversioin
+        let x = math.add(input.x0, (this.velocity.times(this.fpsTime).times(Math.cos(degree * Math.PI / 180))));
+
+        // y=(input)y+v*t*sin((rad)degree) //Amount<Length>
+        let y = math.minus(input.y0, (this.velocity.times(this.fpsTime).times(Math.sin(degree * Math.PI / 180))));
+
+        let output = new Soutput(this.velocity, x, y, this.time, degree1, input.doorStatus,
                 input.indicatorStatus, input.lightTimerStatus, input.triggerStatus);
 
-        System.out.println("Output: v: "+Math.round(100.0*v.doubleValue(METERS_PER_SECOND))/100.0
-                +", x: "+Math.round(100.0*x.doubleValue(METER))/100.0
-                +" ,y: "+Math.round(100.0*y.doubleValue(METER))/100.0
-                +" ,t: "+Math.round(100.0*t.doubleValue(SECOND))/100.0
-                +", degree: "+Math.round(100.0*degree)/100.0);
+        // System.out.println("Output: v: "+Math.round(100.0*v.doubleValue(METERS_PER_SECOND))/100.0
+        //         +", x: "+Math.round(100.0*x.doubleValue(METER))/100.0
+        //         +" ,y: "+Math.round(100.0*y.doubleValue(METER))/100.0
+        //         +" ,t: "+Math.round(100.0*t.doubleValue(SECOND))/100.0
+        //         +", degree: "+Math.round(100.0*degree)/100.0);
+        return output;
     }
 
     // send the updated position and the degree to the visualization as JSON package
@@ -154,22 +179,6 @@ class Simulator {
     //     return result;
     // }
 
-    private getDistancesFromSensors(): number[]{
-        
-        return [
-            /*flDistance*/
-                this.car.getSensor(Orientation.FRONT_LEFT).getMinDistance(),
-            /*frDistance*/
-                this.car.getSensor(Orientation.FRONT_RIGHT).getMinDistance(),
-            /*slfDistance*/
-                this.car.getSensor(Orientation.FRONT_LEFT_SIDE).getMinDistance(),
-            /*slbDistance*/
-                this.car.getSensor(Orientation.BACK_LEFT_SIDE).getMinDistance(),
-            /*srfDistance*/
-                this.car.getSensor(Orientation.FRONT_RIGHT_SIDE).getMinDistance(),
-            /*srbDistance*/
-                this.car.getSensor(Orientation.BACK_RIGHT_SIDE).getMinDistance()];
-    }
 
     // private Map<String, PortSymbol> getPortSymbols(ComponentSymbol cmp){
     //     Map<String, PortSymbol> res = new HashMap<String, PortSymbol>();
@@ -229,70 +238,77 @@ class Simulator {
     // }
 
 
-    @OnWebSocketConnect
-    public void connected(Session session) {
-        Simulator simulator = new Simulator();
-        simulator.session = Optional.ofNullable(session);
-        String root = this.getClass().getResource("").
-                getPath().replaceFirst("/", "").replace("/de", "");
+    //@OnWebSocketConnect
+    public connected() {
+        
+        let simulator = new Simulator();
 
-        Path basePath = Paths.get(root);
-        Path genPath = Paths.get(root,"gen");
-        Path compilePath = Paths.get(root,"gen");
+        // simulator.session = Optional.ofNullable(session);
+        // String root = this.getClass().getResource("").
+        //         getPath().replaceFirst("/", "").replace("/de", "");
 
-        ComponentSymbol cmp =
-                resolver.getComponentSymbol("visualization.main.SDCS").orElse(null);
-        Map<String, PortSymbol> portSymbols = getPortSymbols(cmp); // initialize the PortSymbols
+        // Path basePath = Paths.get(root);
+        // Path genPath = Paths.get(root,"gen");
+        // Path compilePath = Paths.get(root,"gen");
 
-        double[] distances = getDistancesFromSensors();
-        Map<String, NamedStreamSymbol> nameStreamSymbols =
-                getNamedStreamSymbols(distances, portSymbols, 0.0, 0.0, 0.0, 0.0);
+        // ComponentSymbol cmp =
+        //         resolver.getComponentSymbol("visualization.main.SDCS").orElse(null);
+        // Map<String, PortSymbol> portSymbols = getPortSymbols(cmp); // initialize the PortSymbols
 
-        ExpandedComponentInstanceSymbol inst =
-                resolver.getExpandedComponentInstanceSymbol("visualization.main.sDCS").orElse(null);
-        BasicSimulator sim = new BasicSimulator(basePath, genPath, compilePath, inst);
+        let distances: number[] = this.getDistancesFromSensors();
 
-        Map<String, Object[]> outputs = new HashMap<>();
+        // Map<String, NamedStreamSymbol> nameStreamSymbols =
+        //         getNamedStreamSymbols(distances, portSymbols, 0.0, 0.0, 0.0, 0.0);
 
-        try {
-            outputs = sim.execute();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+        // ExpandedComponentInstanceSymbol inst =
+        //         resolver.getExpandedComponentInstanceSymbol("visualization.main.sDCS").orElse(null);
+        // BasicSimulator sim = new BasicSimulator(basePath, genPath, compilePath, inst);
 
-        SInput input = new SInput(Amount.valueOf(0.0, METERS_PER_SQUARE_SECOND), // a
-                Amount.valueOf(0.0, DEGREE_ANGLE),  // s
-                Amount.valueOf(0.0, METER), // x
-                Amount.valueOf(0.0, METER), // y
-                Amount.valueOf(0.0, SECOND), // t
-                (Boolean)outputs.get("doorStatus")[0],
-                (Boolean)outputs.get("indicatorStatus")[0],
-                (Boolean)outputs.get("lightStatus")[0],
-                (Boolean)outputs.get("triggerStatus")[0]);
+        //Map<String, Object[]> outputs = new HashMap<>();
+
+        // try {
+        //     outputs = sim.execute();
+        // } catch(Exception e) {
+        //     e.printStackTrace();
+        // }
+
+        let input: Sinput = new Sinput(math.unit('0 m/s'), // a
+                math.unit(0, 'deg'),  // s
+                math.unit(0, 'meter'), // x
+                math.unit(0, 'meter'), // y
+                math.unit(0, 'sec'), // t
+                false, // doorStatus
+                false, //indicatorStatus
+                false, //lightStatus
+                false //triggerStatus
+            );
+
         simulator.update(input);
-        SOutput output = simulator.output; //SOutput will be filled with updated values
+
+        let output: Soutput = simulator.output; //SOutput will be filled with updated values
 
         // Give the updated t and v to the Generator/BasicSimulator and next loop
         while(true) {
-            portSymbols = removeStreamsFromPortSymbols(portSymbols, nameStreamSymbols);
 
-            double v = output.velocity.doubleValue(METERS_PER_SECOND);
-            double ti = output.ti.doubleValue(SECOND);
-            double xi = output.xi.doubleValue(METER);
-            double yi = output.yi.doubleValue(METER);
-            double degree = output.degree.doubleValue(DEGREE_ANGLE);
+            //portSymbols = removeStreamsFromPortSymbols(portSymbols, nameStreamSymbols);
 
-            Car.setPosition(xi, yi);
-            Car.setDegree(degree);
+            let v: number = output.velocity; // METERS_PER_SECOND
+            let ti: number = output.ti; // SECOND
+            let xi: number = output.xi; // METER
+            let yi: number = output.yi; // METER
+            let degree: number = output.degree; // DEGREE_ANGLE
 
-            nameStreamSymbols = getNamedStreamSymbols(getDistancesFromSensors(), portSymbols, ti, v, xi, yi);
+            this.car.setPosition(xi, yi);
+            this.car.setDegree(degree);
 
-            outputs = new HashMap<>();
-            try {
-                outputs = sim.execute();
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
+            // nameStreamSymbols = getNamedStreamSymbols(getDistancesFromSensors(), portSymbols, ti, v, xi, yi);
+
+            // outputs = new HashMap<>();
+            // try {
+            //     outputs = sim.execute();
+            // } catch(Exception e) {
+            //     e.printStackTrace();
+            // }
 
             input = new SInput(Amount.valueOf((Double)outputs.get("acceleration")[0], METERS_PER_SQUARE_SECOND),
                     Amount.valueOf((Double)outputs.get("steering")[0], DEGREE_ANGLE),
@@ -304,11 +320,11 @@ class Simulator {
             simulator.update(input);
             output = simulator.output; //SOutput will be filled with updated values
 
-            try {
-                Thread.sleep(100);
-            } catch(InterruptedException e) {
-                e.printStackTrace();
-            }
+            // try {
+            //     Thread.sleep(100);
+            // } catch(InterruptedException e) {
+            //     e.printStackTrace();
+            // }
         }
     }
 
