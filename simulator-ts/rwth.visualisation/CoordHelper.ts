@@ -164,6 +164,7 @@ class CoordHelper {
         
         try {
             
+            // check the types
             let intersection: Array<number[]> = this.getIntersectionCirclePlus(s, d, m, radius, plus);
             
             // TODO: get distance between two vectors
