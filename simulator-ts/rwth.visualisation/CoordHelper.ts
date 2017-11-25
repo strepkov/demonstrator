@@ -1,12 +1,12 @@
-import javafx.geometry.Point2D;
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-import org.apache.commons.math3.linear.ArrayRealVector;
-import org.apache.commons.math3.linear.RealVector;
-import org.apache.commons.math3.ml.distance.EuclideanDistance;
+// import javafx.geometry.Point2D;
+// import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+// import org.apache.commons.math3.linear.ArrayRealVector;
+// import org.apache.commons.math3.linear.RealVector;
+// import org.apache.commons.math3.ml.distance.EuclideanDistance;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
+// import java.util.ArrayList;
+// import java.util.List;
+// import java.util.Vector;
 
 class CoordHelper {
 
@@ -90,7 +90,9 @@ class CoordHelper {
                                 s[0]*(p2[1]-p1[1])+s[1]*(p2[0]-p1[0])) /
                                     (d[0]*(p2[1]-p1[1])-d[1]*(p2[0]-p1[0]));
         
-        //TODO: separate the line of operations
+        //TODO: separate the line of operations: 
+        // add - Compute the sum of this vector and in ().
+        // mapMultiply - Multiply each entry by the argument.
         let intersection: Array<number[]> = s.add(d.mapMultiply(scalar));
 
         return intersection;
@@ -101,7 +103,9 @@ class CoordHelper {
         
         try {
 
-            let intersection: Array<number[]> = CoordHelper.getIntersectionLine(p1, p2, s, r);
+            let intersection: Array<number[]> = this.getIntersectionLine(p1, p2, s, r);
+            
+            // TODO: get distance between two vectors
             return intersection.getDistance(s);
         
         } catch {
@@ -110,7 +114,7 @@ class CoordHelper {
         }
     }
 
-    public getIntersectionCircle(sensor: number[], direction: number[],
+    public getIntersectionCirclePlus(sensor: number[], direction: number[],
                                     middlePoint: number[], r: number, plus: boolean): number[] {
 
         let plusValue: number = plus ? 1.0 : -1.0;
@@ -147,8 +151,8 @@ class CoordHelper {
         
         let result = new Array<number[]>();
 
-        let pointLower = CoordHelper.getIntersectionCircle(s, d, m, radius, false);
-        let pointUpper = CoordHelper.getIntersectionCircle(s, d, m, radius, true);
+        let pointLower = this.getIntersectionCirclePlus(s, d, m, radius, false);
+        let pointUpper = this.getIntersectionCirclePlus(s, d, m, radius, true);
 
         result.push(pointUpper);
         result.push(pointLower);
@@ -159,9 +163,10 @@ class CoordHelper {
     public getDistanceCircle(s : number[], d: number[], m: number[], radius: number, plus: boolean): number {
         
         try {
-
-            RealVector intersection = CoordHelper.getIntersectionCircle(s, d, m, radius, plus);
             
+            let intersection: Array<number[]> = this.getIntersectionCirclePlus(s, d, m, radius, plus);
+            
+            // TODO: get distance between two vectors
             return intersection.getDistance(s);
         
         } catch {
