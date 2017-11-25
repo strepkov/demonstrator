@@ -67,7 +67,8 @@ class Simulator {
             /*srfDistance*/
                 this.car.getSensor(Orientation.FRONT_RIGHT_SIDE).getMinDistance(),
             /*srbDistance*/
-                this.car.getSensor(Orientation.BACK_RIGHT_SIDE).getMinDistance()];
+                this.car.getSensor(Orientation.BACK_RIGHT_SIDE).getMinDistance()
+            ];
     }
 
     private output: Soutput; //stores the output data(new positions, degree, velocity etc.)
@@ -103,7 +104,7 @@ class Simulator {
     }
 
     // Updates the time, velocity, degree of car and new positions x,y
-    public calculate(input: Sinput): Soutput {
+    public calculate(input: Sinput) {
         
         // time = t+(1/20)s, for t=0s
         let time_local = math.add(this.time, this.fpsTime);
@@ -135,7 +136,7 @@ class Simulator {
         // y=(input)y+v*t*sin((rad)degree) //Amount<Length>
         let y = math.minus(input.y0, (this.velocity.times(this.fpsTime).times(Math.sin(degree * Math.PI / 180))));
 
-        let output = new Soutput(this.velocity, x, y, this.time, degree1, input.doorStatus,
+        this.output = new Soutput(this.velocity, x, y, this.time, degree1, input.doorStatus,
                 input.indicatorStatus, input.lightTimerStatus, input.triggerStatus);
 
         // System.out.println("Output: v: "+Math.round(100.0*v.doubleValue(METERS_PER_SECOND))/100.0
@@ -143,7 +144,6 @@ class Simulator {
         //         +" ,y: "+Math.round(100.0*y.doubleValue(METER))/100.0
         //         +" ,t: "+Math.round(100.0*t.doubleValue(SECOND))/100.0
         //         +", degree: "+Math.round(100.0*degree)/100.0);
-        return output;
     }
 
     // send the updated position and the degree to the visualization as JSON package
@@ -272,7 +272,9 @@ class Simulator {
         //     e.printStackTrace();
         // }
 
-        let input: Sinput = new Sinput(math.unit('0 m/s'), // a
+        let input: Sinput = new Sinput(
+                
+                math.unit(0, 'm/s'), // a
                 math.unit(0, 'deg'),  // s
                 math.unit(0, 'meter'), // x
                 math.unit(0, 'meter'), // y
