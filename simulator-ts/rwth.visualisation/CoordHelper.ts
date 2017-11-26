@@ -1,18 +1,9 @@
-// import javafx.geometry.Point2D;
-// import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-// import org.apache.commons.math3.linear.ArrayRealVector;
-// import org.apache.commons.math3.linear.RealVector;
-// import org.apache.commons.math3.ml.distance.EuclideanDistance;
-
-// import java.util.ArrayList;
-// import java.util.List;
-// import java.util.Vector;
-
 import * as math from "../libs/math.js";
+export {CoordHelper}; 
 
 class CoordHelper {
 
-    public getSensorBL(carPosition: Array<number[]>): Array<number[]> {
+    public static getSensorBL(carPosition: Array<number[]>): Array<number[]> {
         
         let offset: number[] = [0,0];
 
@@ -24,7 +15,7 @@ class CoordHelper {
         return carPosition;
     }
 
-    public getSensorFL(carPosition: Array<number[]>): Array<number[]> {
+    public static getSensorFL(carPosition: Array<number[]>): Array<number[]> {
         
         let offset: number[] = [0,0];
 
@@ -36,7 +27,7 @@ class CoordHelper {
         return carPosition;
     }
 
-    public getSensorFR(carPosition: Array<number[]>): Array<number[]> {
+    public static getSensorFR(carPosition: Array<number[]>): Array<number[]> {
         
         let offset: number[] = [0,0];
 
@@ -48,7 +39,7 @@ class CoordHelper {
         return carPosition;
     }
 
-    public getSensorBR(carPosition: Array<number[]>): Array<number[]> {
+    public static getSensorBR(carPosition: Array<number[]>): Array<number[]> {
         
         let offset: number[] = [0,0];
 
@@ -60,16 +51,16 @@ class CoordHelper {
         return carPosition;
     }
 
-    public f(x: number): number {
+    public static f(x: number): number {
         return 0.0;
     }
 
-    /*public static Vector<Double> getDistance1(double x1, double y1, double x2, double y2,
+    /*public static static Vector<Double> getDistance1(double x1, double y1, double x2, double y2,
                                               double cx, double cy) {
                                               \\TODO
     }*/
 
-    /*public static Vector<Double> getDirectionFR(double cx, double cy, double degree, double lambda) {
+    /*public static static Vector<Double> getDirectionFR(double cx, double cy, double degree, double lambda) {
         Vector<Double> s3 = CoordHelper.getSensorFR(cx, cy);
 
         double radians = Math.toRadians(degree);
@@ -86,7 +77,7 @@ class CoordHelper {
 
 
     //Intersection between sensor and linear function
-    public getIntersectionLine(p1: number[], p2: number[], s: number[], d: number[]): number[] {
+    public static getIntersectionLine(p1: number[], p2: number[], s: number[], d: number[]): number[] {
 
         let scalar: number = (p1[0]*(p2[1]-p1[1])-p1[1]*(p2[0]-p1[0]) - 
                                 s[0]*(p2[1]-p1[1])+s[1]*(p2[0]-p1[0])) /
@@ -107,11 +98,11 @@ class CoordHelper {
     }
 
     //Distance from sensor to intersection
-    public getDistanceLine(p1: number[], p2: number[], s: number[], r: number[]): number {
+    public static getDistanceLine(p1: number[], p2: number[], s: number[], r: number[]): number {
         
         try {
 
-            let intersection: number[] = this.getIntersectionLine(p1, p2, s, r);
+            let intersection: number[] = CoordHelper.getIntersectionLine(p1, p2, s, r);
             
             // TODO: get distance between two vectors
             let intersection_str = '[' + intersection.toString() + ']';
@@ -131,7 +122,7 @@ class CoordHelper {
         }
     }
 
-    public getIntersectionCirclePlus(sensor: number[], direction: number[],
+    public static getIntersectionCirclePlus(sensor: number[], direction: number[],
                                     middlePoint: number[], r: number, plus: boolean): number[] {
 
         let plusValue: number = plus ? 1.0 : -1.0;
@@ -170,12 +161,12 @@ class CoordHelper {
         return intersection;
     }
 
-    public getIntersectionCircle(s: number[], d: number[], m: number[], radius: number): Array<number[]> {
+    public static getIntersectionCircle(s: number[], d: number[], m: number[], radius: number): Array<number[]> {
         
         let result = new Array<number[]>();
 
-        let pointLower = this.getIntersectionCirclePlus(s, d, m, radius, false);
-        let pointUpper = this.getIntersectionCirclePlus(s, d, m, radius, true);
+        let pointLower = CoordHelper.getIntersectionCirclePlus(s, d, m, radius, false);
+        let pointUpper = CoordHelper.getIntersectionCirclePlus(s, d, m, radius, true);
 
         result.push(pointUpper);
         result.push(pointLower);
@@ -183,12 +174,12 @@ class CoordHelper {
         return result;
     }
 
-    public getDistanceCircle(s : number[], d: number[], m: number[], radius: number, plus: boolean): number {
+    public static getDistanceCircle(s : number[], d: number[], m: number[], radius: number, plus: boolean): number {
         
         try {
             
             // check the types
-            let intersection: number[] = this.getIntersectionCirclePlus(s, d, m, radius, plus);
+            let intersection: number[] = CoordHelper.getIntersectionCirclePlus(s, d, m, radius, plus);
             
             // TODO: get distance between two vectors
             let intersection_str = '[' + intersection.toString() + ']';
