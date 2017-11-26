@@ -8,8 +8,9 @@ class TrackPartCircle extends TrackPart {
     public radiusInner : number;
     public radiusOuter : number;
 
-    public TrackPartCircle(point: number[], radiusInner: number, radiusOuter: number) {
-        
+    public constructor(point: number[], radiusInner: number, radiusOuter: number) {
+        super();
+
         this.point = point;
         this.radiusInner = radiusInner;
         this.radiusOuter = radiusOuter;

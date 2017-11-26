@@ -6,7 +6,7 @@ export {Track}
 
 class Track {
     
-    public static walls = new Array<Wall>();
+    public walls = new Array<Wall>();
 
     public constructor() {
         this.init();

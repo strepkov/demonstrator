@@ -11,7 +11,6 @@ class TrackPartLinear extends TrackPart {
 
     public constructor (pointUpperLeft : number[], pointUpperRight: number[],
         pointLowerLeft: number[], pointLowerRight: number[]) {
-
         super();
         
         this.pointUpperLeft = pointUpperLeft;
