@@ -94,6 +94,7 @@ class Car {
     }
 
     protected doGetDegree(): number {
+        
         return this.degree;
     }
 
