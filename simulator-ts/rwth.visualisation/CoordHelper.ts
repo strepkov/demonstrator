@@ -86,13 +86,12 @@ class CoordHelper {
 
 
     //Intersection between sensor and linear function
-    public getIntersectionLine(p1: number[], p2: number[], s: number[], d: number[]): Array<number[]> {
+    public getIntersectionLine(p1: number[], p2: number[], s: number[], d: number[]): number[] {
 
         let scalar: number = (p1[0]*(p2[1]-p1[1])-p1[1]*(p2[0]-p1[0]) - 
                                 s[0]*(p2[1]-p1[1])+s[1]*(p2[0]-p1[0])) /
                                     (d[0]*(p2[1]-p1[1])-d[1]*(p2[0]-p1[0]));
-        
-        //TODO: separate the line of operations: 
+         
         // add - Compute the sum of this vector and in ().
         // mapMultiply - Multiply each entry by the argument.
         let s_str = '[' + s.toString() + ']';
@@ -101,7 +100,8 @@ class CoordHelper {
         let d_str = '[' + d.toString() + ']';
         let d_math = math.matrix(d_str);
         
-        let intersection: Array<number[]> = math.add(s_math, math.multiply(d_math, scalar));
+        // Check correctness of add function
+        let intersection: number[] = math.add(s_math, math.multiply(d_math, scalar));
 
         return intersection;
     }
@@ -111,12 +111,19 @@ class CoordHelper {
         
         try {
 
-            let intersection: Array<number[]> = this.getIntersectionLine(p1, p2, s, r);
+            let intersection: number[] = this.getIntersectionLine(p1, p2, s, r);
             
             // TODO: get distance between two vectors
+            let intersection_str = '[' + intersection.toString() + ']';
+            let intersection_math = math.matrix(intersection_str);
 
-            // math.distance(intersection, s);
-            return intersection.getDistance(s);
+            let s_str = '[' + s.toString() + ']';
+            let s_math = math.matrix(s_str);
+
+            let distance = math.distance(intersection_math, s_math);
+
+            // TODO: check the types
+            return distance;
         
         } catch {
 
@@ -151,9 +158,15 @@ class CoordHelper {
         let sqrt: number = plusValue*Math.sqrt(sqrtValue);
         let scalar: number = -1*(sqrt +2*a*(x-m)+2*b*(y-n))/zaq;
 
-        //TODO: separate the line of operations 
-        RealVector intersection = sensor.add(direction.mapMultiply(scalar));
+        let sensor_str = '[' + sensor.toString() + ']';
+        let sensor_math = math.matrix(sensor_str);
         
+        let direction_str = '[' + direction.toString() + ']';
+        let direction_math = math.matrix(direction_str);
+
+        let intersection = math.add(sensor_math, math.multiply(direction_math, scalar));
+        
+        // TODO: check the types
         return intersection;
     }
 
@@ -175,10 +188,18 @@ class CoordHelper {
         try {
             
             // check the types
-            let intersection: Array<number[]> = this.getIntersectionCirclePlus(s, d, m, radius, plus);
+            let intersection: number[] = this.getIntersectionCirclePlus(s, d, m, radius, plus);
             
             // TODO: get distance between two vectors
-            return intersection.getDistance(s);
+            let intersection_str = '[' + intersection.toString() + ']';
+            let intersection_math = math.matrix(intersection_str);
+
+            let s_str = '[' + s.toString() + ']';
+            let s_math = math.matrix(s_str);
+
+            let distance = math.distance(intersection_math, s_math);
+
+            return distance;
         
         } catch {
             return Number.MAX_VALUE;
