@@ -95,11 +95,11 @@ class CoordHelper {
         //TODO: separate the line of operations: 
         // add - Compute the sum of this vector and in ().
         // mapMultiply - Multiply each entry by the argument.
-        let s_str = '[' + s.toString + ']';
-        let s_math = math.unit(s_str);
+        let s_str = '[' + s.toString() + ']';
+        let s_math = math.matrix(s_str);
 
-        let d_str = '[' + d.toString + ']';
-        let d_math = math.unit(d_str);
+        let d_str = '[' + d.toString() + ']';
+        let d_math = math.matrix(d_str);
         
         let intersection: Array<number[]> = math.add(s_math, math.multiply(d_math, scalar));
 
