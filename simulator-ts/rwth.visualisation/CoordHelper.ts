@@ -8,6 +8,8 @@
 // import java.util.List;
 // import java.util.Vector;
 
+import * as math from "../libs/math.js";
+
 class CoordHelper {
 
     public getSensorBL(carPosition: Array<number[]>): Array<number[]> {
@@ -93,7 +95,13 @@ class CoordHelper {
         //TODO: separate the line of operations: 
         // add - Compute the sum of this vector and in ().
         // mapMultiply - Multiply each entry by the argument.
-        let intersection: Array<number[]> = s.add(d.mapMultiply(scalar));
+        let s_str = '[' + s.toString + ']';
+        let s_math = math.unit(s_str);
+
+        let d_str = '[' + d.toString + ']';
+        let d_math = math.unit(d_str);
+        
+        let intersection: Array<number[]> = math.add(s_math, math.multiply(d_math, scalar));
 
         return intersection;
     }
@@ -106,6 +114,8 @@ class CoordHelper {
             let intersection: Array<number[]> = this.getIntersectionLine(p1, p2, s, r);
             
             // TODO: get distance between two vectors
+
+            // math.distance(intersection, s);
             return intersection.getDistance(s);
         
         } catch {
