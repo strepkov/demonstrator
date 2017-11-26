@@ -1,34 +1,10 @@
-// import com.google.common.collect.Lists;
-// import de.ma2cfg.simulator.BasicSimulator;
-// import de.monticore.lang.montiarc.montiarc._symboltable.ComponentSymbol;
-// import de.monticore.lang.montiarc.montiarc._symboltable.ExpandedComponentInstanceSymbol;
-// import de.monticore.lang.montiarc.montiarc._symboltable.PortSymbol;
-// import de.monticore.lang.montiarc.stream._symboltable.NamedStreamSymbol;
-// import de.rwth.simulink2montiarc.montiarcadapter.Resolver;
-// import de.se_rwth.commons.logging.Log;
-// import org.jscience.physics.amount.Amount;
-// import org.json.JSONObject;
-
-// import javax.measure.quantity.*;
-// import java.io.IOException;
-// import java.net.URISyntaxException;
-// import java.net.URL;
-// import java.nio.file.Path;
-// import java.nio.file.Paths;
-// import java.util.HashMap;
-// import java.util.Map;
-// import java.util.Optional;
-
-// import static javax.measure.unit.NonSI.DEGREE_ANGLE;
-// import static javax.measure.unit.SI.*;
-
 import * as math from "../libs/math.js";
 import {Car} from "./car/Car";
 import {Orientation} from "./coord/Orientation";
 import {Sinput} from "./Sinput"
 import {Soutput} from "./Soutput"
+import {Track} from "./track/Track";
 
-//@WebSocket
 class Simulator {
 
 //private generator: MontiarcToJavaGenerator;
@@ -38,6 +14,7 @@ class Simulator {
     private velocity;
     private time;
     private car: Car;
+    private track: Track;
 
     public constructor() {
 
@@ -47,6 +24,7 @@ class Simulator {
         this.fpsTime = math.unit('1 sec');
 
         this.car = new Car(0,0); // TODO: initial position?
+        this.track = new Track();
     }
 
     public getTime(){
@@ -57,17 +35,17 @@ class Simulator {
         
         return [
             /*flDistance*/
-                this.car.getSensor(Orientation.FRONT_LEFT).getMinDistance(),
+                this.car.getSensor(Orientation.FRONT_LEFT).getMinDistance(this.track.walls, this.car),
             /*frDistance*/
-                this.car.getSensor(Orientation.FRONT_RIGHT).getMinDistance(),
+                this.car.getSensor(Orientation.FRONT_RIGHT).getMinDistance(this.track.walls, this.car),
             /*slfDistance*/
-                this.car.getSensor(Orientation.FRONT_LEFT_SIDE).getMinDistance(),
+                this.car.getSensor(Orientation.FRONT_LEFT_SIDE).getMinDistance(this.track.walls, this.car),
             /*slbDistance*/
-                this.car.getSensor(Orientation.BACK_LEFT_SIDE).getMinDistance(),
+                this.car.getSensor(Orientation.BACK_LEFT_SIDE).getMinDistance(this.track.walls, this.car),
             /*srfDistance*/
-                this.car.getSensor(Orientation.FRONT_RIGHT_SIDE).getMinDistance(),
+                this.car.getSensor(Orientation.FRONT_RIGHT_SIDE).getMinDistance(this.track.walls, this.car),
             /*srbDistance*/
-                this.car.getSensor(Orientation.BACK_RIGHT_SIDE).getMinDistance()
+                this.car.getSensor(Orientation.BACK_RIGHT_SIDE).getMinDistance(this.track.walls, this.car)
             ];
     }
 
@@ -300,7 +278,7 @@ class Simulator {
             let yi: number = output.yi; // METER
             let degree: number = output.degree; // DEGREE_ANGLE
 
-            this.car.setPosition({xi, yi});
+            this.car.setPosition({xi,yi});
             this.car.setDegree(degree);
 
             // nameStreamSymbols = getNamedStreamSymbols(getDistancesFromSensors(), portSymbols, ti, v, xi, yi);
