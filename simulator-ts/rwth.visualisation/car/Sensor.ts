@@ -4,14 +4,18 @@ import {Track} from "../track/Track";
 import {Wall} from "../track/Wall";
 import {WallCurved} from "../track/WallCurved";
 import {WallLinear} from "../track/WallLinear";
+import {CoordHelper} from "../CoordHelper";
+import * as math from "../../libs/math.js";
 
 export {Sensor}
 
 class Sensor {
+
     private offset : number[];
     private direction : number[];
 
     public constructor (offset : number[], direction : number[]) {
+        
         this.offset = offset;
         this.direction = direction;
     }
@@ -47,7 +51,7 @@ class Sensor {
     //             this.offset, this.direction, this.getDirection(), this.getPosition());
     // }
 
-    // List<RealVector>
+    // check the correct type during execution
     public getIntersections(wall : Wall);
     public getIntersections(wall : WallLinear);
     public getIntersections(wall : WallCurved);
@@ -70,8 +74,7 @@ class Sensor {
             try {
                     let position : number[] = this.getPosition();
                     let direction : number[] = this.getDirection();
-                    let intersection : number[] 
-                        = CoordHelper.getIntersectionLine(wall.pointLeft, wall.pointRight, position, direction);
+                    let intersection : number[] = CoordHelper.getIntersectionLine(wall.pointLeft, wall.pointRight, position, direction);
             
                     if(wall.inBoundaries(intersection)) {
             
@@ -93,8 +96,7 @@ class Sensor {
             try {
                     let position : number[] = this.getPosition();
                     let direction : number[] = this.getDirection();
-                    let intersections : Array<number[]>
-                        = CoordHelper.getIntersectionCircle(position, direction, wall.pointMiddle, wall.radius);
+                    let intersections : Array<number[]> = CoordHelper.getIntersectionCircle(position, direction, wall.pointMiddle, wall.radius);
             
                     for( let intersection of intersections) {
                             
@@ -116,7 +118,7 @@ class Sensor {
 
     // get the parameter of the line of the sensor to intersection point
     // if the parameter is positive than the intersection point is in correct direction
-    public getParameters(wall : Wall) {
+    public getParameters(wall : Wall): Array<number> {
         
         let parameters = new Array<number>();
         let intersections : Array<number[]> = this.getIntersections(wall);
@@ -137,7 +139,7 @@ class Sensor {
         return parameters;
     }
 
-    public getDistances(wall : Wall) {
+    public getDistances(wall : Wall): Array<number> {
 
         let distances = new Array<number>();
         let intersections : Array<number[]> = this.getIntersections(wall);
@@ -147,7 +149,13 @@ class Sensor {
             //Should be a vector
             let position : number[] = this.getPosition();
             // TODO: distance between vectors calculate
-            let distance : number = position.getDistance(intersection);
+            let position_str = '[' + position.toString() + ']';
+            let position_math = math.matrix(position_str);
+
+            let intersection_str = '[' + intersection.toString() + ']';
+            let intersection_math = math.matrix(intersection_str);
+
+            let distance : number = math.distance(position_math, intersection_math);
 
             distances.push(distance);
         }
@@ -155,15 +163,10 @@ class Sensor {
         return distances;
     }
 
-    public getAllDistances() {
+    public getAllDistances(walls: Array<Wall>): Array<number> {
         
         let allDistances = new Array<number>();
-        let walls : Array<Wall>  = Track.walls;
-
         let wallIndex : number = 0;
-
-        // System.out.println("====Walls====");
-        // System.out.println(this);
 
         for(let wall of walls) {
             
@@ -179,7 +182,6 @@ class Sensor {
                 if(parameter >= 0) {
                     
                     let distance : number = distances[i];
-                    // System.out.println("Index: " + wallIndex);
                     allDistances.push(distance);
                 }
             }
@@ -189,9 +191,9 @@ class Sensor {
     }
 
     // Gets the correct distance of the sensor to the track
-    public getMinDistance() : number {
+    public getMinDistance(walls: Array<Wall>) : number {
 
-        let distances : number[] = this.getAllDistances();
+        let distances : number[] = this.getAllDistances(walls);
         let minDistance : number = Number.MAX_VALUE;
 
         for(let distance of distances) {
@@ -199,9 +201,6 @@ class Sensor {
             minDistance = Math.min(minDistance, distance);
         }
 
-        // System.out.println("====Min Distances====");
-        // System.out.println(this);
-        // System.out.println("minDistance: " + minDistance);
         return minDistance;
     }
 }
