@@ -2,7 +2,7 @@ export {Rotation};
 
 abstract class Rotation {
 
-    public static getMatrix(degree : number) {
+    public static getMatrix(degree : number): number[][] {
 
         let degreeRD : number = degree*(Math.PI/180);
         
