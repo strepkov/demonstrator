@@ -5,6 +5,7 @@ import {Wall} from "../track/Wall";
 import {WallCurved} from "../track/WallCurved";
 import {WallLinear} from "../track/WallLinear";
 import {CoordHelper} from "../CoordHelper";
+import {Car} from "./Car";
 import * as math from "../../libs/math.js";
 
 export {Sensor}
@@ -20,9 +21,10 @@ class Sensor {
         this.direction = direction;
     }
 
-    public getDirection() {
+    // Get direction of what?
+    public getDirection(car: Car) {
         
-        let degree : number = Car.getDegree();
+        let degree : number = car.getDegree();
         let rotationMatrix : number[][] = Rotation.getMatrix(degree);
         // TODO: fix operate
         let rotatedDirection : number[] = rotationMatrix.operate(this.direction);
@@ -30,19 +32,28 @@ class Sensor {
         return rotatedDirection;
     }
 
-    public getPosition() {
+    // Get position of what?
+    public getPosition(car: Car) {
 
-        let degree : number = Car.getDegree();
+        let degree : number = car.getDegree();
         let rotationMatrix : number[][] = Rotation.getMatrix(degree);
-        let position : number[] = Car.getPosition();
+        let position : number[] = car.getPosition();
         
-        // type of offset ?
-        let offset : number[] = position.add(this.offset).subtract(position);
-        
-        // Should be a vector, because we need to add vectors inside the vector
-        let rotatedOffset :number[] = rotationMatrix.operate(offset);
+        let position_str = '[' + position.toString() + ']';
+        let position_math = math.matrix(position_str);
 
-        return rotatedOffset.add(position);
+        let offset_str = '[' + this.offset.toString() + ']';
+        let offset_math = math.matrix(offset_str);
+
+        // add - Compute the sum of this vector and (), subtract
+        let offset = math.subtract(math.add(position_math, position_math),position_math); // return Array<number[]>
+        
+        // operate - Returns the result of multiplying rotationMatrix by the vector v.
+        // TODO:
+        let rotatedOffset: number[] = math.multiply(rotationMatrix, offset); // return Array
+        rotatedOffset.push(position_math);
+        
+        return rotatedOffset;
     }
 
     // @Override
@@ -52,10 +63,10 @@ class Sensor {
     // }
 
     // check the correct type during execution
-    public getIntersections(wall : Wall);
-    public getIntersections(wall : WallLinear);
-    public getIntersections(wall : WallCurved);
-    public getIntersections(wall : any){
+    public getIntersections(wall: Wall, car: Car): Array<number[]>;
+    public getIntersections(wall: WallLinear, car: Car): Array<number[]>;
+    public getIntersections(wall: WallCurved, car: Car): Array<number[]>;
+    public getIntersections(wall: any, car: Car): Array<number[]>{
         
         // if (wall instanceof Wall){
         //     if(wall instanceof WallLinear) {
@@ -72,8 +83,8 @@ class Sensor {
             let result = new Array<number[]>();
             
             try {
-                    let position : number[] = this.getPosition();
-                    let direction : number[] = this.getDirection();
+                    let position : number[] = this.getPosition(car);
+                    let direction : number[] = this.getDirection(car);
                     let intersection : number[] = CoordHelper.getIntersectionLine(wall.pointLeft, wall.pointRight, position, direction);
             
                     if(wall.inBoundaries(intersection)) {
@@ -94,8 +105,8 @@ class Sensor {
             let result = new Array<number[]>();
             
             try {
-                    let position : number[] = this.getPosition();
-                    let direction : number[] = this.getDirection();
+                    let position : number[] = this.getPosition(car);
+                    let direction : number[] = this.getDirection(car);
                     let intersections : Array<number[]> = CoordHelper.getIntersectionCircle(position, direction, wall.pointMiddle, wall.radius);
             
                     for( let intersection of intersections) {
@@ -118,15 +129,15 @@ class Sensor {
 
     // get the parameter of the line of the sensor to intersection point
     // if the parameter is positive than the intersection point is in correct direction
-    public getParameters(wall : Wall): Array<number> {
+    public getParameters(wall : Wall, car: Car): Array<number> {
         
         let parameters = new Array<number>();
-        let intersections : Array<number[]> = this.getIntersections(wall);
+        let intersections : Array<number[]> = this.getIntersections(wall, car);
 
         for(let intersection of intersections) {
 
-            let position : number[] = this.getPosition();
-            let direction : number[] = this.getDirection();
+            let position : number[] = this.getPosition(car);
+            let direction : number[] = this.getDirection(car);
 
             // Add a constant 
             let scalar : number = (direction[0] < 0.0001 && direction[0]>-0.0001) ?
@@ -139,15 +150,15 @@ class Sensor {
         return parameters;
     }
 
-    public getDistances(wall : Wall): Array<number> {
+    public getDistances(wall : Wall, car: Car): Array<number> {
 
         let distances = new Array<number>();
-        let intersections : Array<number[]> = this.getIntersections(wall);
+        let intersections : Array<number[]> = this.getIntersections(wall, car);
 
         for(let intersection of intersections) {
             
             //Should be a vector
-            let position : number[] = this.getPosition();
+            let position : number[] = this.getPosition(car);
             // TODO: distance between vectors calculate
             let position_str = '[' + position.toString() + ']';
             let position_math = math.matrix(position_str);
@@ -163,7 +174,7 @@ class Sensor {
         return distances;
     }
 
-    public getAllDistances(walls: Array<Wall>): Array<number> {
+    public getAllDistances(walls: Array<Wall>, car: Car): Array<number> {
         
         let allDistances = new Array<number>();
         let wallIndex : number = 0;
@@ -172,8 +183,8 @@ class Sensor {
             
             wallIndex++;
 
-            let parameters : Array<number> = this.getParameters(wall);
-            let distances : Array<number> = this.getDistances(wall);
+            let parameters : Array<number> = this.getParameters(wall, car);
+            let distances : Array<number> = this.getDistances(wall, car);
 
             for(let i : number = 0; i < parameters.length; i++) {
                 
@@ -191,9 +202,9 @@ class Sensor {
     }
 
     // Gets the correct distance of the sensor to the track
-    public getMinDistance(walls: Array<Wall>) : number {
+    public getMinDistance(walls: Array<Wall>, car: Car) : number {
 
-        let distances : number[] = this.getAllDistances(walls);
+        let distances : number[] = this.getAllDistances(walls, car);
         let minDistance : number = Number.MAX_VALUE;
 
         for(let distance of distances) {
