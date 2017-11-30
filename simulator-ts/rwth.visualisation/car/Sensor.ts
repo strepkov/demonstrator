@@ -26,8 +26,9 @@ class Sensor {
         
         let degree : number = car.getDegree();
         let rotationMatrix : number[][] = Rotation.getMatrix(degree);
-        // TODO: fix operate
-        let rotatedDirection : number[] = rotationMatrix.operate(this.direction);
+        
+        // TODO: verify the correctness of the result
+        let rotatedDirection : number[] = math.multiply(rotationMatrix, this.direction);
         
         return rotatedDirection;
     }
@@ -49,7 +50,7 @@ class Sensor {
         let offset = math.subtract(math.add(position_math, position_math),position_math); // return Array<number[]>
         
         // operate - Returns the result of multiplying rotationMatrix by the vector v.
-        // TODO:
+        // TODO: verify the correctness of the result
         let rotatedOffset: number[] = math.multiply(rotationMatrix, offset); // return Array
         rotatedOffset.push(position_math);
         
