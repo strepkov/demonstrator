@@ -34,18 +34,14 @@ class Car {
         this.doInitPosition(x, y);
     }
     
-    public setPosition(position: {x: number, y: number});
-    public setPosition(position: number[]);
-    public setPosition(position: any){
-    
-        if(typeof position == "object"){
+    public setPositionXY(x: number, y: number){
 
-            this.getInstance().doSetPosition(position);
-        }
-        else if (position instanceof Array){
+        this.getInstance().doSetPositionXY(x,y);
+    }
 
-            this.getInstance().doSetPosition(position);
-        }
+    public setPosition(position: number[]){
+
+        this.getInstance().doSetPosition(position);
     }
 
     public getPosition(): number[] {
@@ -68,19 +64,15 @@ class Car {
         return this.getInstance().doGetSensor(orientation);
     }
 
-    public doSetPosition(position: {x: number, y: number});
-    public doSetPosition(position: number[]);
-    public doSetPosition(position: any){
+    public doSetPositionXY(x: number, y: number){
 
-        if(typeof position == "object"){
-        
-            this.position[0] = position.x;
-            this.position[1] = position.y;
-        }
-        else if(position instanceof Array){
+        this.position[0] = x;
+        this.position[1] = y;
+    }
+
+    public doSetPosition(position: number[]){
             
-            this.position = position;
-        }
+        this.position = position;
     }
     
     protected doGetPosition(): number[] {

@@ -278,7 +278,7 @@ class Simulator {
             let yi: number = output.yi; // METER
             let degree: number = output.degree; // DEGREE_ANGLE
 
-            this.car.setPosition({xi,yi});
+            this.car.setPositionXY(xi,yi);
             this.car.setDegree(degree);
 
             // nameStreamSymbols = getNamedStreamSymbols(getDistancesFromSensors(), portSymbols, ti, v, xi, yi);
