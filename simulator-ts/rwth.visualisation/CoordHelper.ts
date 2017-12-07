@@ -3,6 +3,10 @@ export {CoordHelper};
 
 class CoordHelper {
 
+    public static test(): number{
+        return 1;
+    }
+
     public static getSensorBL(carPosition: Array<number[]>): Array<number[]> {
         
         let offset: number[] = [0,0];
