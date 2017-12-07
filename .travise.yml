@@ -1,0 +1,5 @@
+script:
+  - mvn clean install
+
+after_success:
+- mvn deploy
