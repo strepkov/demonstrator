@@ -3,8 +3,7 @@ function sendData() {
 
     $.ajax({
         type: "POST",
-        //            url: "137.226.168.11:80",
-        url: "http://127.0.0.1:5000",
+        url: "http://137.226.168.11:80",
         dataType: 'text',
         data: 'text='+text,
         crossDomain: true,
