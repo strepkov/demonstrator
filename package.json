@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npm install -D jasmine-ts",
-    "test": "jasmine-ts simulator-ts/test/CoordHelper.spec.ts"
+    "test": "jasmine-ts JASMINE_CONFIG_PATH=jasmine.json simulator-ts/test/*.spec.ts"
   },
   "repository": {
     "type": "git",
