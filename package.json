@@ -1,0 +1,24 @@
+{
+  "name": "demonstrator",
+  "version": "1.0.0",
+  "description": "[![Build Status](https://travis-ci.org/EmbeddedMontiArc/demonstrator.svg?branch=strepkov-bit)](https://travis-ci.org/EmbeddedMontiArc/demonstrator)",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm install -D jasmine-ts",
+    "test": "jasmine-ts simulator-ts/test/CoordHelper.spec.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EmbeddedMontiArc/demonstrator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EmbeddedMontiArc/demonstrator/issues"
+  },
+  "homepage": "https://github.com/EmbeddedMontiArc/demonstrator#readme",
+  "devDependencies": {
+    "@types/jasmine": "^2.8.4",
+    "jasmine-ts": "^0.2.1"
+  }
+}
