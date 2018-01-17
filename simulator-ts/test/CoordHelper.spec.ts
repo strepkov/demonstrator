@@ -1,7 +1,7 @@
 import {CoordHelper} from '../rwth.visualisation/CoordHelper';
 
-describe('Our awesome test', () => {
-    it('tests something completely non-sense', () => {
+describe('artificial test', () => {
+    it('should return 1', () => {
         let expected = 1;
         expect(CoordHelper.test()).toEqual(expected);
     });
