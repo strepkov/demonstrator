@@ -4,14 +4,15 @@
   "description": "[![Build Status](https://travis-ci.org/EmbeddedMontiArc/demonstrator.svg?branch=strepkov-bit)](https://travis-ci.org/EmbeddedMontiArc/demonstrator)",
   "main": "index.js",
   "scripts": {
-    "build": "npm install -D jasmine-ts",
-    "test": "jasmine-ts JASMINE_CONFIG_PATH=jasmine.json simulator-ts/test/*.spec.ts"
+    "build": "npm install -D jasmine-ts nyc",
+    "test": "nyc -r lcov -e .ts -x \"*.spec.ts\" jasmine-ts JASMINE_CONFIG_PATH=jasmine.json \"simulator-ts/test/*.spec.ts\"",
+    "posttest": "nyc report --reporter=json && codecov -f coverage/*.json"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/EmbeddedMontiArc/demonstrator.git"
   },
-  "author": "",
+  "author": "strepkov",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/EmbeddedMontiArc/demonstrator/issues"
@@ -19,6 +20,8 @@
   "homepage": "https://github.com/EmbeddedMontiArc/demonstrator#readme",
   "devDependencies": {
     "@types/jasmine": "^2.8.4",
-    "jasmine-ts": "^0.2.1"
+    "codecov": "^2.3.1",
+    "jasmine-ts": "^0.2.1",
+    "nyc": "^11.4.1"
   }
 }
