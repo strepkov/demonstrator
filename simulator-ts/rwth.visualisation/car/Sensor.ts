@@ -21,20 +21,16 @@ class Sensor {
         this.direction = direction;
     }
 
-    // Get direction of what?
-    public getDirection(car: Car) {
+    public getDirection(car: Car): number[] {
         
         let degree : number = car.getDegree();
         let rotationMatrix : number[][] = Rotation.getMatrix(degree);
         
         // TODO: verify the correctness of the result
-        let rotatedDirection : number[] = math.multiply(rotationMatrix, this.direction);
-        
-        return rotatedDirection;
+        return math.multiply(rotationMatrix, this.direction);;
     }
 
-    // Get position of what?
-    public getPosition(car: Car) {
+    public getPosition(car: Car): number[] {
 
         let degree : number = car.getDegree();
         let rotationMatrix : number[][] = Rotation.getMatrix(degree);
