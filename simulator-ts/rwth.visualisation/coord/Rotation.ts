@@ -1,6 +1,6 @@
 export {Rotation};
 
-abstract class Rotation {
+class Rotation {
 
     public static getMatrix(degree : number): number[][] {
 
