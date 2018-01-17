@@ -5,6 +5,6 @@ describe('create instance of Car class', () => {
         
         let car = new Car(0,0);
 
-        expect(car.getInstance).not.toBeNull();
+        expect(car).not.toBeNull();
     });
 });
