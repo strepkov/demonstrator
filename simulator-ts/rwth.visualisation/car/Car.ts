@@ -22,12 +22,7 @@ class Car {
         this.doInitSensorBackLeftSide();
         this.doInitSensorBackRightSide();
         this.position = [x,y];
-    }
-    
-    public setPositionXY(x: number, y: number){
-
-        this.position[0] = x;
-        this.position[1] = y;
+        this.degree = 0;
     }
 
     public setPosition(position: number[]){
