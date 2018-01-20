@@ -7,21 +7,7 @@
         "sourceMap": true,
         "outDir": "./tsc-output"
     },
-    "files": [
-        "./simulator-ts/rwth.visualisation/car/Car.ts",
-        "./simulator-ts/rwth.visualisation/car/Sensor.ts",
-        "./simulator-ts/rwth.visualisation/coord/Orientation.ts",
-        "./simulator-ts/rwth.visualisation/coord/Rotation.ts",
-        "./simulator-ts/rwth.visualisation/track/Track.ts",
-        "./simulator-ts/rwth.visualisation/track/TrackPart.ts",
-        "./simulator-ts/rwth.visualisation/track/TrackPartCircle.ts",
-        "./simulator-ts/rwth.visualisation/track/TrackPartLinear.ts",
-        "./simulator-ts/rwth.visualisation/track/Wall.ts",
-        "./simulator-ts/rwth.visualisation/track/WallCurved.ts",
-        "./simulator-ts/rwth.visualisation/track/WallLinear.ts",
-        "./simulator-ts/rwth.visualisation/CoordHelper.ts",
-        "./simulator-ts/rwth.visualisation/Simulator.ts",
-        "./simulator-ts/rwth.visualisation/Sinput.ts",
-        "./simulator-ts/rwth.visualisation/Soutput.ts"
+    "include": [
+        "./simulator-ts/rwth.visualisation/**/*"
     ]
 }
