@@ -5,7 +5,7 @@
         "removeComments": true,
         "preserveConstEnums": true,
         "sourceMap": true,
-        "outDir": "./js-from-ts"
+        "outDir": "./tsc-output"
     },
     "files": [
         "./simulator-ts/rwth.visualisation/car/Car.ts",
