@@ -1,4 +1,5 @@
 import {Car} from "../rwth.visualisation/car/Car";
+import {Orientation} from "../rwth.visualisation/coord/Orientation";
 
 describe('create instance of Car class', () => {
 
@@ -37,6 +38,10 @@ describe('create instance of Car class', () => {
         car.setDegree(10);
 
         expect(car.getDegree()).toEqual(10);
+    });
+    it('should return the the Sensor', () => {
+        
+        expect(car.getSensor(Orientation.FRONT_LEFT)).not.toBeNull;
     });
 
 });
