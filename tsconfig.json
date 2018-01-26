@@ -5,7 +5,8 @@
         "removeComments": true,
         "preserveConstEnums": true,
         "sourceMap": true,
-        "outDir": "./tsc-output"
+        "outDir": "./tsc-output",
+        "inlineSources" : true
     },
     "include": [
         "./simulator-ts/rwth.visualisation/**/*"
