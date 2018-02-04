@@ -26,7 +26,6 @@ class Sensor {
         let degree : number = car.getDegree();
         let rotationMatrix : number[][] = Rotation.getMatrix(degree);
         
-        // TODO: verify the correctness of the result
         return math.multiply(rotationMatrix, this.direction);;
     }
 
@@ -36,21 +35,13 @@ class Sensor {
         let rotationMatrix : number[][] = Rotation.getMatrix(degree);
         let position : number[] = car.getPosition();
         
-        let position_str = '[' + position.toString() + ']';
-        let position_math = math.matrix(position_str);
+        let position_math = math.matrix(position);
+        let offset_math = math.matrix(this.offset);
 
-        let offset_str = '[' + this.offset.toString() + ']';
-        let offset_math = math.matrix(offset_str);
-
-        // add - Compute the sum of this vector and (), subtract
-        let offset = math.subtract(math.add(position_math, position_math),position_math); // return Array<number[]>
+        let offset = math.subtract(math.add(position_math, offset_math),position_math);
+        let rotatedOffset: number[] = math.multiply(rotationMatrix, offset);
         
-        // operate - Returns the result of multiplying rotationMatrix by the vector v.
-        // TODO: verify the correctness of the result
-        let rotatedOffset: number[] = math.multiply(rotationMatrix, offset); // return Array
-        rotatedOffset.push(position_math);
-        
-        return rotatedOffset;
+        return math.add(rotatedOffset, position_math);
     }
 
     // @Override
