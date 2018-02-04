@@ -9,10 +9,7 @@ class CoordHelper {
 
     public static getSensorBL(carPosition: Array<number[]>): Array<number[]> {
         
-        let offset: number[] = [0,0];
-
-        offset[0] = 1.85;
-        offset[1] = -4.15;
+        let offset: number[] = [1.85, -4.15];
 
         carPosition.push(offset);
 
