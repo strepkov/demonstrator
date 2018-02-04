@@ -77,22 +77,15 @@ class CoordHelper {
     }*/
 
 
-    //Intersection between sensor and linear function
+    //Intersection between sensor and linear function; p1, p2 points of wall, (s)ensor and (d)irection.
     public static getIntersectionLine(p1: number[], p2: number[], s: number[], d: number[]): number[] {
 
-        let scalar: number = (p1[0]*(p2[1]-p1[1])-p1[1]*(p2[0]-p1[0]) - 
-                                s[0]*(p2[1]-p1[1])+s[1]*(p2[0]-p1[0])) /
+        let scalar: number = (p1[0]*(p2[1]-p1[1])-p1[1]*(p2[0]-p1[0]) - s[0]*(p2[1]-p1[1])+s[1]*(p2[0]-p1[0])) /
                                     (d[0]*(p2[1]-p1[1])-d[1]*(p2[0]-p1[0]));
          
-        // add - Compute the sum of this vector and in ().
-        // mapMultiply - Multiply each entry by the argument.
-        let s_str = '[' + s.toString() + ']';
-        let s_math = math.matrix(s_str);
-
-        let d_str = '[' + d.toString() + ']';
-        let d_math = math.matrix(d_str);
+        let s_math = math.matrix(s);
+        let d_math = math.matrix(d);
         
-        // Check correctness of add function
         let intersection: number[] = math.add(s_math, math.multiply(d_math, scalar));
 
         return intersection;
