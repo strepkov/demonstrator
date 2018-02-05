@@ -3,6 +3,7 @@ export {CoordHelper};
 
 class CoordHelper {
 
+    /*
     public static getSensorBL(carPosition: Array<number[]>): Array<number[]> {
         
         let offset: number[] = [1.85, -4.15];
@@ -51,7 +52,7 @@ class CoordHelper {
     public static f(x: number): number {
         return 0.0;
     }
-
+    */
     /*public static static Vector<Double> getDistance1(double x1, double y1, double x2, double y2,
                                               double cx, double cy) {
                                               \\TODO
@@ -127,8 +128,9 @@ class CoordHelper {
         let zaq: number = 2*Math.pow(a,2)+2*Math.pow(b,2);
         let sqrtValue: number = -4*as*xm+za;
         
-        if(sqrtValue<0 && sqrtValue>= -0.0001){
-                sqrtValue = 0;
+        if(sqrtValue < 0 && sqrtValue >= -0.0001){
+            
+            sqrtValue = 0;
         }
 
         let sqrt: number = plusValue*Math.sqrt(sqrtValue);
