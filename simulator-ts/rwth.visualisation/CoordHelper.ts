@@ -3,10 +3,6 @@ export {CoordHelper};
 
 class CoordHelper {
 
-    public static test(): number{
-        return 1;
-    }
-
     public static getSensorBL(carPosition: Array<number[]>): Array<number[]> {
         
         let offset: number[] = [1.85, -4.15];
@@ -95,19 +91,14 @@ class CoordHelper {
     public static getDistanceLine(p1: number[], p2: number[], s: number[], r: number[]): number {
         
         try {
-
-            let intersection: number[] = CoordHelper.getIntersectionLine(p1, p2, s, r);
+                let intersection: number[] = CoordHelper.getIntersectionLine(p1, p2, s, r);
             
-            // TODO: get distance between two vectors
-            let intersection_str = '[' + intersection.toString() + ']';
-            let intersection_math = math.matrix(intersection_str);
+                let intersection_math = math.matrix(intersection);
+                let s_math = math.matrix(s);
 
-            let s_str = '[' + s.toString() + ']';
-            let s_math = math.matrix(s_str);
+                // get distance between two vectors
+                let distance = math.distance(intersection_math, s_math);
 
-            let distance = math.distance(intersection_math, s_math);
-
-            // TODO: check the types
             return distance;
         
         } catch {
@@ -143,15 +134,8 @@ class CoordHelper {
         let sqrt: number = plusValue*Math.sqrt(sqrtValue);
         let scalar: number = -1*(sqrt +2*a*(x-m)+2*b*(y-n))/zaq;
 
-        let sensor_str = '[' + sensor.toString() + ']';
-        let sensor_math = math.matrix(sensor_str);
+        let intersection = math.add(math.matrix(sensor), math.multiply(math.matrix(direction), scalar));
         
-        let direction_str = '[' + direction.toString() + ']';
-        let direction_math = math.matrix(direction_str);
-
-        let intersection = math.add(sensor_math, math.multiply(direction_math, scalar));
-        
-        // TODO: check the types
         return intersection;
     }
 
@@ -171,22 +155,16 @@ class CoordHelper {
     public static getDistanceCircle(s : number[], d: number[], m: number[], radius: number, plus: boolean): number {
         
         try {
+                // check the types
+                let intersection: number[] = CoordHelper.getIntersectionCirclePlus(s, d, m, radius, plus);
             
-            // check the types
-            let intersection: number[] = CoordHelper.getIntersectionCirclePlus(s, d, m, radius, plus);
-            
-            // TODO: get distance between two vectors
-            let intersection_str = '[' + intersection.toString() + ']';
-            let intersection_math = math.matrix(intersection_str);
-
-            let s_str = '[' + s.toString() + ']';
-            let s_math = math.matrix(s_str);
-
-            let distance = math.distance(intersection_math, s_math);
+                // distance between two vectors
+                let distance = math.distance(math.matrix(intersection), math.matrix(s));
 
             return distance;
         
         } catch {
+
             return Number.MAX_VALUE;
         }
     }
