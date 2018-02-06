@@ -106,7 +106,7 @@ class CoordHelper {
     }
 
     public static getIntersectionCirclePlus(sensor: number[], direction: number[],
-                                    middlePoint: number[], r: number, plus: boolean): number[] {
+                                    middlePoint: number[], radius: number, plus: boolean): number[] {
 
         let plusValue: number = plus ? 1.0 : -1.0;
 
@@ -120,7 +120,7 @@ class CoordHelper {
         let y: number = sensor[1];
 
         let as: number = Math.pow(a,2)+Math.pow(b,2);
-        let xm: number = Math.pow(x-m,2)+Math.pow(y-n,2)-Math.pow(r,2);
+        let xm: number = Math.pow(x-m,2)+Math.pow(y-n,2)-Math.pow(radius,2);
         let za: number = Math.pow(2*a*(x-m)+2*b*(y-n), 2);
         let zaq: number = 2*Math.pow(a,2)+2*Math.pow(b,2);
         let sqrtValue: number = -4*as*xm+za;
@@ -132,10 +132,8 @@ class CoordHelper {
 
         let sqrt: number = plusValue*Math.sqrt(sqrtValue);
         let scalar: number = -1*(sqrt +2*a*(x-m)+2*b*(y-n))/zaq;
-
-        let intersection = math.add(math.matrix(sensor), math.multiply(math.matrix(direction), scalar));
         
-        return intersection;
+        return math.add(sensor, math.multiply(direction, scalar)); // returns intersection
     }
 
     public static getIntersectionCircle(s: number[], d: number[], m: number[], radius: number): Array<number[]> {
@@ -156,7 +154,6 @@ class CoordHelper {
         try {
                 // check the types
                 let intersection: number[] = CoordHelper.getIntersectionCirclePlus(s, d, m, radius, plus);
-            
                 // distance between two vectors
                 let distance = math.distance(math.matrix(intersection), math.matrix(s));
 
