@@ -94,7 +94,9 @@ class Sensor {
             try {
                     let position : number[] = this.getPosition(car);
                     let direction : number[] = this.getDirection(car);
-                    let intersections : Array<number[]> = CoordHelper.getIntersectionCircle(position, direction, wall.pointMiddle, wall.radius);
+                    
+                    let intersections : Array<number[]> = CoordHelper.getIntersectionCircle(
+                        position, direction, wall.pointMiddle, wall.radius);
             
                     for( let intersection of intersections) {
                             
