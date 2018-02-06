@@ -7,6 +7,7 @@ import {WallLinear} from "../track/WallLinear";
 import {CoordHelper} from "../CoordHelper";
 import {Car} from "./Car";
 import * as math from "../../libs/math.js";
+import {MatrixToArray} from "../MatrixToArray";
 
 export {Sensor}
 
@@ -26,7 +27,7 @@ class Sensor {
         let degree : number = car.getDegree();
         let rotationMatrix : number[][] = Rotation.getMatrix(degree);
         
-        return math.multiply(rotationMatrix, this.direction);;
+        return math.multiply(rotationMatrix, this.direction);
     }
 
     public getPosition(car: Car): number[] {
@@ -35,13 +36,10 @@ class Sensor {
         let rotationMatrix : number[][] = Rotation.getMatrix(degree);
         let position : number[] = car.getPosition();
         
-        let position_math = math.matrix(position);
-        let offset_math = math.matrix(this.offset);
-
-        let offset = math.subtract(math.add(position_math, offset_math),position_math);
+        let offset : number[] = math.subtract(math.add(position, this.offset),position);
         let rotatedOffset: number[] = math.multiply(rotationMatrix, offset);
         
-        return math.add(rotatedOffset, position_math);
+        return math.add(rotatedOffset, position); // returns normal array
     }
 
     // @Override
@@ -50,7 +48,6 @@ class Sensor {
     //             this.offset, this.direction, this.getDirection(), this.getPosition());
     // }
 
-    // check the correct type during execution
     public getIntersections(wall: Wall, car: Car): Array<number[]>;
     public getIntersections(wall: WallLinear, car: Car): Array<number[]>;
     public getIntersections(wall: WallCurved, car: Car): Array<number[]>;
@@ -73,19 +70,21 @@ class Sensor {
             try {
                     let position : number[] = this.getPosition(car);
                     let direction : number[] = this.getDirection(car);
-                    let intersection : number[] = CoordHelper.getIntersectionLine(wall.pointLeft, wall.pointRight, position, direction);
+
+                    let intersection : number[] = CoordHelper.getIntersectionLine(
+                        wall.pointLeft, wall.pointRight, position, direction);
             
                     if(wall.inBoundaries(intersection)) {
             
                         result.push(intersection);
                     }
             
-                    return result;   
-                } 
-                
+                    return result;
+                }
+
             catch { 
                     // need to add some log here
-                    return result;
+                    return [[0,0],[0,0]];
                 }
         }
         else if (wall instanceof WallCurved){
@@ -109,8 +108,8 @@ class Sensor {
                 } 
                 
             catch {
-                    // add extra logging
-                    return result;
+                    // need to add some log here
+                    return [[0,0],[0,0]];
                 }
         }   
     }
@@ -144,17 +143,11 @@ class Sensor {
         let intersections : Array<number[]> = this.getIntersections(wall, car);
 
         for(let intersection of intersections) {
-            
-            //Should be a vector
-            let position : number[] = this.getPosition(car);
-            // TODO: distance between vectors calculate
-            let position_str = '[' + position.toString() + ']';
-            let position_math = math.matrix(position_str);
-
-            let intersection_str = '[' + intersection.toString() + ']';
-            let intersection_math = math.matrix(intersection_str);
-
-            let distance : number = math.distance(position_math, intersection_math);
+        
+            let position_matrix = math.matrix(this.getPosition(car));
+            let intersection_matrix = math.matrix(intersection);
+            // distance between vectors calculate
+            let distance : number = math.distance(position_matrix, intersection_matrix);
 
             distances.push(distance);
         }
