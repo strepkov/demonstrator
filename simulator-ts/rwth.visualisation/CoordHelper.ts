@@ -79,16 +79,13 @@ class CoordHelper {
 
         let scalar: number = (p1[0]*(p2[1]-p1[1])-p1[1]*(p2[0]-p1[0]) - s[0]*(p2[1]-p1[1])+s[1]*(p2[0]-p1[0])) /
                                     (d[0]*(p2[1]-p1[1])-d[1]*(p2[0]-p1[0]));
-         
-        let s_math = math.matrix(s);
-        let d_math = math.matrix(d);
         
-        let intersection: number[] = math.add(s_math, math.multiply(d_math, scalar));
+        let intersection: number[] = math.add(s, math.multiply(d, scalar));
 
-        return intersection;
+        return intersection; // returns normal array
     }
 
-    //Distance from sensor to intersection
+    //Distance from sensor to intersection : p1, p2 points of wall, (s)ensor and r - direction.
     public static getDistanceLine(p1: number[], p2: number[], s: number[], r: number[]): number {
         
         try {
