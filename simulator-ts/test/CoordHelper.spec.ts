@@ -10,6 +10,6 @@ describe('test CoordHelper\' functions', () => {
             [50, -20], // point 2 of the wall
             [0,0], // the sensor position
             [0,1])) // direction of the sensor
-            .toEqual(math.matrix([0,-20]));
+            .toEqual([0,-20]);
     });
 });
