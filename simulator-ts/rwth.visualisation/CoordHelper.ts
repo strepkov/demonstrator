@@ -90,15 +90,11 @@ class CoordHelper {
         
         try {
                 let intersection: number[] = CoordHelper.getIntersectionLine(p1, p2, s, r);
-            
-                let intersection_math = math.matrix(intersection);
-                let s_math = math.matrix(s);
-
                 // get distance between two vectors
-                let distance = math.distance(intersection_math, s_math);
+                let distance = math.distance(intersection, s);
 
             return distance;
-        
+            
         } catch {
 
             return Number.MAX_VALUE;
