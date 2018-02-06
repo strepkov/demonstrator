@@ -3,6 +3,7 @@ import {Car} from "../rwth.visualisation/car/Car";
 import {Orientation} from "../rwth.visualisation/coord/Orientation";
 import {WallLinear} from "../rwth.visualisation/track/WallLinear";
 import * as math from "../libs/math.js";
+import {MatrixToArray} from "../rwth.visualisation/MatrixToArray";
 
 describe('The sensors test', () => {
 
@@ -39,20 +40,21 @@ describe('The sensors test', () => {
     it('should return GET POSITION', () => {
 
         let sensor = car.getSensor(Orientation.BACK_LEFT_SIDE);
-        let position = math.matrix([-4.15, 1.85]);
         
-        expect(sensor.getPosition(car)).toEqual(position);
+        expect(sensor.getPosition(car)).toEqual([-4.15, 1.85]);
     });
 
 
-    // it('should return GET POSITION', () => {
+    it('should return intersections points', () => {
 
-    //     let car2 = new Car(60,0);
-    //     car2.setDegree(60);
-    //     let sensor = car2.getSensor(Orientation.FRONT_LEFT_SIDE);
-    //     let wall = new WallLinear([-120, -20], [122, -20])
+        let car2 = new Car(0,0);
+        let sensor = car2.getSensor(Orientation.FRONT_RIGHT_SIDE);
+        let wall = new WallLinear([-50, -20], [50, -20]);
+
+        let sensor_offset = [4.15,-20];
         
-    //     expect(sensor.getIntersections(wall, car2)).toEqual([[0,0],[0,0]]);
-    // });
+        // Take in account only sensor's offset because of the initial postition of the car(0,0) 
+        expect(sensor.getIntersections(wall, car2)).toEqual([sensor_offset]);
+    });
 
 });
