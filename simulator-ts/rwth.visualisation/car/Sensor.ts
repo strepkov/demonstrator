@@ -145,11 +145,8 @@ class Sensor {
         let intersections : Array<number[]> = this.getIntersections(wall, car);
 
         for(let intersection of intersections) {
-        
-            let position_matrix = math.matrix(this.getPosition(car));
-            let intersection_matrix = math.matrix(intersection);
             // distance between vectors calculate
-            let distance : number = math.distance(position_matrix, intersection_matrix);
+            let distance : number = math.distance(this.getPosition(car), intersection);
 
             distances.push(distance);
         }
