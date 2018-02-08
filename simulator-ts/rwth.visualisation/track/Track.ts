@@ -10,7 +10,7 @@ class Track {
 
     public constructor() {
     
-        this.walls.push(new WallLinear([58, -9.5], [122, -9.5]));
+        this.walls.push(new WallLinear([58, -9.5], [-122, -9.5]));
         this.walls.push(new WallLinear([58, 10], [-122, 10]));
         this.walls.push(new WallLinear([109, -36], [58, -9.5]));
         this.walls.push(new WallLinear([114, -18], [58, 10]));
