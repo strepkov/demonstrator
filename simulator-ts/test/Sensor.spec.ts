@@ -96,4 +96,12 @@ describe('The sensors test', () => {
         expect(sensor.getMinDistance(track.walls, car)).toEqual(77.55);
     });
 
+    it('test Sensor.getDistancesFromSensors()', () => {
+
+        let sensor = car.getSensor(Orientation.FRONT_RIGHT); 
+        let track = new Track;
+        
+        expect(car.getDistancesFromSensors(track)).toEqual([70.15, 77.55, 8.15, 8.15, 7.65, 7.65]);
+    });
+
 });
