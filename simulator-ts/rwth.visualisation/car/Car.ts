@@ -1,5 +1,6 @@
 import {Orientation} from "../coord/Orientation";
 import {Sensor} from "./Sensor";
+import {Track} from "../track/Track";
 
 export {Car}
 
@@ -107,5 +108,23 @@ class Car {
         let offset: number[] = [-4.15, -1.85];
 
         this.sensors.set(Orientation.BACK_RIGHT_SIDE, new Sensor(offset, direction));
+    }
+
+    public getDistancesFromSensors(track : Track): number[]{
+        
+        return [
+            /*flDistance*/
+                this.getSensor(Orientation.FRONT_LEFT).getMinDistance(track.walls, this),
+            /*frDistance*/
+                this.getSensor(Orientation.FRONT_RIGHT).getMinDistance(track.walls, this),
+            /*slfDistance*/
+                this.getSensor(Orientation.FRONT_LEFT_SIDE).getMinDistance(track.walls, this),
+            /*slbDistance*/
+                this.getSensor(Orientation.BACK_LEFT_SIDE).getMinDistance(track.walls, this),
+            /*srfDistance*/
+                this.getSensor(Orientation.FRONT_RIGHT_SIDE).getMinDistance(track.walls, this),
+            /*srbDistance*/
+                this.getSensor(Orientation.BACK_RIGHT_SIDE).getMinDistance(track.walls, this)
+            ];
     }
 }

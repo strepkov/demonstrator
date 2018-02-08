@@ -15,6 +15,7 @@ class Simulator {
     private time;
     private car: Car;
     private track: Track;
+    private output: Soutput; //stores the output data(new positions, degree, velocity etc.)
 
     public constructor() {
 
@@ -30,26 +31,6 @@ class Simulator {
     public getTime(){
         return this.time;
     }
-
-    private getDistancesFromSensors(): number[]{
-        
-        return [
-            /*flDistance*/
-                this.car.getSensor(Orientation.FRONT_LEFT).getMinDistance(this.track.walls, this.car),
-            /*frDistance*/
-                this.car.getSensor(Orientation.FRONT_RIGHT).getMinDistance(this.track.walls, this.car),
-            /*slfDistance*/
-                this.car.getSensor(Orientation.FRONT_LEFT_SIDE).getMinDistance(this.track.walls, this.car),
-            /*slbDistance*/
-                this.car.getSensor(Orientation.BACK_LEFT_SIDE).getMinDistance(this.track.walls, this.car),
-            /*srfDistance*/
-                this.car.getSensor(Orientation.FRONT_RIGHT_SIDE).getMinDistance(this.track.walls, this.car),
-            /*srbDistance*/
-                this.car.getSensor(Orientation.BACK_RIGHT_SIDE).getMinDistance(this.track.walls, this.car)
-            ];
-    }
-
-    private output: Soutput; //stores the output data(new positions, degree, velocity etc.)
 
     public getOutput(): Soutput {
         return this.output;
@@ -233,7 +214,7 @@ class Simulator {
         //         resolver.getComponentSymbol("visualization.main.SDCS").orElse(null);
         // Map<String, PortSymbol> portSymbols = getPortSymbols(cmp); // initialize the PortSymbols
 
-        let distances: number[] = this.getDistancesFromSensors();
+        let distances: number[] = this.car.getDistancesFromSensors(this.track);
 
         // Map<String, NamedStreamSymbol> nameStreamSymbols =
         //         getNamedStreamSymbols(distances, portSymbols, 0.0, 0.0, 0.0, 0.0);
