@@ -7,7 +7,6 @@ import {WallLinear} from "../track/WallLinear";
 import {CoordHelper} from "../CoordHelper";
 import {Car} from "./Car";
 import * as math from "../../libs/math.js";
-import {MatrixToArray} from "../MatrixToArray";
 
 export {Sensor}
 
@@ -42,26 +41,10 @@ class Sensor {
         return math.add(rotatedOffset, position); // returns normal array
     }
 
-    // @Override
-    // public String toString() {
-    //     return String.format("Sensor - Offset: %s - Direction: %s, %s - Position: %s",
-    //             this.offset, this.direction, this.getDirection(), this.getPosition());
-    // }
-
     public getIntersections(wall: Wall, car: Car): Array<number[]>;
     public getIntersections(wall: WallLinear, car: Car): Array<number[]>;
     public getIntersections(wall: WallCurved, car: Car): Array<number[]>;
     public getIntersections(wall: any, car: Car): Array<number[]>{
-        
-        // if (wall instanceof Wall){
-        //     if(wall instanceof WallLinear) {
-        //         return this.getIntersections((WallLinear)wall);
-        //     } else if(wall instanceof WallCurved) {
-        //         return this.getIntersections((WallCurved)wall);
-        //     }
-        //     return new ArrayList<>();
-        // }
-        // else 
         
         if (wall instanceof WallLinear){
 

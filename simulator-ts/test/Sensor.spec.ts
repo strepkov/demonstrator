@@ -3,8 +3,8 @@ import {Car} from "../rwth.visualisation/car/Car";
 import {Orientation} from "../rwth.visualisation/coord/Orientation";
 import {WallLinear} from "../rwth.visualisation/track/WallLinear";
 import * as math from "../libs/math.js";
-import {MatrixToArray} from "../rwth.visualisation/MatrixToArray";
 import { WallCurved } from "../rwth.visualisation/track/WallCurved";
+import { Track } from "../rwth.visualisation/track/Track";
 
 describe('The sensors test', () => {
 
@@ -62,6 +62,38 @@ describe('The sensors test', () => {
         let wall = new WallCurved([123, 22], 60, [184, 22], [109, -36]);
         
         expect(sensor.getIntersections(wall, car)).toEqual([[178.05613044884285,-1.85]]);
+    });
+
+    it('test Sensor.getParameters()', () => {
+
+        let sensor = car.getSensor(Orientation.FRONT_RIGHT_SIDE); 
+        let wall = new WallLinear([-50, -20], [50, -20]);
+        
+        expect(sensor.getParameters(wall, car)).toEqual([18.15]);
+    });
+
+    it('test Sensor.getDistances()', () => {
+
+        let sensor = car.getSensor(Orientation.FRONT_RIGHT_SIDE); 
+        let wall = new WallLinear([-50, -20], [50, -20]);
+        
+        expect(sensor.getDistances(wall, car)).toEqual([18.15]);
+    });
+
+    it('test Sensor.getAllDistances()', () => {
+
+        let sensor = car.getSensor(Orientation.FRONT_RIGHT); 
+        let track = new Track;
+        
+        expect(sensor.getAllDistances(track.walls, car)).toEqual([77.55, 173.90613044884284, 152.19932533050707]);
+    });
+
+    it('test Sensor.getMinDistance()', () => {
+
+        let sensor = car.getSensor(Orientation.FRONT_RIGHT); 
+        let track = new Track;
+        
+        expect(sensor.getMinDistance(track.walls, car)).toEqual(77.55);
     });
 
 });
