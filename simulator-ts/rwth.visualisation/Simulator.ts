@@ -5,6 +5,8 @@ import {Sinput} from "./Sinput"
 import {Soutput} from "./Soutput"
 import {Track} from "./track/Track";
 
+export {Simulator}
+
 class Simulator {
 
 //private generator: MontiarcToJavaGenerator;
@@ -23,8 +25,8 @@ class Simulator {
         this.velocity = math.unit('0 m/s'); // v
         this.time = math.unit('0 sec'); // t
         this.fpsTime = math.unit('1 sec');
-
-        this.car = new Car(0,0); // TODO: initial position?
+        
+        this.car = new Car(0,0);
         this.track = new Track();
     }
 
@@ -53,14 +55,6 @@ class Simulator {
     //     this();
     //      this.generator = new MontiarcToJavaGenerator(baseDirectory, generationDirectory, compileDirectory, inst);
     // }
-
-
-    // update the new positions after accelerate with a and direction with steering s
-    public update(input: Sinput){
-        
-        this.calculate(input);
-        //this.transmit();
-    }
 
     // Updates the time, velocity, degree of car and new positions x,y
     public calculate(input: Sinput) {
@@ -97,161 +91,43 @@ class Simulator {
 
         this.output = new Soutput(this.velocity, x, y, this.time, degree1, input.doorStatus,
                 input.indicatorStatus, input.lightTimerStatus, input.triggerStatus);
-
-        // System.out.println("Output: v: "+Math.round(100.0*v.doubleValue(METERS_PER_SECOND))/100.0
-        //         +", x: "+Math.round(100.0*x.doubleValue(METER))/100.0
-        //         +" ,y: "+Math.round(100.0*y.doubleValue(METER))/100.0
-        //         +" ,t: "+Math.round(100.0*t.doubleValue(SECOND))/100.0
-        //         +", degree: "+Math.round(100.0*degree)/100.0);
     }
 
     // send the updated position and the degree to the visualization as JSON package
-    // private void transmit() {
-    //     try {
-    //         if(session.isPresent()) {
-    //             JSONObject data = createJSON(output);
-    //             String dataString = data.toString();
-    //             session.get().getRemote().sendString(dataString);
-    //         }
-    //     } catch (IOException exception) {
-    //         exception.printStackTrace();
-    //     }
-    // }
+    // private void transmit()
 
-    // private JSONObject createJSON(SOutput output) {
-    //     JSONObject result = new JSONObject();
+    // private JSONObject createJSON(SOutput output)
 
-    //     // Send the client "x=10" instead of "x=10 m"
-    //     double xi = output.xi.doubleValue(METER);
-    //     double yi = output.yi.doubleValue(METER);
-    //     double deg = output.degree.doubleValue(DEGREE_ANGLE);
-
-    //     result.put("x", xi);
-    //     result.put("y", yi);
-    //     result.put("angle", deg);
-
-    //     result.put("doorStatus", output.doorStatus);
-    //     result.put("indicatorStatus", output.indicatorStatus);
-    //     result.put("lightTimerStatus", output.lightTimerStatus);
-    //     result.put("triggerStatus", output.triggerStatus);
-
-    //     return result;
-    // }
-
-
-    // private Map<String, PortSymbol> getPortSymbols(ComponentSymbol cmp){
-    //     Map<String, PortSymbol> res = new HashMap<String, PortSymbol>();
-    //     res.put("time", cmp.getIncomingPort("time").orElse(null));
-    //     res.put("fl", cmp.getIncomingPort("fl").orElse(null));
-    //     res.put("fr", cmp.getIncomingPort("fr").orElse(null));
-    //     res.put("slf", cmp.getIncomingPort("slf").orElse(null));
-    //     res.put("slb", cmp.getIncomingPort("slb").orElse(null));
-    //     res.put("srf", cmp.getIncomingPort("srf").orElse(null));
-    //     res.put("srb", cmp.getIncomingPort("srb").orElse(null));
-    //     res.put("x_i", cmp.getIncomingPort("x").orElse(null));
-    //     res.put("y_i", cmp.getIncomingPort("y").orElse(null));
-    //     res.put("velocity", cmp.getIncomingPort("velocity").orElse(null));
-
-    //     return res;
-    // }
-
-    // private Map<String, NamedStreamSymbol> getNamedStreamSymbols(double[] distances, Map<String, PortSymbol> portSymbols, double ti, double v, double xi, double yi){
-    //     Map<String, NamedStreamSymbol> res = new HashMap<String, NamedStreamSymbol>();
-    //     res.put("timeSymbol",
-    //             portSymbols.get("time").addStream(0, true, Lists.newArrayList(ti)));
-    //     res.put("flSymbol",
-    //             portSymbols.get("fl").addStream(0, true, Lists.newArrayList(distances[0])));
-    //     res.put("frSymbol",
-    //             portSymbols.get("fr").addStream(0, true, Lists.newArrayList(distances[1])));
-    //     res.put("slfSymbol",
-    //             portSymbols.get("slf").addStream(0, true, Lists.newArrayList(distances[2])));
-    //     res.put("slbSymbol",
-    //             portSymbols.get("slb").addStream(0, true, Lists.newArrayList(distances[3])));
-    //     res.put("srfSymbol",
-    //             portSymbols.get("srf").addStream(0, true, Lists.newArrayList(distances[4])));
-    //     res.put("srbSymbol",
-    //             portSymbols.get("srb").addStream(0, true, Lists.newArrayList(distances[5])));
-    //     res.put("velocitySymbol",
-    //             portSymbols.get("velocity").addStream(0, true, Lists.newArrayList(v)));
-    //     res.put("xSymbol",
-    //             portSymbols.get("x_i").addStream(0, true, Lists.newArrayList(xi)));
-    //     res.put("ySymbol",
-    //             portSymbols.get("y_i").addStream(0, true, Lists.newArrayList(yi)));
-
-    //     return res;
-    // }
-
-    // private Map<String, PortSymbol> removeStreamsFromPortSymbols(Map<String, PortSymbol> portSymbols,
-    //                                                             Map<String, NamedStreamSymbol> namedStreamSymbols){
-    //     portSymbols.get("time").removeStream(namedStreamSymbols.get("timeSymbol"));
-    //     portSymbols.get("fl").removeStream(namedStreamSymbols.get("flSymbol"));
-    //     portSymbols.get("fr").removeStream(namedStreamSymbols.get("frSymbol"));
-    //     portSymbols.get("slf").removeStream(namedStreamSymbols.get("slfSymbol"));
-    //     portSymbols.get("slb").removeStream(namedStreamSymbols.get("slbSymbol"));
-    //     portSymbols.get("srf").removeStream(namedStreamSymbols.get("srfSymbol"));
-    //     portSymbols.get("srb").removeStream(namedStreamSymbols.get("srbSymbol"));
-    //     portSymbols.get("velocity").removeStream(namedStreamSymbols.get("velocitySymbol"));
-    //     portSymbols.get("x_i").removeStream(namedStreamSymbols.get("xSymbol"));
-    //     portSymbols.get("y_i").removeStream(namedStreamSymbols.get("ySymbol"));
-    //     return portSymbols;
-    // }
-
-
-    //@OnWebSocketConnect
-    public connected() {
+    public run() {
         
         let simulator = new Simulator();
 
-        // simulator.session = Optional.ofNullable(session);
-        // String root = this.getClass().getResource("").
-        //         getPath().replaceFirst("/", "").replace("/de", "");
-
-        // Path basePath = Paths.get(root);
-        // Path genPath = Paths.get(root,"gen");
-        // Path compilePath = Paths.get(root,"gen");
-
-        // ComponentSymbol cmp =
-        //         resolver.getComponentSymbol("visualization.main.SDCS").orElse(null);
-        // Map<String, PortSymbol> portSymbols = getPortSymbols(cmp); // initialize the PortSymbols
+        let input: Sinput = new Sinput(
+                
+            math.unit(0, 'm/s'), // a
+            math.unit(0, 'deg'),  // s
+            math.unit(0, 'meter'), // x
+            math.unit(0, 'meter'), // y
+            math.unit(0, 'sec'), // t
+            false, // doorStatus
+            false, //indicatorStatus
+            false, //lightStatus
+            false //triggerStatus
+        );
 
         let distances: number[] = this.car.getDistancesFromSensors(this.track);
 
-        // Map<String, NamedStreamSymbol> nameStreamSymbols =
-        //         getNamedStreamSymbols(distances, portSymbols, 0.0, 0.0, 0.0, 0.0);
-
-        // ExpandedComponentInstanceSymbol inst =
-        //         resolver.getExpandedComponentInstanceSymbol("visualization.main.sDCS").orElse(null);
         // BasicSimulator sim = new BasicSimulator(basePath, genPath, compilePath, inst);
 
-        //Map<String, Object[]> outputs = new HashMap<>();
+        // outputs = sim.execute();
+    
 
-        // try {
-        //     outputs = sim.execute();
-        // } catch(Exception e) {
-        //     e.printStackTrace();
-        // }
-
-        let input: Sinput = new Sinput(
-                
-                math.unit(0, 'm/s'), // a
-                math.unit(0, 'deg'),  // s
-                math.unit(0, 'meter'), // x
-                math.unit(0, 'meter'), // y
-                math.unit(0, 'sec'), // t
-                false, // doorStatus
-                false, //indicatorStatus
-                false, //lightStatus
-                false //triggerStatus
-            );
-
-        simulator.update(input);
+        simulator.calculate(input);
 
         let output: Soutput = simulator.output; //SOutput will be filled with updated values
 
         // Give the updated t and v to the Generator/BasicSimulator and next loop
         while(true) {
-
-            //portSymbols = removeStreamsFromPortSymbols(portSymbols, nameStreamSymbols);
 
             let v: number = output.velocity; // METERS_PER_SECOND
             let ti: number = output.ti; // SECOND
@@ -264,12 +140,7 @@ class Simulator {
 
             // nameStreamSymbols = getNamedStreamSymbols(getDistancesFromSensors(), portSymbols, ti, v, xi, yi);
 
-            // outputs = new HashMap<>();
-            // try {
-            //     outputs = sim.execute();
-            // } catch(Exception e) {
-            //     e.printStackTrace();
-            // }
+            // outputs = sim.execute();
 
             // create input generated by controller
             // TODO: fill input with tha data from controller
@@ -286,26 +157,13 @@ class Simulator {
                 false  //triggerStatus
             );
 
-            simulator.update(input);
+            simulator.calculate(input);
 
             output = simulator.output; //SOutput will be filled with updated values
 
-            // try {
             //     Thread.sleep(100);
-            // } catch(InterruptedException e) {
-            //     e.printStackTrace();
-            // }
         }
     }
-
-    // @OnWebSocketClose
-    // public void closed(Session   session, int statusCode, String reason) {
-    //     this.session = Optional.empty();
-    // }
-
-    // @OnWebSocketMessage
-    // public void message(Session session, String message) throws IOException {
-    // }
 
     // public void generate() {
     //     try {
