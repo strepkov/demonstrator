@@ -1,6 +1,7 @@
 import {Orientation} from "../coord/Orientation";
 import {Sensor} from "./Sensor";
 import {Track} from "../track/Track";
+import * as math from "../../libs/math.js";
 
 export {Car}
 
@@ -23,7 +24,7 @@ class Car {
         this.doInitSensorBackLeftSide();
         this.doInitSensorBackRightSide();
         this.position = [x,y];
-        this.degree = 0;
+        this.degree = math.unit('0 deg');
     }
 
     public setPosition(position: number[]){
@@ -43,7 +44,7 @@ class Car {
 
     public getDegree(): number {
         
-        return this.degree;;
+        return this.degree;
     }
 
     public getSensor(orientation: Orientation): Sensor {

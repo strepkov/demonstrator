@@ -1,5 +1,6 @@
 import {Car} from "../rwth.visualisation/car/Car";
 import {Orientation} from "../rwth.visualisation/coord/Orientation";
+import * as math from "../libs/math.js";
 
 describe('create instance of Car class', () => {
 
@@ -30,7 +31,7 @@ describe('create instance of Car class', () => {
 
     it('should return the initial angle', () => {
 
-        expect(car.getDegree()).toEqual(0);
+        expect(car.getDegree()).toEqual(math.unit('0 deg'));
     });
 
     it('should return the correct angle', () => {
