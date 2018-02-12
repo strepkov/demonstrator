@@ -23,16 +23,14 @@ class Sensor {
 
     public getDirection(car: Car): number[] {
         
-        let degree : number = car.getDegree();
-        let rotationMatrix : number[][] = Rotation.getMatrix(degree);
+        let rotationMatrix : number[][] = Rotation.getMatrix(car.getDegree());
         
         return math.multiply(rotationMatrix, this.direction);
     }
 
     public getPosition(car: Car): number[] {
 
-        let degree : number = car.getDegree();
-        let rotationMatrix : number[][] = Rotation.getMatrix(degree);
+        let rotationMatrix : number[][] = Rotation.getMatrix(car.getDegree());
         let position : number[] = car.getPosition();
         
         let offset : number[] = math.subtract(math.add(position, this.offset),position);

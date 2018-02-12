@@ -1,13 +1,12 @@
 export {Rotation};
+import * as math from "../../libs/math.js";
 
 class Rotation {
 
     public static getMatrix(degree : number): number[][] {
-
-        let degreeRD : number = degree*(Math.PI/180);
         
-        let rotationMatrix: number[][]  =   [[Math.cos(degreeRD), Math.sin(degreeRD)],
-                                             [-Math.sin(degreeRD), Math.cos(degreeRD)]];
+        let rotationMatrix: number[][]  =   [[math.cos(degree), math.sin(degree)],
+                                             [-math.sin(degree), math.cos(degree)]];
         return rotationMatrix;
     }
 }
