@@ -4,6 +4,7 @@ import {Orientation} from "./coord/Orientation";
 import {Sinput} from "./Sinput"
 import {Soutput} from "./Soutput"
 import {Track} from "./track/Track";
+import {ControllerMock} from "./ControllerMock";
 
 export {Simulator}
 
@@ -22,7 +23,7 @@ class Simulator {
     public constructor() {
 
         // Initial velocity is 0 m/s, Initial time is 0 s
-        this.velocity = math.unit('0 m/s'); // v
+        this.velocity = math.unit('0 m/s'); // v - m/s
         this.time = math.unit('0 sec'); // t
         this.fpsTime = math.unit('1 sec');
         
@@ -30,198 +31,128 @@ class Simulator {
         this.track = new Track();
     }
 
-    public getTime(){
-        return this.time;
-    }
-
-    public getOutput(): Soutput {
-        return this.output;
-    }
-
-    // private resolver: Resolver;
-
-    //  static {
-    //     Path rPath = null;
-    //     URL srcLocation = Simulator.class.getProtectionDomain().getCodeSource().getLocation();
-    //     try {
-    //         rPath = Paths.get(srcLocation.toURI());
-    //     } catch (URISyntaxException e) {
-    //         Log.error("Could not initialize Trigger resolver at location " + srcLocation);
-    //     }
-    //     resolver = Resolver.get(rPath);
-    // }
-
-    // public constructor(Path baseDirectory, Path generationDirectory, Path compileDirectory, ExpandedComponentInstanceSymbol inst) {
-    //     this();
-    //      this.generator = new MontiarcToJavaGenerator(baseDirectory, generationDirectory, compileDirectory, inst);
-    // }
-
     // Updates the time, velocity, degree of car and new positions x,y
     public calculate(input: Sinput) {
         
         // time = t+(1/20)s, for t=0s
-        let time_local = math.add(this.time, this.fpsTime);
-        this.time = time_local;
-
-        // velocity = v+(input)acceleration*(1/20)s, for v=0 m/ss
-        let velocity_local = math.add(this.velocity, math.multiply(input.acceleration, this.fpsTime));  // TODO input
-        this.velocity = velocity_local;
-
-        let degree: number;
-        let nullVelocity = math.unit('0 m/s');
+        this.time = math.add(this.time, this.fpsTime);
         
+        // velocity = v+(input)acceleration*(1/20)s, for v=0 m/ss
+        console.log('\n before velocity 1: ', this.velocity.value);
 
+        let temp_mult = math.multiply(input.acceleration, this.fpsTime);
+        let temp_add = math.add(this.velocity, temp_mult);
+
+        let cond = (temp_add > math.unit('10 m/s'));
+
+        console.log('\n before velocity 2: ', this.velocity.value);
+        
+        if (cond){
+            this.velocity = math.unit('10 m/s');
+        }
+        else {
+            this.velocity = math.add(this.velocity, math.multiply(input.acceleration, this.fpsTime));
+        }
+        
+        // math.add(this.velocity, math.multiply(input.acceleration, this.fpsTime)) < math.unit('10 m/s')) ? 
+        //     this.velocity = math.unit('10 m/s') :
+        //     this.velocity = math.add(this.velocity, math.multiply(input.acceleration, this.fpsTime));
+        
+        console.log('\n current velocity: ', this.velocity.value);
+
+        let degree;
         // calculation of car rotation
-        if(velocity_local.equals(nullVelocity)){
+        if(this.velocity.equals(math.unit('0 m/s'))){
+
              degree = this.car.getDegree();
         }
         else{
-            degree = this.car.getDegree() + input.steering; // adjust steeriing angle
+
+            degree = math.add(this.car.getDegree(), input.steering); // adjust steeriing angle
         }
 
-        let degree1 = math.unit(degree, 'deg');
-
         //Calculate positioin of the car
-
         // x=(input)x+v*t*cos((rad)degree) // degree * Math.PI / 180 - radian conversioin
-        let x = math.add(input.x0, (this.velocity.times(this.fpsTime).times(Math.cos(degree * Math.PI / 180))));
+        let x = math.add(input.x0, math.multiply(this.velocity, math.multiply(this.fpsTime, math.cos(degree))));
 
         // y=(input)y+v*t*sin((rad)degree) //Amount<Length>
-        let y = math.minus(input.y0, (this.velocity.times(this.fpsTime).times(Math.sin(degree * Math.PI / 180))));
+        let y = math.subtract(input.y0, math.multiply(this.velocity, math.multiply(this.fpsTime, math.sin(degree))));
 
-        this.output = new Soutput(this.velocity, x, y, this.time, degree1, input.doorStatus,
-                input.indicatorStatus, input.lightTimerStatus, input.triggerStatus);
+        this.output = new Soutput(
+            this.velocity,
+            x,
+            y,
+            this.time,
+            degree,
+            input.doorStatus,
+            input.indicatorStatus,
+            input.lightTimerStatus,
+            input.triggerStatus);
     }
 
-    // send the updated position and the degree to the visualization as JSON package
-    // private void transmit()
-
-    // private JSONObject createJSON(SOutput output)
+    // send the updated position and the degree to the visualization
 
     public run() {
-        
-        let simulator = new Simulator();
+
+        let distances: number[] = this.car.getDistancesFromSensors(this.track);
+
+        let steering_controller = ControllerMock.steering(distances); // steering angle
+        let acceleration_controller = ControllerMock.acceleration(this.time); // constant velocity
 
         let input: Sinput = new Sinput(
                 
-            math.unit(0, 'm/s'), // a
-            math.unit(0, 'deg'),  // s
-            math.unit(0, 'meter'), // x
-            math.unit(0, 'meter'), // y
-            math.unit(0, 'sec'), // t
+            acceleration_controller, // a
+            steering_controller,  // s
+            math.unit('0 m'), // x
+            math.unit('0 m'), // y
+            this.time, // t
             false, // doorStatus
             false, //indicatorStatus
             false, //lightStatus
             false //triggerStatus
         );
-
-        let distances: number[] = this.car.getDistancesFromSensors(this.track);
-
-        // BasicSimulator sim = new BasicSimulator(basePath, genPath, compilePath, inst);
-
-        // outputs = sim.execute();
     
-
-        simulator.calculate(input);
-
-        let output: Soutput = simulator.output; //SOutput will be filled with updated values
+        this.calculate(input);
 
         // Give the updated t and v to the Generator/BasicSimulator and next loop
-        while(true) {
 
-            let v: number = output.velocity; // METERS_PER_SECOND
-            let ti: number = output.ti; // SECOND
-            let xi: number = output.xi; // METER
-            let yi: number = output.yi; // METER
-            let degree: number = output.degree; // DEGREE_ANGLE
+        let trigger = false;
 
-            this.car.setPosition([xi,yi]);
-            this.car.setDegree(degree);
+        while(!trigger) {
 
-            // nameStreamSymbols = getNamedStreamSymbols(getDistancesFromSensors(), portSymbols, ti, v, xi, yi);
+            trigger = ControllerMock.gameOverTrigger(this.output.xi.value, this.output.yi.value);
 
-            // outputs = sim.execute();
+            this.car.setPosition([this.output.xi.value, this.output.yi.value]);
+            this.car.setDegree(this.output.degree);
+
+            console.log(
+                        "\n X :",this.output.xi.value,
+                        "\n Y :", this.output.yi.value,
+                        "\n T :", this.output.ti.value,
+                        "\n D :", this.output.degree.value * 180 / math.PI,
+                    );
 
             // create input generated by controller
-            // TODO: fill input with tha data from controller
+            // fill input with tha data from controller
+
+            let distances1: number[] = this.car.getDistancesFromSensors(this.track);
+
+            let steering_controller1 = ControllerMock.steering(distances1); // steering angle
+            let acceleration_controller1 = ControllerMock.acceleration(this.time); // constant velocity
 
             input = new Sinput(
-                math.unit('0 m/s^2'), //acceleration
-                math.unit('0 deg'), // steering, DEGREE_ANGLE
-                output.xi,
-                output.yi,
-                output.ti,
+                acceleration_controller1, //acceleration
+                steering_controller1, // steering, DEGREE_ANGLE
+                this.output.xi,
+                this.output.yi,
+                this.output.ti,
                 false, //doorStatus
                 false, //indicatorStatus
                 false, //lightStatus
                 false  //triggerStatus
             );
 
-            simulator.calculate(input);
-
-            output = simulator.output; //SOutput will be filled with updated values
-
-            //     Thread.sleep(100);
+            this.calculate(input);
         }
     }
-
-    // public void generate() {
-    //     try {
-    //         generator.generate();
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //     }
-    // }
-
-    // public void getOutputs(Amount<Velocity> v, Amount<javax.measure.quantity.Duration> t) throws Exception {
-    //     double velocity = v.doubleValue(METERS_PER_SECOND);
-    //     double time = t.doubleValue(SECOND);
-
-    //     Map<String, Object> input = new HashMap<>();
-    //     input.put("velocity", velocity);
-    //     input.put("time", time);
-
-    //     Map<String, Object> output = generator.calculateOutput(input);
-
-    //     Double acceleration = (Double) output.get("acceleration");
-    //     Double steering = (Double) output.get("steering");
-    //     System.out.println("a: "+acceleration+", s: "+steering);
-    // }
-
-    // public void getOutputs(Amount<Angle> angle, Amount<Length> x, Amount<Length> y,
-    //                        Amount<Length> d1, Amount<Length> d2, Amount<Length> d3, Amount<Length> d4,
-    //                        Amount<Length> d5, Amount<Length> d6, Amount<Length> d7, Amount<Length> d8)
-    //         throws Exception {
-    //     double angleDouble = angle.doubleValue(DEGREE_ANGLE);
-    //     double xDouble = x.doubleValue(METER);
-    //     double yDouble = y.doubleValue(METER);
-
-    //     double d1Double = d1.doubleValue(METER);
-    //     double d2Double = d2.doubleValue(METER);
-    //     double d3Double = d3.doubleValue(METER);
-    //     double d4Double = d4.doubleValue(METER);
-    //     double d5Double = d5.doubleValue(METER);
-    //     double d6Double = d6.doubleValue(METER);
-    //     double d7Double = d7.doubleValue(METER);
-    //     double d8Double = d8.doubleValue(METER);
-
-    //     Map<String, Object> input = new HashMap<>();
-    //     input.put("", angleDouble);
-    //     input.put("", xDouble);
-    //     input.put("", yDouble);
-    //     input.put("", d1Double);
-    //     input.put("", d2Double);
-    //     input.put("", d3Double);
-    //     input.put("", d4Double);
-    //     input.put("", d5Double);
-    //     input.put("", d6Double);
-    //     input.put("", d7Double);
-    //     input.put("", d8Double);
-
-    //     Map<String, Object> output = generator.calculateOutput(input);
-    //     Double acceleration = (Double) output.get("acceleration");
-    //     Double steering = (Double) output.get("steering");
-
-    //     System.out.println("a: "+acceleration+", s: "+steering);
-    // }
 }
