@@ -38,27 +38,17 @@ class Simulator {
         this.time = math.add(this.time, this.fpsTime);
         
         // velocity = v+(input)acceleration*(1/20)s, for v=0 m/ss
-        console.log('\n before velocity 1: ', this.velocity.value);
 
-        let temp_mult = math.multiply(input.acceleration, this.fpsTime);
-        let temp_add = math.add(this.velocity, temp_mult);
-
-        let cond = (temp_add > math.unit('10 m/s'));
-
-        console.log('\n before velocity 2: ', this.velocity.value);
-        
-        if (cond){
-            this.velocity = math.unit('10 m/s');
-        }
-        else {
-            this.velocity = math.add(this.velocity, math.multiply(input.acceleration, this.fpsTime));
-        }
+        // if (cond){
+             this.velocity = math.unit('14 km/h');
+        // }
+        // else {
+        //     this.velocity = math.add(this.velocity, math.multiply(input.acceleration, this.fpsTime));
+        // }
         
         // math.add(this.velocity, math.multiply(input.acceleration, this.fpsTime)) < math.unit('10 m/s')) ? 
         //     this.velocity = math.unit('10 m/s') :
         //     this.velocity = math.add(this.velocity, math.multiply(input.acceleration, this.fpsTime));
-        
-        console.log('\n current velocity: ', this.velocity.value);
 
         let degree;
         // calculation of car rotation
