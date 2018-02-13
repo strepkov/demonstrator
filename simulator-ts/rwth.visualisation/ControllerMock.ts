@@ -80,8 +80,10 @@ class ControllerMock{
             let belowBnd = x < -200;
             let rightBnd = y > 120;
             let leftBnd = y < -50;
+
+            let finishCircle : boolean = (x < 1 && x > -1) && (y < 8 && y > -8);            
   
-        return aboveBnd || belowBnd || rightBnd || leftBnd;
+        return aboveBnd || belowBnd || rightBnd || leftBnd || finishCircle;
     }
 
 }
