@@ -144,5 +144,7 @@ class Simulator {
 
             this.calculate(input);
         }
+
+        return trigger;
     }
 }

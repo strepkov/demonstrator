@@ -4,10 +4,8 @@ describe('The simulator test', () => {
 
     let simulator = new Simulator();
 
-    it('should return ...', () => {
-
-        simulator.run();
+    it('simulator.run() should return true', () => {;
         
-        expect(1).toEqual(1);
+        expect(simulator.run()).toEqual(true);
     });
 });
