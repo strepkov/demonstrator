@@ -20,6 +20,8 @@ class Simulator {
     private track: Track;
     private output: Soutput; //stores the output data(new positions, degree, velocity etc.)
 
+    private listeners: Array<Function>;
+
     public constructor() {
 
         // Initial velocity is 0 m/s, Initial time is 0 s
@@ -30,6 +32,16 @@ class Simulator {
         this.car = new Car(0,0);
         this.track = new Track();
     }
+
+    // public addSimListener(simListener: Function) {
+    //     this.listeners.push(simListener);
+    // }
+
+    // private onSimFrameFinished() {
+    //     this.listeners.forEach(sl => {
+    //         sl.apply(this, [this.car, this.track]);
+    //     });
+    // }
 
     // Updates the time, velocity, degree of car and new positions x,y
     public calculate(input: Sinput) {
@@ -143,6 +155,7 @@ class Simulator {
             );
 
             this.calculate(input);
+            // this.onSimFrameFinished();
         }
 
         return trigger;
