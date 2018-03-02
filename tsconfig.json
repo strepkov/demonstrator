@@ -1,12 +1,12 @@
 {
     "compilerOptions": {
-        "target": "es6",
-        "module": "umd",
+        "target": "es5",
+        "module": "amd",
         "removeComments": true,
         "preserveConstEnums": true,
         "sourceMap": true,
-        "outDir": "./tsc-output",
-        "inlineSources" : true
+        "outFile": "out/bundle.js",
+        "allowJs": true
     },
     "include": [
         "./simulator-ts/rwth.visualisation/**/*"
