@@ -188,6 +188,8 @@ public class EmscriptenCommandBuilder implements CommandBuilder {
     if (std != null) {
       list.add("-std=" + std);
     }
+    System.out.println("Emscripten command:");
+    System.out.println(list.toString());
     return list;
   }
 
