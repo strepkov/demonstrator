@@ -52,6 +52,7 @@ public class Main {
 
         GeneratorCPP generator = new GeneratorCPP();
         generator.useArmadilloBackend();
+        generator.setUseAlgebraicOptimizations(true);
         CppStep<ExpandedComponentInstanceSymbol> cppStep = new CppStep<>(
                 new EmamCppCompiler(new GeneratorCPPWrapper(generator),
                         new CppGeneratorAdapter(template), symtab),
@@ -67,18 +68,32 @@ public class Main {
         EmscriptenCommandBuilderFactory commandBuilderFactory = new EmscriptenCommandBuilderFactory();
         commandBuilderFactory.setEmscripten(emscriptenPath.toString());
         commandBuilderFactory.include(armadilloPath);
-        commandBuilderFactory.include(blasPath);
-        commandBuilderFactory.include(lapackPath);
+        //commandBuilderFactory.include(blasPath);
+        //commandBuilderFactory.include(lapackPath);
+        //commandBuilderFactory.addFlag("v");
+        //commandBuilderFactory.addFlag("fopenmp");
+        //commandBuilderFactory.addFlag("llibstdc++");
+        //commandBuilderFactory.addFlag("llibgfortran");
+
         commandBuilderFactory.setStd("c++11");
         commandBuilderFactory.addFlag("L.");
         commandBuilderFactory.addFlag("DARMA_DONT_USE_WRAPPER");
-        commandBuilderFactory.addFlag("lblas_WIN64");
         commandBuilderFactory.addFlag("llapack_WIN64");
-
+        commandBuilderFactory.addFlag("lblas_WIN64");
+        commandBuilderFactory.addFlag("llibf2c");
+        commandBuilderFactory.addFlag("ltmglib_WIN64");
+        commandBuilderFactory.addFlag("llibfblaswr");
+        commandBuilderFactory.addFlag("O3");
+        //commandBuilderFactory.addFlag("g");
+        //commandBuilderFactory.addFlag("lg2c");
+        //commandBuilderFactory.addOption(new Option("USE_PTHREADS", true));
+        //commandBuilderFactory.addOption(new Option("WASM_MEM_MAX", 4194304000l));
+        //commandBuilderFactory.addOption(new Option("PTHREAD_HINT_NUM_CORES", 4));
         commandBuilderFactory.addOption(new Option("WASM", true));
-        //commandBuilderFactory.addOption(new Option("-L."));
-        //commandBuilderFactory.addOption(new Option("LINKABLE", true));
-        commandBuilderFactory.addOption(new Option("EXPORT_ALL", true));
+        commandBuilderFactory.addOption(new Option("AGGRESSIVE_VARIABLE_ELIMINATION", true));
+        //commandBuilderFactory.addOption(new Option("VERBOSE", true));
+        //commandBuilderFactory.addOption(new Option("EMCC_DEBUG", true));
+        //commandBuilderFactory.addOption(new Option("EXPORT_ALL", true));
         //commandBuilderFactory.addOption(new Option("-DARMA_DONT_USE_WRAPPER", true));
         //commandBuilderFactory.addOption(new Option("-lblas_WIN64"));
         //commandBuilderFactory.addOption(new Option("-llapack_WIN64"));

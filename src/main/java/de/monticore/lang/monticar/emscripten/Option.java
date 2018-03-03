@@ -9,8 +9,8 @@ import static de.monticore.lang.monticar.contract.StringPrecondition.requiresNot
 public class Option {
 
     private final String option;
-    private final boolean enabled;
     private boolean dontCare = false;
+    protected long number = -1;
 
     /**
      * Initializes a new option with the specified option title and boolean value.
@@ -21,12 +21,19 @@ public class Option {
      */
     public Option(String option, boolean enabled) {
         this.option = requiresNotBlank(option);
-        this.enabled = enabled;
+        if (enabled)
+            this.number = 1;
+        else
+            this.number = 0;
+    }
+
+    public Option(String option, long number) {
+        this.option = option;
+        this.number = number;
     }
 
     public Option(String option) {
         this.option = option;
-        enabled = false;
         dontCare = true;
     }
 
@@ -35,15 +42,11 @@ public class Option {
         return option;
     }
 
-    public boolean isEnabled() {
-        return enabled;
-    }
-
     @Override
     public String toString() {
         String result = option;
         if (!dontCare)
-            result += "=" + (enabled ? "1" : "0");
+            result += "=" + number;
         return result;
     }
 }
