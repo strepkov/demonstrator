@@ -1,5 +1,5 @@
 import {CoordHelper} from '../rwth.visualisation/CoordHelper';
-import * as math from "../libs/math.js";
+import * as math from "../rwth.visualisation/math/math.js";
 
 describe('test CoordHelper\' functions', () => {
 

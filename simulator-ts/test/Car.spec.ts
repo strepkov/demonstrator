@@ -1,6 +1,6 @@
 import {Car} from "../rwth.visualisation/car/Car";
 import {Orientation} from "../rwth.visualisation/coord/Orientation";
-import * as math from "../libs/math.js";
+import * as math from "../rwth.visualisation/math/math.js";
 
 describe('create instance of Car class', () => {
 
