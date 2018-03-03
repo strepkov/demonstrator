@@ -6,7 +6,7 @@ import {WallCurved} from "../track/WallCurved";
 import {WallLinear} from "../track/WallLinear";
 import {CoordHelper} from "../CoordHelper";
 import {Car} from "./Car";
-import * as math from "../../libs/math.js";
+import * as math from "../math/math.js";
 
 export {Sensor}
 

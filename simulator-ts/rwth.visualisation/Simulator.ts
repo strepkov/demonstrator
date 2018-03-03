@@ -1,4 +1,4 @@
-import * as math from "../libs/math.js";
+import * as math from "math/math.js";
 import {Car} from "./car/Car";
 import {Orientation} from "./coord/Orientation";
 import {Sinput} from "./Sinput"

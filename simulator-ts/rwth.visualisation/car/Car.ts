@@ -1,7 +1,7 @@
 import {Orientation} from "../coord/Orientation";
 import {Sensor} from "./Sensor";
 import {Track} from "../track/Track";
-import * as math from "../../libs/math.js";
+import * as math from "../math/math.js";
 
 export {Car}
 

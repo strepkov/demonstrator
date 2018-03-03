@@ -1,5 +1,5 @@
 export {Rotation};
-import * as math from "../../libs/math.js";
+import * as math from "../math/math.js";
 
 class Rotation {
 
