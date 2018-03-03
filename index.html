@@ -22,6 +22,7 @@
 			}
 			a { color: red }
 		</style>
+
 	</head>
 	
 	<body>
@@ -40,13 +41,21 @@
 			</div>
 		</div>
 		</div>
-	
 		
 		<script src="build/three.js"></script>
 		<script src="js/OrbitControls.js"></script>
 		<script src="js/loaders/AssimpJSONLoader.js"></script>
 		<script src="js/Detector.js"></script>
 		<script src="js/libs/stats.min.js"></script>
+
+		<script src="simulator-ts/libs/require.js"></script>
+        <script type="text/javascript" src="out/bundle.js"></script>
+        <script type="text/javascript">
+            requirejs(['Simulator'], function(Simulator) {
+                console.log('starting application...');
+                window.simulator = Simulator;
+            });
+        </script>
 		
 		<script>	
 			if ( ! Detector.webgl ) {
@@ -70,7 +79,7 @@
 			};
 			
 			var onError = function ( xhr ) {
-			};			
+			};
 
 			// Global Car Variable
 			var currentCar = new THREE.Object3D();
@@ -818,16 +827,30 @@
 				stats.update();
 			}
 
-			var i = 0;
 			function move(){
-				setTimeout(testmove, 10);
+				
+				var simulator = new window.simulator.Simulator();
+				console.log(simulator.fpsTime.value);
+				
+				var trigger = false;
+				
+				var run = simulator.run;
+				var simulatorRun = run.bind(simulator);
+				
+				simulatorRun();
+				
+				for(i=0;i<=25;i++) {
+					
+					setTimeout(move1(simulator.pointsX[i], simulator.pointsY[i]), 5000);
+					console.log("test ", simulator.pointsX[i]);
+					console.log("test ", simulator.pointsY[i]);
+				}
 			}
-
-			function testmove(){
-				setPosition(currentCar, 0, 0.2, i);
-			 	i=i+0.1;
-			 	setTimeout(move, 10);
-			}
+		
+		function move1(x,y){
+			
+			setPosition(currentCar, y, 0.2, x);
+		}
 			
 			/**
 			 * 3D Visualization API
