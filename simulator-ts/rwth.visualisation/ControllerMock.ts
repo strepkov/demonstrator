@@ -1,4 +1,4 @@
-import * as math from "math/math.js";
+import * as math from "./math/math.js";
 
 export {ControllerMock};
 
