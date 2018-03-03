@@ -31,7 +31,7 @@
 			<button id="silver-material">Pure Chrome</button>
 			<button id="black-material">Black</button>
 			<button id="red-material">Red</button>
-			<button id="move"></button>
+			<button id="move">Start</button>
 		
 		<!--<button onClick="showGameOverScreen()" style="position: absolute; top:50%;" id="restart_trigger">Trigger</button>-->
 		<div style="display: none; position: absolute; top: 0; bottom: 0; left: 0; right: 0; background-color: #000000; opacity: 1;" id="close_layer">
@@ -812,7 +812,6 @@
 				setColor(yellowGlass, frontlights);
 			}
 			
-
 			// var t = 0;
 			function animate() {
 				requestAnimationFrame( animate );
@@ -827,51 +826,57 @@
 				stats.update();
 			}
 
+			// Run logic using Simulator class
+			setTimeout(function(){
+				
+			var simulator = new window.simulator.Simulator();
+
+			//bind the function
+			var run = simulator.run;
+			var simulatorRun = run.bind(simulator);
+			
+			// execute simulation and recive data for moving
+			simulatorRun();
+
+			window.simulatorInstance = simulator; }, 10);
+
+			var time = 0;
+			var run = false;
+
 			function move(){
-				
-				var simulator = new window.simulator.Simulator();
-				console.log(simulator.fpsTime.value);
-				
-				var trigger = false;
-				
-				var run = simulator.run;
-				var simulatorRun = run.bind(simulator);
-				
-				simulatorRun();
-				
-				for(i=0;i<=25;i++) {
-					
-					setTimeout(move1(simulator.pointsX[i], simulator.pointsY[i]), 5000);
-					console.log("test ", simulator.pointsX[i]);
-					console.log("test ", simulator.pointsY[i]);
-				}
+
+				// init parametrs for next run
+				if (run) 
+					{
+						time = 0;
+						run = false;
+					}
+
+				var simulator = window.simulatorInstance;
+
+				// exit function when there is no more points
+				if (time > simulator.timeOut/4*10-2) 
+					{
+						run = true;
+						return;
+					}
+				else time++;
+						
+				setTimeout(move1(simulator.pointsY[time], simulator.pointsX[time], simulator.angleR[time]), 20);
+
+					console.log("test X: ", simulator.pointsX[time]);
+					console.log("test Y: ", simulator.pointsY[time]);
+					console.log("test R: ", simulator.angleR[time],"\n\n");
+
 			}
 		
-		function move1(x,y){
+			function move1(x, y, degree){
 			
-			setPosition(currentCar, y, 0.2, x);
-		}
+				setPosition(currentCar, x, 0.2, y);
+				rotateCar(currentCar, degree);
+				setTimeout(move, 20);
+			}
 			
-			/**
-			 * 3D Visualization API
-			 * -> Websocket HTML5
-			 * Client Part
-			 */
-
-
-
-			// Handle incoming messages
-
-			    //console.log(msg);
-				// parse the message data back into JSON
-				//var data = JSON.parse(msg.data);
-				//rotateCar(currentCar, data.angle);
-
-				// mapping of the data of x will map to z axis of Three.js
-				// data of y will map to x axis of Three.js
-			//	for (var i = 0; i < 1000; i++){
-
-			//};
 		</script>
 	</body>
 </html>
