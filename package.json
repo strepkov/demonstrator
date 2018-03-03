@@ -7,7 +7,7 @@
     "install": "npm install -D jasmine-ts nyc",
     "test": "nyc -r lcov -e .ts jasmine-ts JASMINE_CONFIG_PATH=jasmine.json",
     "coverage": "nyc report --reporter=json && codecov -f coverage/*.json",
-    "build": "tsc"
+    "build": "tsc --module amd --outFile out/bundle.js"
   },
   "repository": {
     "type": "git",
