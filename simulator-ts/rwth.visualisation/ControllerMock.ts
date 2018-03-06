@@ -73,7 +73,7 @@ class ControllerMock{
         return acceleration;
     }
 
-    public static gameOverTrigger(x,y): boolean{
+    public static gameOverTrigger(x,y,time): boolean{
 
             // The boundaries of the 3D world
             let aboveBnd = x > 200;
@@ -81,7 +81,11 @@ class ControllerMock{
             let rightBnd = y > 120;
             let leftBnd = y < -50;
 
-            let finishCircle : boolean = (x < 1 && x > -1) && (y < 8 && y > -8);            
+            let xloc = x < 1 && x > -1;
+            let yloc = y < 15 && y > -15;
+            let tloc = time.value > 3;
+
+            let finishCircle : boolean = xloc && yloc && tloc;            
   
         return aboveBnd || belowBnd || rightBnd || leftBnd || finishCircle;
     }
