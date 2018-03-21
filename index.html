@@ -48,8 +48,6 @@
 		<script src="js/Detector.js"></script>
 		<script src="js/libs/stats.min.js"></script>
 
-		<script type="text/javascript" src="traget_simple/pID.js" async></script>
-
 		<script src="simulator-ts/libs/require.js"></script>
         <script type="text/javascript" src="out/bundle.js"></script>
         <script type="text/javascript">
@@ -121,15 +119,18 @@
 			var tireBackLeft = new THREE.Object3D();
 
 			// Load the Car Object here
-			var carLoader = new THREE.AssimpJSONLoader(); 
+			
+
+			var carLoader = new THREE.AssimpJSONLoader();
+
 			carLoader.load( 'models/assimp/AudiAvus.json', function ( object ) {
-				currentCar = object;
-				currentCar.position.y = 0.2;
+			currentCar = object;
+			currentCar.position.y = 0.2;
 				
-				currentCar.updateMatrixWorld();
-				var vector = new THREE.Vector3();
-				vector.setFromMatrixPosition( leftFrontIndicator.matrixWorld );
-				console.log(vector);
+			currentCar.updateMatrixWorld();
+			var vector = new THREE.Vector3();
+			vector.setFromMatrixPosition( leftFrontIndicator.matrixWorld );
+			console.log(vector);
 				
 				// Children Car IDs
 				body = object.getObjectByName("3DSMesh_6", true);
@@ -212,6 +213,7 @@
 				setColor(yellowGlass, frontlights);
 				
 			}, onProgress, onError );
+			
 
 			// Second car is loading here
 			carLoader.load( 'models/assimp/AudiAvus.json', function ( object ) {
@@ -476,7 +478,7 @@
 				
 				// Camera
 				camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 2000 );
-				camera.position.set( 0, 20, 0 );
+				camera.position.set( 20, 17, -20 );
 				
 				// Scene
 				scene = new THREE.Scene();	
