@@ -34529,12 +34529,15 @@ define("ControllerMock", ["require", "exports", "math/math"], function (require,
             }
             return acceleration;
         };
-        ControllerMock.gameOverTrigger = function (x, y) {
+        ControllerMock.gameOverTrigger = function (x, y, time) {
             var aboveBnd = x > 200;
             var belowBnd = x < -200;
             var rightBnd = y > 120;
             var leftBnd = y < -50;
-            var finishCircle = (x < 1 && x > -1) && (y < 8 && y > -8);
+            var xloc = x < 1 && x > -1;
+            var yloc = y < 15 && y > -15;
+            var tloc = time.value > 3;
+            var finishCircle = xloc && yloc && tloc;
             return aboveBnd || belowBnd || rightBnd || leftBnd || finishCircle;
         };
         return ControllerMock;
@@ -34995,7 +34998,7 @@ define("Simulator", ["require", "exports", "math/math", "car/Car", "Sinput", "So
         function Simulator() {
             this.velocity = math.unit('0 m/s');
             this.time = math.unit('0 sec');
-            this.fpsTime = math.unit('0.4 sec');
+            this.fpsTime = math.unit('0.5 sec');
             this.car = new Car_1.Car(0, 0);
             this.track = new Track_1.Track();
             this.pointsX = new Array();
@@ -35005,7 +35008,9 @@ define("Simulator", ["require", "exports", "math/math", "car/Car", "Sinput", "So
         }
         Simulator.prototype.calculate = function (input) {
             this.time = math.add(this.time, this.fpsTime);
-            this.velocity = math.unit('14 km/h');
+            if (math.add(this.velocity, math.multiply(input.acceleration, this.fpsTime)) < math.unit('60 km/h')) {
+                this.velocity = math.add(this.velocity, math.multiply(input.acceleration, this.fpsTime));
+            }
             var degree;
             if (this.velocity.equals(math.unit('0 m/s'))) {
                 degree = this.car.getDegree();
@@ -35025,7 +35030,7 @@ define("Simulator", ["require", "exports", "math/math", "car/Car", "Sinput", "So
             this.calculate(input);
             var trigger = false;
             while (!trigger) {
-                trigger = ControllerMock_1.ControllerMock.gameOverTrigger(this.output.xi.value, this.output.yi.value);
+                trigger = ControllerMock_1.ControllerMock.gameOverTrigger(this.output.xi.value, this.output.yi.value, this.time);
                 this.car.setPosition([this.output.xi.value, this.output.yi.value]);
                 this.car.setDegree(this.output.degree);
                 this.pointsX.push(this.output.xi.value);
