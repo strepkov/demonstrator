@@ -1026,18 +1026,26 @@
 			setTimeout(function(){
 				
 			var simulator = new window.simulator.Simulator();
+			// if the object is already created, does it hold values inside?
 
 			//bind the function
 			var run = simulator.run;
 			var simulatorRun = run.bind(simulator);
-			
+
+			var startTime = Math.floor(Date.now()); //Get the starting time (right now) in ms
+		
 			// execute simulation and recive data for moving
 			simulatorRun();
+
+			var now = Math.floor(Date.now()); // get the time now
+    		console.log("Simulation time : ", now - startTime,"ms"); // ms
 
 			window.simulatorInstance = simulator; }, 10);
 
 			var time = 0;
 			var run = false;
+
+
 
 			function move(){
 
