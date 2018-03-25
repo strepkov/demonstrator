@@ -1035,7 +1035,9 @@
 			var startTime = Math.floor(Date.now()); //Get the starting time (right now) in ms
 		
 			// execute simulation and recive data for moving
-			simulatorRun();
+			while(!simulator.output.triggerStatus){
+				simulatorRun();
+			}
 
 			var now = Math.floor(Date.now()); // get the time now
     		console.log("Simulation time : ", now - startTime,"ms"); // ms

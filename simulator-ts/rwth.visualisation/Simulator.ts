@@ -18,7 +18,7 @@ class Simulator {
     private time;
     private car: Car;
     private track: Track;
-    private output: Soutput; //stores the output data(new positions, degree, velocity etc.)
+    public output: Soutput; //stores the output data(new positions, degree, velocity etc.)
     private input: Sinput;
 
     //private listeners: Array<Function>;
@@ -65,7 +65,9 @@ class Simulator {
             false, //indicatorStatus
             false, //lightStatus
             false //triggerStatus
-        )
+        );
+
+        this.calculate();
     }
 
     // public addSimListener(simListener: Function) {
@@ -117,21 +119,15 @@ class Simulator {
         this.output.doorStatus = this.input.doorStatus;
         this.output.indicatorStatus = this.input.indicatorStatus;
         this.output.lightTimerStatus = this.input.lightTimerStatus;
-        this.output.triggerStatus = this.input.triggerStatus;
+        //this.output.triggerStatus = this.input.triggerStatus;
     }
 
     // send the updated position and the degree to the visualization
     public run() {
-    
-        this.calculate();
 
         // Give the updated t and v to the Generator/BasicSimulator and next loop
 
-        let trigger = false;
-
-        while(!trigger) {
-
-            trigger = ControllerMock.gameOverTrigger(this.output.xi.value, this.output.yi.value,this.time);
+            this.output.triggerStatus = ControllerMock.gameOverTrigger(this.output.xi.value, this.output.yi.value,this.time);
 
             this.car.setPosition([this.output.xi.value, this.output.yi.value]);
             this.car.setDegree(this.output.degree);
@@ -165,12 +161,11 @@ class Simulator {
             this.input.doorStatus = false; //doorStatus
             this.input.indicatorStatus = false; //indicatorStatus
             this.input.lightTimerStatus = false; //lightStatus
-            this.input.triggerStatus = false;  //triggerStatus
+            //this.input.triggerStatus = false;  //triggerStatus
 
             this.calculate();
             // this.onSimFrameFinished();
-        }
 
-        return trigger;
+        return this.output.triggerStatus;
     }
 }
