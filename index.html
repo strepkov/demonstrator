@@ -1024,56 +1024,35 @@
 
 			// Run logic using Simulator class
 			setTimeout(function(){
-				
+			
 			var simulator = new window.simulator.Simulator();
-			// if the object is already created, does it hold values inside?
+			window.simulatorInstance = simulator; 
+			}, 10);
 
-			//bind the function
-			var run = simulator.run;
-			var simulatorRun = run.bind(simulator);
-
-			var startTime = Math.floor(Date.now()); //Get the starting time (right now) in ms
 		
-			// execute simulation and recive data for moving
-			while(!simulator.output.triggerStatus){
-				simulatorRun();
-			}
-
-			var now = Math.floor(Date.now()); // get the time now
-    		console.log("Simulation time : ", now - startTime,"ms"); // ms
-
-			window.simulatorInstance = simulator; }, 10);
-
-			var time = 0;
-			var run = false;
-
-
-
 			function move(){
-
-				// init parametrs for next run
-				if (run) 
-					{
-						time = 0;
-						run = false;
-					}
 
 				var simulator = window.simulatorInstance;
 
-				// exit function when there is no more points
-				if (time > simulator.timeOut/5*10-2) // fpsTime = 0.5
-					{
-						run = true;
-						return;
-					}
-				else time++;
+				//bind the function
+				var run = simulator.run;
+				var simulatorRun = run.bind(simulator);
+				
+				if(!simulator.output.triggerStatus){
+					simulatorRun();
+				}
+				else return; // TODO: run again without page reload
 						
-				setTimeout(move1(simulator.pointsY[time], simulator.pointsX[time], simulator.angleR[time]), 20);
+				setTimeout(
 
-					console.log("test X: ", simulator.pointsX[time]);
-					console.log("test Y: ", simulator.pointsY[time]);
-					console.log("test R: ", simulator.angleR[time],"\n\n");
+					move1(
+						simulator.output.yi.value,
+						simulator.output.xi.value,
+						simulator.output.degree.value * 180 / Math.PI), 20);
 
+					console.log("test X: ", simulator.output.xi.value);
+					console.log("test Y: ", simulator.output.yi.value);
+					console.log("test R: ", simulator.output.degree.value,"\n\n");
 			}
 		
 			function move1(x, y, degree){
