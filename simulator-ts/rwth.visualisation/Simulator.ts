@@ -19,6 +19,7 @@ class Simulator {
     private car: Car;
     private track: Track;
     private output: Soutput; //stores the output data(new positions, degree, velocity etc.)
+    private input: Sinput;
 
     //private listeners: Array<Function>;
 
@@ -42,6 +43,29 @@ class Simulator {
         this.pointsY = new Array<number>();
         this.angleR = new Array<number>();
         this.timeOut = 0;
+
+        this.output = new Soutput(
+            math.unit('0 m/s'),
+            math.unit('0 m'),
+            math.unit('0 m'),
+            math.unit('0 s'),
+            math.unit('0 deg'),
+            false,
+            false,
+            false,
+            false);
+
+        this.input = new Sinput(
+            math.unit('0 m/s^2'), // acceleration
+            math.unit('0 deg'),  // steering
+            math.unit('0 m'), // x
+            math.unit('0 m'), // y
+            math.unit('0 s'), // time
+            false, // doorStatus
+            false, //indicatorStatus
+            false, //lightStatus
+            false //triggerStatus
+        )
     }
 
     // public addSimListener(simListener: Function) {
@@ -55,15 +79,15 @@ class Simulator {
     // }
 
     // Updates the time, velocity, degree of car and new positions x,y
-    public calculate(input: Sinput) {
+    public calculate() {
         
         // time = t+(1/20)s, for t=0s
         this.time = math.add(this.time, this.fpsTime);
         
         // velocity = v+(input)acceleration*(1/20)s, for v=0 m/ss
-        if ( math.add(this.velocity, math.multiply(input.acceleration, this.fpsTime)) < math.unit('60 km/h')){ 
+        if ( math.add(this.velocity, math.multiply(this.input.acceleration, this.fpsTime)) < math.unit('60 km/h')){ 
             
-            this.velocity = math.add(this.velocity, math.multiply(input.acceleration, this.fpsTime));
+            this.velocity = math.add(this.velocity, math.multiply(this.input.acceleration, this.fpsTime));
         }
         
         // calculation of car rotation
@@ -75,51 +99,31 @@ class Simulator {
         }
         else{
 
-            degree = math.add(this.car.getDegree(), input.steering); // adjust steeriing angle
+            degree = math.add(this.car.getDegree(), this.input.steering); // adjust steeriing angle
         }
 
         //Calculate positioin of the car
         // x=(input)x+v*t*cos((rad)degree) // degree * Math.PI / 180 - radian conversioin
-        let x = math.add(input.x0, math.multiply(this.velocity, math.multiply(this.fpsTime, math.cos(degree))));
+        let x = math.add(this.input.x0, math.multiply(this.velocity, math.multiply(this.fpsTime, math.cos(degree))));
 
         // y=(input)y+v*t*sin((rad)degree) //Amount<Length>
-        let y = math.subtract(input.y0, math.multiply(this.velocity, math.multiply(this.fpsTime, math.sin(degree))));
+        let y = math.subtract(this.input.y0, math.multiply(this.velocity, math.multiply(this.fpsTime, math.sin(degree))));
 
-        this.output = new Soutput(
-            this.velocity,
-            x,
-            y,
-            this.time,
-            degree,
-            input.doorStatus,
-            input.indicatorStatus,
-            input.lightTimerStatus,
-            input.triggerStatus);
+        this.output.velocity = this.velocity;
+        this.output.xi = x;
+        this.output.yi = y;
+        this.output.ti = this.time;
+        this.output.degree = degree,
+        this.output.doorStatus = this.input.doorStatus;
+        this.output.indicatorStatus = this.input.indicatorStatus;
+        this.output.lightTimerStatus = this.input.lightTimerStatus;
+        this.output.triggerStatus = this.input.triggerStatus;
     }
 
     // send the updated position and the degree to the visualization
-
     public run() {
-
-        let distances: number[] = this.car.getDistancesFromSensors(this.track);
-
-        let steering_controller = ControllerMock.steering(distances); // steering angle
-        let acceleration_controller = ControllerMock.acceleration(this.time); // constant velocity
-
-        let input: Sinput = new Sinput(
-                
-            acceleration_controller, // a
-            steering_controller,  // s
-            math.unit('0 m'), // x
-            math.unit('0 m'), // y
-            this.time, // t
-            false, // doorStatus
-            false, //indicatorStatus
-            false, //lightStatus
-            false //triggerStatus
-        );
     
-        this.calculate(input);
+        this.calculate();
 
         // Give the updated t and v to the Generator/BasicSimulator and next loop
 
@@ -152,19 +156,18 @@ class Simulator {
             let steering_controller1 = ControllerMock.steering(distances1); // steering angle
             let acceleration_controller1 = ControllerMock.acceleration(this.time); // constant velocity
 
-            input = new Sinput(
-                acceleration_controller1, //acceleration
-                steering_controller1, // steering, DEGREE_ANGLE
-                this.output.xi,
-                this.output.yi,
-                this.output.ti,
-                false, //doorStatus
-                false, //indicatorStatus
-                false, //lightStatus
-                false  //triggerStatus
-            );
+            
+            this.input.acceleration = acceleration_controller1; //acceleration
+            this.input.steering = steering_controller1; // steering, DEGREE_ANGLE
+            this.input.x0 = this.output.xi;
+            this.input.y0 = this.output.yi;
+            this.input.t0 = this.output.ti;
+            this.input.doorStatus = false; //doorStatus
+            this.input.indicatorStatus = false; //indicatorStatus
+            this.input.lightTimerStatus = false; //lightStatus
+            this.input.triggerStatus = false;  //triggerStatus
 
-            this.calculate(input);
+            this.calculate();
             // this.onSimFrameFinished();
         }
 
