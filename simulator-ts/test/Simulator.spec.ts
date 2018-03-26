@@ -6,6 +6,6 @@ describe('The simulator test', () => {
 
     it('simulator.run() should return true', () => {;
         
-        expect(simulator.run()).toEqual(true);
+        expect(simulator.run()).toEqual(false);
     });
 });
