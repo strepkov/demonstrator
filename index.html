@@ -47,6 +47,7 @@
 		<script src="js/loaders/AssimpJSONLoader.js"></script>
 		<script src="js/Detector.js"></script>
 		<script src="js/libs/stats.min.js"></script>
+		<script src="mainController.js"></script>
 
 		<script src="simulator-ts/libs/require.js"></script>
         <script type="text/javascript" src="out/bundle.js"></script>
@@ -1024,22 +1025,85 @@
 
 			// Run logic using Simulator class
 			setTimeout(function(){
-			
+
 			var simulator = new window.simulator.Simulator();
 			window.simulatorInstance = simulator; 
-			}, 10);
+
+			Module.init();
+			
+			// distances to objects
+			Module.setFl(100);
+			Module.setFr(99);
+			Module.setSlf(5);
+			Module.setSlb(5);
+			Module.setSrf(5);
+			Module.setSrb(5);
+			Module.setTime(1);
+			Module.setVelocity(0);
+			Module.setX(0);
+			Module.setY(0);
+
+			Module.execute();
+
+			console.log(Module.getStatus());
+			console.log(Module.getAcceleration());
+			console.log(Module.getSteering());
+
+			Module.setFl(99);
+			Module.setFr(98);
+			Module.setSlf(5);
+			Module.setSlb(5);
+			Module.setSrf(5);
+			Module.setSrb(5);
+			Module.setTime(2);
+			Module.setVelocity(2);
+			Module.setX(1);
+			Module.setY(1);
+
+			}, 3000);
 
 		
 			function move(){
 
 				var simulator = window.simulatorInstance;
 
+				//var person = {firstName:"John", lastName:"Doe", age:50, eyeColor:"blue"};
+
 				//bind the function
 				var run = simulator.run;
 				var simulatorRun = run.bind(simulator);
+
+				var getDistances = simulator.getDistances;
+				var simulatorGetDistances = getDistances.bind(simulator);
+
+				var startTime = Math.floor(Date.now());
+
+				var distances = simulatorGetDistances();
+
+				Module.setFl(distances[0]);
+				Module.setFr(distances[1]);
+				Module.setSlf(distances[2]);
+				Module.setSlb(distances[3]);
+				Module.setSrf(distances[4]);
+				Module.setSrb(distances[5]);
+				Module.setTime(simulator.output.ti.value);
+				//Module.setVelocity(0);
+				Module.setX(simulator.output.xi.value);
+				Module.setY(simulator.output.yi.value);
+
+				Module.execute();
+
+				console.log("Get distances + set Module + execute : ",Math.floor(Date.now()) - startTime);
+
+				// console.log(Module.getStatus());
+				// console.log(Module.getAcceleration());
+				// console.log(Module.getSteering());
+
+				//TODO: Add values from model like arguments in run functioin 
 				
 				if(!simulator.output.triggerStatus){
 					simulatorRun();
+
 				}
 				else return; // TODO: run again without page reload
 						

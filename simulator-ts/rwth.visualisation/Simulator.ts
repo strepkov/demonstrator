@@ -110,10 +110,20 @@ class Simulator {
         //this.output.triggerStatus = this.input.triggerStatus;
     }
 
+    // send current output struct to the controller
+    public getDistances(){
+
+        let distances: number[] = this.car.getDistancesFromSensors(this.track);
+
+        return distances;
+    }
+
     // send the updated position and the degree to the visualization
     public run() {
 
         // Give the updated t and v to the Generator/BasicSimulator and next loop
+
+            //console.log(person.firstName);
 
             this.output.triggerStatus = ControllerMock.gameOverTrigger(this.output.xi.value, this.output.yi.value,this.time);
 
@@ -146,6 +156,6 @@ class Simulator {
             this.calculate();
             // this.onSimFrameFinished();
 
-        return this.output.triggerStatus;
+        return this.output;
     }
 }
