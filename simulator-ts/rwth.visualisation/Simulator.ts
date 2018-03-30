@@ -140,6 +140,6 @@ class Simulator {
         this.calculate();
         // this.onSimFrameFinished();
 
-        return this.output;
+        return this.output.triggerStatus;
     }
 }
