@@ -95,8 +95,7 @@ class Simulator {
         //Calculate positioin of the car
         // x=(input)x+v*t*cos((rad)degree) // degree * Math.PI / 180 - radian conversioin
         let x = math.add(this.input.x0, math.multiply(this.velocity, math.multiply(this.fpsTime, math.cos(degree))));
-
-        // y=(input)y+v*t*sin((rad)degree) //Amount<Length>
+        // y=(input)y+v*t*sin((rad)degree)
         let y = math.subtract(this.input.y0, math.multiply(this.velocity, math.multiply(this.fpsTime, math.sin(degree))));
 
         this.output.velocity = this.velocity;
@@ -114,47 +113,32 @@ class Simulator {
     public getDistances(){
 
         let distances: number[] = this.car.getDistancesFromSensors(this.track);
-
         return distances;
     }
 
     // send the updated position and the degree to the visualization
-    public run() {
+    public run(status, steering, acceleration) {
 
         // Give the updated t and v to the Generator/BasicSimulator and next loop
 
-            //console.log(person.firstName);
-
-            this.output.triggerStatus = ControllerMock.gameOverTrigger(this.output.xi.value, this.output.yi.value,this.time);
-
-            this.car.setPosition([this.output.xi.value, this.output.yi.value]);
-            this.car.setDegree(this.output.degree);
-
-            // console.log(
-            //             "\n X :",this.output.xi.value,
-            //             "\n Y :", this.output.yi.value,
-            //             "\n T :", this.output.ti.value,
-            //             "\n D :", this.output.degree.value * 180 / math.PI
-            //         );
-
-            let distances1: number[] = this.car.getDistancesFromSensors(this.track);
-
-            let steering_controller1 = ControllerMock.steering(distances1); // steering angle
-            let acceleration_controller1 = ControllerMock.acceleration(this.time); // constant velocity
-
-            
-            this.input.acceleration = acceleration_controller1; //acceleration
-            this.input.steering = steering_controller1; // steering, DEGREE_ANGLE
-            this.input.x0 = this.output.xi;
-            this.input.y0 = this.output.yi;
-            this.input.t0 = this.output.ti;
-            this.input.doorStatus = false; //doorStatus
-            this.input.indicatorStatus = false; //indicatorStatus
-            this.input.lightTimerStatus = false; //lightStatus
-            //this.input.triggerStatus = false;  //triggerStatus
-
-            this.calculate();
-            // this.onSimFrameFinished();
+        this.output.triggerStatus = status;
+        //this.output.triggerStatus = ControllerMock.gameOverTrigger(this.output.xi.value, this.output.yi.value,this.time);
+        this.car.setPosition([this.output.xi.value, this.output.yi.value]);
+        this.car.setDegree(this.output.degree);
+        //let distances1: number[] = this.car.getDistancesFromSensors(this.track);
+        //let steering_controller1 = ControllerMock.steering(distances1); // steering angle
+        //let acceleration_controller1 = ControllerMock.acceleration(this.time); // constant velocity
+        
+        this.input.acceleration = math.unit(acceleration,"m/s^2"); //acceleration
+        this.input.steering = math.unit(steering,'deg'); // steering, DEGREE_ANGLE
+        this.input.x0 = this.output.xi;
+        this.input.y0 = this.output.yi;
+        this.input.t0 = this.output.ti;
+        this.input.doorStatus = false; //doorStatus
+        this.input.indicatorStatus = false; //indicatorStatus
+        this.input.lightTimerStatus = false; //lightStatus
+        this.calculate();
+        // this.onSimFrameFinished();
 
         return this.output;
     }

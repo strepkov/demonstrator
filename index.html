@@ -53,7 +53,7 @@
         <script type="text/javascript" src="out/bundle.js"></script>
         <script type="text/javascript">
             requirejs(['Simulator'], function(Simulator) {
-                console.log('starting application...');
+                console.log('loading the simulator core...');
                 window.simulator = Simulator;
             });
         </script>
@@ -131,7 +131,7 @@
 			currentCar.updateMatrixWorld();
 			var vector = new THREE.Vector3();
 			vector.setFromMatrixPosition( leftFrontIndicator.matrixWorld );
-			console.log(vector);
+			//console.log(vector);
 				
 				// Children Car IDs
 				body = object.getObjectByName("3DSMesh_6", true);
@@ -226,7 +226,7 @@
 				currentCar2.updateMatrixWorld();
 				var vector = new THREE.Vector3();
 				vector.setFromMatrixPosition( leftFrontIndicator.matrixWorld );
-				console.log(vector);
+				//console.log(vector);
 				
 				// Children Car IDs
 				body = object.getObjectByName("3DSMesh_6", true);
@@ -320,7 +320,7 @@
 				currentCar3.updateMatrixWorld();
 				var vector = new THREE.Vector3();
 				vector.setFromMatrixPosition( leftFrontIndicator.matrixWorld );
-				console.log(vector);
+				//console.log(vector);
 				
 				// Children Car IDs
 				body = object.getObjectByName("3DSMesh_6", true);
@@ -1024,50 +1024,49 @@
 			}
 
 			// Run logic using Simulator class
+
+			var jsonConfFile;
+
 			setTimeout(function(){
 
 			var simulator = new window.simulator.Simulator();
 			window.simulatorInstance = simulator; 
 
+			// Init the model, which is the controller of the car
 			Module.init();
 			
-			// distances to objects
-			Module.setFl(100);
-			Module.setFr(99);
-			Module.setSlf(5);
-			Module.setSlb(5);
-			Module.setSrf(5);
-			Module.setSrb(5);
-			Module.setTime(1);
-			Module.setVelocity(0);
-			Module.setX(0);
-			Module.setY(0);
-
-			Module.execute();
-
-			console.log(Module.getStatus());
-			console.log(Module.getAcceleration());
-			console.log(Module.getSteering());
-
-			Module.setFl(99);
-			Module.setFr(98);
-			Module.setSlf(5);
-			Module.setSlb(5);
-			Module.setSrf(5);
-			Module.setSrb(5);
-			Module.setTime(2);
-			Module.setVelocity(2);
-			Module.setX(1);
-			Module.setY(1);
+			readTextFile("simulation-conf.json");
+			// Now is possible to use jsonConfFile
 
 			}, 3000);
+
+			// Read the file with configuration
+			function readTextFile(file)
+			{
+    			var rawFile = new XMLHttpRequest();
+    			rawFile.open("GET", file, false);
+    			rawFile.onreadystatechange = function ()
+    				{
+        				if(rawFile.readyState === 4)
+        					{
+            					if(rawFile.status === 200 || rawFile.status == 0)
+            					{
+                					var allText = rawFile.responseText;
+                					jsonConfFile = JSON.parse(allText);
+            					}
+        					}
+    				}
+    			rawFile.send(null);
+			}
+
+			// Intermidiate point for interpolation
+			// var x_previous = 0;
+			// var y_previous = 0;
 
 		
 			function move(){
 
 				var simulator = window.simulatorInstance;
-
-				//var person = {firstName:"John", lastName:"Doe", age:50, eyeColor:"blue"};
 
 				//bind the function
 				var run = simulator.run;
@@ -1076,54 +1075,71 @@
 				var getDistances = simulator.getDistances;
 				var simulatorGetDistances = getDistances.bind(simulator);
 
+				// Checking of execution time
 				var startTime = Math.floor(Date.now());
 
+				// Read the distances from Simulator, where the track was defined
 				var distances = simulatorGetDistances();
 
-				Module.setFl(distances[0]);
-				Module.setFr(distances[1]);
-				Module.setSlf(distances[2]);
-				Module.setSlb(distances[3]);
-				Module.setSrf(distances[4]);
-				Module.setSrb(distances[5]);
-				Module.setTime(simulator.output.ti.value);
-				//Module.setVelocity(0);
+				// TODO: define interface for standart wasm-model
+
+				Module.setFl(distances[0]); Module.setFr(distances[1]);
+				Module.setSlf(distances[2]); Module.setSlb(distances[3]);
+				Module.setSrf(distances[4]); Module.setSrb(distances[5]);
+
 				Module.setX(simulator.output.xi.value);
 				Module.setY(simulator.output.yi.value);
 
+				Module.setTime(simulator.output.ti.value);
+
+				// Calculate 
 				Module.execute();
-
-				console.log("Get distances + set Module + execute : ",Math.floor(Date.now()) - startTime);
-
-				// console.log(Module.getStatus());
-				// console.log(Module.getAcceleration());
-				// console.log(Module.getSteering());
-
-				//TODO: Add values from model like arguments in run functioin 
 				
 				if(!simulator.output.triggerStatus){
-					simulatorRun();
-
+					
+					simulatorRun(Module.getStatus(),Module.getSteering(),Module.getAcceleration());
+					console.log("Get distances + set Module + execute : ",Math.floor(Date.now()) - startTime);
 				}
 				else return; // TODO: run again without page reload
 						
 				setTimeout(
-
 					move1(
 						simulator.output.yi.value,
 						simulator.output.xi.value,
-						simulator.output.degree.value * 180 / Math.PI), 20);
+						simulator.output.degree.value * 180 / Math.PI)
+				, 16);
 
-					console.log("test X: ", simulator.output.xi.value);
-					console.log("test Y: ", simulator.output.yi.value);
-					console.log("test R: ", simulator.output.degree.value,"\n\n");
+				console.log("Status : ", simulator.output.triggerStatus);
+				console.log("Time : ", simulator.output.ti.value);
+				console.log("test X: ", simulator.output.xi.value);
+				console.log("test Y: ", simulator.output.yi.value);
+				console.log("test R: ", simulator.output.degree.value * 180 / Math.PI,"\n\n");
 			}
 		
 			function move1(x, y, degree){
+
+				// for(var progress=0; progress<=1; progress+=0.3)
+				// {
+				// 	x_new = x_previous + (x - x_previous) * progress;
+				// 	y_new = y_previous + (y - y_previous) * progress;
+
+				// 	console.log("X :", x_new), "\n";
+				// 	console.log("Y :", y_new), "\n";
+
+				// 	setTimeout( function()
+				// 		{
+				// 			setPosition(currentCar, x, 0.2, y);
+				// 		}
+				// 		, 200);
+				// }
+
+				// Update the point for the next round
+				// x_previous = x;
+				// y_previous = y;
 			
 				setPosition(currentCar, x, 0.2, y);
 				rotateCar(currentCar, degree);
-				setTimeout(move, 20);
+				setTimeout(move, 16);
 			}
 			
 		</script>
