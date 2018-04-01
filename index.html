@@ -48,6 +48,7 @@
 		<script src="js/Detector.js"></script>
 		<script src="js/libs/stats.min.js"></script>
 		<script src="mainController.js"></script>
+		<script src="zone2coord.js"></script>
 
 		<script src="simulator-ts/libs/require.js"></script>
         <script type="text/javascript" src="out/bundle.js"></script>
@@ -1025,7 +1026,10 @@
 
 			// Run logic using Simulator class
 
-			var jsonConfFile;
+			var jsonSimulationConf;
+			var jsonZone2Coord;
+
+			var simulationStatus = false;
 
 			setTimeout(function(){
 
@@ -1035,13 +1039,19 @@
 			// Init the model, which is the controller of the car
 			Module.init();
 			
-			readTextFile("simulation-conf.json");
+			readJSONFile("simulation.json");
 			// Now is possible to use jsonConfFile
+			// example : console.log(jsonSimulationConf.car.start);
+				
+			var zone = jsonSimulationConf.car.start;
+			console.log("X : ", zone2Coord.get(zone)[0]," Y : ", zone2Coord.get(zone)[1]);
+			zone = jsonSimulationConf.car.end;
+			console.log("X : ", zone2Coord.get(zone)[0]," Y : ", zone2Coord.get(zone)[1]);
 
 			}, 3000);
 
 			// Read the file with configuration
-			function readTextFile(file)
+			function readJSONFile(file)
 			{
     			var rawFile = new XMLHttpRequest();
     			rawFile.open("GET", file, false);
@@ -1051,8 +1061,8 @@
         					{
             					if(rawFile.status === 200 || rawFile.status == 0)
             					{
-                					var allText = rawFile.responseText;
-                					jsonConfFile = JSON.parse(allText);
+									var allText = rawFile.responseText;
+									jsonSimulationConf = JSON.parse(allText);
             					}
         					}
     				}
@@ -1095,7 +1105,7 @@
 				// Calculate 
 				Module.execute();
 				
-				if(!simulator.output.triggerStatus){
+				if(!simulationStatus){
 					
 					simulatorRun(Module.getStatus(),Module.getSteering(),Module.getAcceleration());
 					console.log("Get distances + set Module + execute : ",Math.floor(Date.now()) - startTime);
@@ -1108,6 +1118,17 @@
 						simulator.output.xi.value,
 						simulator.output.degree.value * 180 / Math.PI)
 				, 16);
+
+				// Calculate status
+				var zone = jsonSimulationConf.car.end;
+				var endX = zone2Coord.get(zone)[0];
+				var endY = zone2Coord.get(zone)[1];
+
+				if(simulator.output.xi.value >= (endX - 2) && simulator.output.xi.value <= (endX + 2) 
+					&& simulator.output.yi.value >= (endY - 2) && simulator.output.yi.value <= (endY + 2)){
+						simulationStatus = true;
+					}
+				//
 
 				console.log("Status : ", simulator.output.triggerStatus);
 				console.log("Time : ", simulator.output.ti.value);
