@@ -116,6 +116,12 @@ class Simulator {
         return distances;
     }
 
+    public initPosition(x,y){
+        
+        this.output.xi = math.unit(x,'m');
+        this.output.yi = math.unit(y,'m');;
+    }
+
     // send the updated position and the degree to the visualization
     public run(status, steering, acceleration) {
 

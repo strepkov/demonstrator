@@ -1042,9 +1042,20 @@
 			readJSONFile("simulation.json");
 			// Now is possible to use jsonConfFile
 			// example : console.log(jsonSimulationConf.car.start);
-				
+			
+			// Diagnostic information to know the start point
 			var zone = jsonSimulationConf.car.start;
 			console.log("X : ", zone2Coord.get(zone)[0]," Y : ", zone2Coord.get(zone)[1]);
+
+			// Set initial car position for simulator
+			var initPosition = simulator.initPosition;
+			var simulatorInitPosition = initPosition.bind(simulator);
+			simulatorInitPosition(zone2Coord.get(zone)[0], zone2Coord.get(zone)[1]);
+
+			// TODO: fix parameters sequence
+			setPosition(currentCar,zone2Coord.get(zone)[1], 0.2, zone2Coord.get(zone)[0]);
+			
+			// Diagnostic information to know the end point
 			zone = jsonSimulationConf.car.end;
 			console.log("X : ", zone2Coord.get(zone)[0]," Y : ", zone2Coord.get(zone)[1]);
 
@@ -1123,13 +1134,14 @@
 				var zone = jsonSimulationConf.car.end;
 				var endX = zone2Coord.get(zone)[0];
 				var endY = zone2Coord.get(zone)[1];
-
+				
+				// There are taking in to account deviations from the central point of the end zone
 				if(simulator.output.xi.value >= (endX - 2) && simulator.output.xi.value <= (endX + 2) 
-					&& simulator.output.yi.value >= (endY - 2) && simulator.output.yi.value <= (endY + 2)){
+					&& simulator.output.yi.value >= (endY - 5) && simulator.output.yi.value <= (endY + 5)){
 						simulationStatus = true;
 					}
-				//
-
+				
+				// Just diagnostic information
 				console.log("Status : ", simulator.output.triggerStatus);
 				console.log("Time : ", simulator.output.ti.value);
 				console.log("test X: ", simulator.output.xi.value);
