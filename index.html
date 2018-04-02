@@ -1116,7 +1116,7 @@
 				// Calculate 
 				Module.execute();
 				
-				if(!simulationStatus){
+				if(!simulationStatus && !Module.getStatus()){
 					
 					simulatorRun(Module.getStatus(),Module.getSteering(),Module.getAcceleration());
 					console.log("Get distances + set Module + execute : ",Math.floor(Date.now()) - startTime);
@@ -1136,7 +1136,7 @@
 				var endY = zone2Coord.get(zone)[1];
 				
 				// There are taking in to account deviations from the central point of the end zone
-				if(simulator.output.xi.value >= (endX - 2) && simulator.output.xi.value <= (endX + 2) 
+				if(simulator.output.xi.value >= (endX - 5) && simulator.output.xi.value <= (endX + 5) 
 					&& simulator.output.yi.value >= (endY - 5) && simulator.output.yi.value <= (endY + 5)){
 						simulationStatus = true;
 					}
