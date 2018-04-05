@@ -248603,13 +248603,6 @@
 					,"value": 2
 				}
 				,{
-					 "key": "$tex.file"
-					,"semantic": 1
-					,"index": 0
-					,"type": 3
-					,"value": "AVUSMETE.JPG"
-				}
-				,{
 					 "key": "$tex.mapmodeu"
 					,"semantic": 1
 					,"index": 0
@@ -248711,13 +248704,6 @@
 					,"index": 0
 					,"type": 4
 					,"value": 2
-				}
-				,{
-					 "key": "$tex.file"
-					,"semantic": 5
-					,"index": 0
-					,"type": 3
-					,"value": "AVUSLOGO.JPG"
 				}
 				,{
 					 "key": "$tex.mapmodeu"
@@ -248897,13 +248883,6 @@
 					,"index": 0
 					,"type": 4
 					,"value": 2
-				}
-				,{
-					 "key": "$tex.file"
-					,"semantic": 5
-					,"index": 0
-					,"type": 3
-					,"value": "AVUSRECT.JPG"
 				}
 				,{
 					 "key": "$tex.mapmodeu"
@@ -249845,13 +249824,6 @@
 					,"value": 2
 				}
 				,{
-					 "key": "$tex.file"
-					,"semantic": 5
-					,"index": 0
-					,"type": 3
-					,"value": "AVUSWHB2.JPG"
-				}
-				,{
 					 "key": "$tex.mapmodeu"
 					,"semantic": 5
 					,"index": 0
@@ -250029,13 +250001,6 @@
 					,"index": 0
 					,"type": 4
 					,"value": 2
-				}
-				,{
-					 "key": "$tex.file"
-					,"semantic": 5
-					,"index": 0
-					,"type": 3
-					,"value": "AVUSDASB.JPG"
 				}
 				,{
 					 "key": "$tex.mapmodeu"
@@ -250293,13 +250258,6 @@
 					,"value": 2
 				}
 				,{
-					 "key": "$tex.file"
-					,"semantic": 1
-					,"index": 0
-					,"type": 3
-					,"value": "AVUSPLAT.JPG"
-				}
-				,{
 					 "key": "$tex.mapmodeu"
 					,"semantic": 1
 					,"index": 0
@@ -250325,13 +250283,6 @@
 						,1
 						,0
 					]
-				}
-				,{
-					 "key": "$tex.file"
-					,"semantic": 5
-					,"index": 0
-					,"type": 3
-					,"value": "AVUSPLAT.JPG"
 				}
 				,{
 					 "key": "$tex.mapmodeu"
