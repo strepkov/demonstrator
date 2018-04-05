@@ -47,12 +47,14 @@
 		<script src="js/loaders/AssimpJSONLoader.js"></script>
 		<script src="js/Detector.js"></script>
 		<script src="js/libs/stats.min.js"></script>
+		<script src="mainController.js"></script>
+		<script src="zone2coord.js"></script>
 
 		<script src="simulator-ts/libs/require.js"></script>
         <script type="text/javascript" src="out/bundle.js"></script>
         <script type="text/javascript">
             requirejs(['Simulator'], function(Simulator) {
-                console.log('starting application...');
+                console.log('loading the simulator core...');
                 window.simulator = Simulator;
             });
         </script>
@@ -130,7 +132,7 @@
 			currentCar.updateMatrixWorld();
 			var vector = new THREE.Vector3();
 			vector.setFromMatrixPosition( leftFrontIndicator.matrixWorld );
-			console.log(vector);
+			//console.log(vector);
 				
 				// Children Car IDs
 				body = object.getObjectByName("3DSMesh_6", true);
@@ -225,7 +227,7 @@
 				currentCar2.updateMatrixWorld();
 				var vector = new THREE.Vector3();
 				vector.setFromMatrixPosition( leftFrontIndicator.matrixWorld );
-				console.log(vector);
+				//console.log(vector);
 				
 				// Children Car IDs
 				body = object.getObjectByName("3DSMesh_6", true);
@@ -319,7 +321,7 @@
 				currentCar3.updateMatrixWorld();
 				var vector = new THREE.Vector3();
 				vector.setFromMatrixPosition( leftFrontIndicator.matrixWorld );
-				console.log(vector);
+				//console.log(vector);
 				
 				// Children Car IDs
 				body = object.getObjectByName("3DSMesh_6", true);
@@ -1023,54 +1025,159 @@
 			}
 
 			// Run logic using Simulator class
+
+			var jsonSimulationConf;
+			var jsonZone2Coord;
+
+			var simulationStatus = false;
+
 			setTimeout(function(){
-				
+
 			var simulator = new window.simulator.Simulator();
+			window.simulatorInstance = simulator; 
 
-			//bind the function
-			var run = simulator.run;
-			var simulatorRun = run.bind(simulator);
+			// Init the model, which is the controller of the car
+			Module.init();
 			
-			// execute simulation and recive data for moving
-			simulatorRun();
+			readJSONFile("simulation.json");
+			// Now is possible to use jsonConfFile
+			// example : console.log(jsonSimulationConf.car.start);
+			
+			// Diagnostic information to know the start point
+			var zone = jsonSimulationConf.car.start;
+			console.log("X : ", zone2Coord.get(zone)[0]," Y : ", zone2Coord.get(zone)[1]);
 
-			window.simulatorInstance = simulator; }, 10);
+			// Set initial car position for simulator
+			var initPosition = simulator.initPosition;
+			var simulatorInitPosition = initPosition.bind(simulator);
+			//simulatorInitPosition(zone2Coord.get(zone)[0], zone2Coord.get(zone)[1]);
 
-			var time = 0;
-			var run = false;
+			// TODO: fix parameters sequence
+			setPosition(currentCar,zone2Coord.get(zone)[1], 0.2, zone2Coord.get(zone)[0]);
+			
+			// Diagnostic information to know the end point
+			zone = jsonSimulationConf.car.end;
+			console.log("X : ", zone2Coord.get(zone)[0]," Y : ", zone2Coord.get(zone)[1]);
 
+			}, 3000);
+
+			// Read the file with configuration
+			function readJSONFile(file)
+			{
+    			var rawFile = new XMLHttpRequest();
+    			rawFile.open("GET", file, false);
+    			rawFile.onreadystatechange = function ()
+    				{
+        				if(rawFile.readyState === 4)
+        					{
+            					if(rawFile.status === 200 || rawFile.status == 0)
+            					{
+									var allText = rawFile.responseText;
+									jsonSimulationConf = JSON.parse(allText);
+            					}
+        					}
+    				}
+    			rawFile.send(null);
+			}
+
+			// Intermidiate point for interpolation
+			// var x_previous = 0;
+			// var y_previous = 0;
+
+		
 			function move(){
-
-				// init parametrs for next run
-				if (run) 
-					{
-						time = 0;
-						run = false;
-					}
 
 				var simulator = window.simulatorInstance;
 
-				// exit function when there is no more points
-				if (time > simulator.timeOut/5*10-2) // fpsTime = 0.5
-					{
-						run = true;
-						return;
-					}
-				else time++;
+				//bind the function
+				var run = simulator.run;
+				var simulatorRun = run.bind(simulator);
+
+				var getDistances = simulator.getDistances;
+				var simulatorGetDistances = getDistances.bind(simulator);
+
+				// Checking of execution time
+				var startTime = Math.floor(Date.now());
+
+				// Read the distances from Simulator, where the track was defined
+				var distances = simulatorGetDistances();
+
+				// TODO: define interface for standart wasm-model
+
+				Module.setFl(distances[0]); Module.setFr(distances[1]);
+				Module.setSlf(distances[2]); Module.setSlb(distances[3]);
+				Module.setSrf(distances[4]); Module.setSrb(distances[5]);
+
+				// console.log("Distance from FL : ",distances[0]);
+				// console.log("Distance from FR : ",distances[1]);
+				// console.log("Distance from SLF : ",distances[2]);
+				// console.log("Distance from SLB : ",distances[3]);
+
+				Module.setX(simulator.output.xi.value);
+				Module.setY(simulator.output.yi.value);
+
+				Module.setTime(simulator.output.ti.value);
+
+				// Calculate 
+				Module.execute();
+				
+				if(!simulationStatus && !Module.getStatus()){
+					
+					simulatorRun(Module.getStatus(),Module.getSteering(),Module.getAcceleration());
+					console.log("Get distances + set Module + execute : ",Math.floor(Date.now()) - startTime);
+				}
+				else return; // TODO: run again without page reload
 						
-				setTimeout(move1(simulator.pointsY[time], simulator.pointsX[time], simulator.angleR[time]), 20);
+				setTimeout(
+					move1(
+						simulator.output.yi.value,
+						simulator.output.xi.value,
+						simulator.output.degree.value * 180 / Math.PI)
+				, 16);
 
-					console.log("test X: ", simulator.pointsX[time]);
-					console.log("test Y: ", simulator.pointsY[time]);
-					console.log("test R: ", simulator.angleR[time],"\n\n");
-
+				// Calculate status
+				var zone = jsonSimulationConf.car.end;
+				var endX = zone2Coord.get(zone)[0];
+				var endY = zone2Coord.get(zone)[1];
+				
+				// There are taking in to account deviations from the central point of the end zone
+				if(simulator.output.xi.value >= (endX - 6) && simulator.output.xi.value <= (endX + 6) 
+					&& simulator.output.yi.value >= (endY - 6) && simulator.output.yi.value <= (endY + 6)){
+						simulationStatus = true;
+					}
+				
+				// Just diagnostic information
+				console.log("Status : ", simulator.output.triggerStatus);
+				console.log("Time : ", simulator.output.ti.value);
+				console.log("test X: ", simulator.output.xi.value);
+				console.log("test Y: ", simulator.output.yi.value);
+				console.log("test R: ", simulator.output.degree.value * 180 / Math.PI,"\n\n");
 			}
 		
 			function move1(x, y, degree){
+
+				// for(var progress=0; progress<=1; progress+=0.3)
+				// {
+				// 	x_new = x_previous + (x - x_previous) * progress;
+				// 	y_new = y_previous + (y - y_previous) * progress;
+
+				// 	console.log("X :", x_new), "\n";
+				// 	console.log("Y :", y_new), "\n";
+
+				// 	setTimeout( function()
+				// 		{
+				// 			setPosition(currentCar, x, 0.2, y);
+				// 		}
+				// 		, 200);
+				// }
+
+				// Update the point for the next round
+				// x_previous = x;
+				// y_previous = y;
 			
 				setPosition(currentCar, x, 0.2, y);
 				rotateCar(currentCar, degree);
-				setTimeout(move, 20);
+				setTimeout(move, 16);
 			}
 			
 		</script>

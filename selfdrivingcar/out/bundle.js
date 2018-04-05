@@ -34991,7 +34991,7 @@ define("Soutput", ["require", "exports"], function (require, exports) {
     }());
     exports.Soutput = Soutput;
 });
-define("Simulator", ["require", "exports", "math/math", "car/Car", "Sinput", "Soutput", "track/Track", "ControllerMock"], function (require, exports, math, Car_1, Sinput_1, Soutput_1, Track_1, ControllerMock_1) {
+define("Simulator", ["require", "exports", "math/math", "car/Car", "Sinput", "Soutput", "track/Track"], function (require, exports, math, Car_1, Sinput_1, Soutput_1, Track_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var Simulator = (function () {
@@ -35001,49 +35001,56 @@ define("Simulator", ["require", "exports", "math/math", "car/Car", "Sinput", "So
             this.fpsTime = math.unit('0.5 sec');
             this.car = new Car_1.Car(0, 0);
             this.track = new Track_1.Track();
-            this.pointsX = new Array();
-            this.pointsY = new Array();
-            this.angleR = new Array();
-            this.timeOut = 0;
+            this.output = new Soutput_1.Soutput(math.unit('0 m/s'), math.unit('0 m'), math.unit('0 m'), math.unit('0 s'), math.unit('0 deg'), false, false, false, false);
+            this.input = new Sinput_1.Sinput(math.unit('0 m/s^2'), math.unit('0 deg'), math.unit('0 m'), math.unit('0 m'), math.unit('0 s'), false, false, false, false);
+            this.calculate();
         }
-        Simulator.prototype.calculate = function (input) {
+        Simulator.prototype.calculate = function () {
             this.time = math.add(this.time, this.fpsTime);
-            if (math.add(this.velocity, math.multiply(input.acceleration, this.fpsTime)) < math.unit('60 km/h')) {
-                this.velocity = math.add(this.velocity, math.multiply(input.acceleration, this.fpsTime));
+            if (math.add(this.velocity, math.multiply(this.input.acceleration, this.fpsTime)) < math.unit('60 km/h')) {
+                this.velocity = math.add(this.velocity, math.multiply(this.input.acceleration, this.fpsTime));
             }
             var degree;
             if (this.velocity.equals(math.unit('0 m/s'))) {
                 degree = this.car.getDegree();
             }
             else {
-                degree = math.add(this.car.getDegree(), input.steering);
+                degree = math.add(this.car.getDegree(), this.input.steering);
             }
-            var x = math.add(input.x0, math.multiply(this.velocity, math.multiply(this.fpsTime, math.cos(degree))));
-            var y = math.subtract(input.y0, math.multiply(this.velocity, math.multiply(this.fpsTime, math.sin(degree))));
-            this.output = new Soutput_1.Soutput(this.velocity, x, y, this.time, degree, input.doorStatus, input.indicatorStatus, input.lightTimerStatus, input.triggerStatus);
+            var x = math.add(this.input.x0, math.multiply(this.velocity, math.multiply(this.fpsTime, math.cos(degree))));
+            var y = math.subtract(this.input.y0, math.multiply(this.velocity, math.multiply(this.fpsTime, math.sin(degree))));
+            this.output.velocity = this.velocity;
+            this.output.xi = x;
+            this.output.yi = y;
+            this.output.ti = this.time;
+            this.output.degree = degree,
+                this.output.doorStatus = this.input.doorStatus;
+            this.output.indicatorStatus = this.input.indicatorStatus;
+            this.output.lightTimerStatus = this.input.lightTimerStatus;
         };
-        Simulator.prototype.run = function () {
+        Simulator.prototype.getDistances = function () {
             var distances = this.car.getDistancesFromSensors(this.track);
-            var steering_controller = ControllerMock_1.ControllerMock.steering(distances);
-            var acceleration_controller = ControllerMock_1.ControllerMock.acceleration(this.time);
-            var input = new Sinput_1.Sinput(acceleration_controller, steering_controller, math.unit('0 m'), math.unit('0 m'), this.time, false, false, false, false);
-            this.calculate(input);
-            var trigger = false;
-            while (!trigger) {
-                trigger = ControllerMock_1.ControllerMock.gameOverTrigger(this.output.xi.value, this.output.yi.value, this.time);
-                this.car.setPosition([this.output.xi.value, this.output.yi.value]);
-                this.car.setDegree(this.output.degree);
-                this.pointsX.push(this.output.xi.value);
-                this.pointsY.push(this.output.yi.value);
-                this.timeOut = this.output.ti.value;
-                this.angleR.push(this.output.degree.value * 180 / math.PI);
-                var distances1 = this.car.getDistancesFromSensors(this.track);
-                var steering_controller1 = ControllerMock_1.ControllerMock.steering(distances1);
-                var acceleration_controller1 = ControllerMock_1.ControllerMock.acceleration(this.time);
-                input = new Sinput_1.Sinput(acceleration_controller1, steering_controller1, this.output.xi, this.output.yi, this.output.ti, false, false, false, false);
-                this.calculate(input);
-            }
-            return trigger;
+            return distances;
+        };
+        Simulator.prototype.initPosition = function (x, y) {
+            this.output.xi = math.unit(x, 'm');
+            this.output.yi = math.unit(y, 'm');
+            ;
+        };
+        Simulator.prototype.run = function (status, steering, acceleration) {
+            this.output.triggerStatus = status;
+            this.car.setPosition([this.output.xi.value, this.output.yi.value]);
+            this.car.setDegree(this.output.degree);
+            this.input.acceleration = math.unit(acceleration, "m/s^2");
+            this.input.steering = math.unit(steering, 'deg');
+            this.input.x0 = this.output.xi;
+            this.input.y0 = this.output.yi;
+            this.input.t0 = this.output.ti;
+            this.input.doorStatus = false;
+            this.input.indicatorStatus = false;
+            this.input.lightTimerStatus = false;
+            this.calculate();
+            return this.output.triggerStatus;
         };
         return Simulator;
     }());
