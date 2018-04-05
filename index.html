@@ -1050,7 +1050,7 @@
 			// Set initial car position for simulator
 			var initPosition = simulator.initPosition;
 			var simulatorInitPosition = initPosition.bind(simulator);
-			simulatorInitPosition(zone2Coord.get(zone)[0], zone2Coord.get(zone)[1]);
+			//simulatorInitPosition(zone2Coord.get(zone)[0], zone2Coord.get(zone)[1]);
 
 			// TODO: fix parameters sequence
 			setPosition(currentCar,zone2Coord.get(zone)[1], 0.2, zone2Coord.get(zone)[0]);
@@ -1108,6 +1108,11 @@
 				Module.setSlf(distances[2]); Module.setSlb(distances[3]);
 				Module.setSrf(distances[4]); Module.setSrb(distances[5]);
 
+				// console.log("Distance from FL : ",distances[0]);
+				// console.log("Distance from FR : ",distances[1]);
+				// console.log("Distance from SLF : ",distances[2]);
+				// console.log("Distance from SLB : ",distances[3]);
+
 				Module.setX(simulator.output.xi.value);
 				Module.setY(simulator.output.yi.value);
 
@@ -1136,8 +1141,8 @@
 				var endY = zone2Coord.get(zone)[1];
 				
 				// There are taking in to account deviations from the central point of the end zone
-				if(simulator.output.xi.value >= (endX - 5) && simulator.output.xi.value <= (endX + 5) 
-					&& simulator.output.yi.value >= (endY - 5) && simulator.output.yi.value <= (endY + 5)){
+				if(simulator.output.xi.value >= (endX - 6) && simulator.output.xi.value <= (endX + 6) 
+					&& simulator.output.yi.value >= (endY - 6) && simulator.output.yi.value <= (endY + 6)){
 						simulationStatus = true;
 					}
 				
