@@ -34946,7 +34946,9 @@ define("car/Car", ["require", "exports", "coord/Orientation", "car/Sensor", "mat
                 this.getSensor(Orientation_1.Orientation.FRONT_LEFT_SIDE).getMinDistance(track.walls, this),
                 this.getSensor(Orientation_1.Orientation.BACK_LEFT_SIDE).getMinDistance(track.walls, this),
                 this.getSensor(Orientation_1.Orientation.FRONT_RIGHT_SIDE).getMinDistance(track.walls, this),
-                this.getSensor(Orientation_1.Orientation.BACK_RIGHT_SIDE).getMinDistance(track.walls, this)
+                this.getSensor(Orientation_1.Orientation.BACK_RIGHT_SIDE).getMinDistance(track.walls, this),
+                this.getSensor(Orientation_1.Orientation.BACK_LEFT).getMinDistance(track.walls, this),
+                this.getSensor(Orientation_1.Orientation.BACK_RIGHT).getMinDistance(track.walls, this)
             ];
         };
         return Car;
