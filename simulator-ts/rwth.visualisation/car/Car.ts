@@ -134,7 +134,11 @@ class Car {
             /*srfDistance*/
                 this.getSensor(Orientation.FRONT_RIGHT_SIDE).getMinDistance(track.walls, this),
             /*srbDistance*/
-                this.getSensor(Orientation.BACK_RIGHT_SIDE).getMinDistance(track.walls, this)
+                this.getSensor(Orientation.BACK_RIGHT_SIDE).getMinDistance(track.walls, this),
+            /*blDistance*/
+                this.getSensor(Orientation.BACK_LEFT).getMinDistance(track.walls, this),
+            /*brbDistance*/
+                this.getSensor(Orientation.BACK_RIGHT).getMinDistance(track.walls, this)
             ];
     }
 }
