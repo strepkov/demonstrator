@@ -101,7 +101,7 @@ describe('The sensors test', () => {
         let sensor = car.getSensor(Orientation.FRONT_RIGHT); 
         let track = new Track;
         
-        expect(car.getDistancesFromSensors(track)).toEqual([70.15, 77.55, 8.15, 8.15, 7.65, 7.65]);
+        expect(car.getDistancesFromSensors(track)).toEqual([70.15, 77.55, 8.15, 8.15, 7.65, 7.65, 154.56690776089104, 148.7845536128401]);
     });
 
 });
