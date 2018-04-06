@@ -32,6 +32,8 @@
 			<button id="black-material">Black</button>
 			<button id="red-material">Red</button>
 			<button id="move">Start</button>
+			<button id="create">Export telemetry</button>
+			<a download="telemety-log.json" id="downloadlink" style="display: none">Download telemety-log</a>
 		
 		<!--<button onClick="showGameOverScreen()" style="position: absolute; top:50%;" id="restart_trigger">Trigger</button>-->
 		<div style="display: none; position: absolute; top: 0; bottom: 0; left: 0; right: 0; background-color: #000000; opacity: 1;" id="close_layer">
@@ -1024,8 +1026,35 @@
 				stats.update();
 			}
 
-			// Run logic using Simulator class
+			// Create an export log
+			var logObject = {
+					telemetry: []
+				};
 
+			(function () {
+				var textFile = null,
+					makeTextFile = function (text) {
+						var data = new Blob([text], { type: 'text/plain' });
+						// If we are replacing a previously generated file we need to
+						// manually revoke the object URL to avoid memory leaks.
+						if (textFile !== null) {
+							window.URL.revokeObjectURL(textFile);
+						}
+						textFile = window.URL.createObjectURL(data);
+						return textFile;
+					};
+				var create = document.getElementById('create');
+
+				create.addEventListener('click', function () {
+					var link = document.getElementById('downloadlink');
+					link.href = makeTextFile(JSON.stringify(logObject));
+					link.style.display = 'block';
+					link.style.color = "green";
+				}, false);
+			})();
+
+
+			// Run logic using Simulator class
 			var jsonSimulationConf;
 			var jsonZone2Coord;
 
@@ -1108,15 +1137,6 @@
 				Module.setSlf(distances[2]); Module.setSlb(distances[3]);
 				Module.setSrf(distances[4]); Module.setSrb(distances[5]);
 
-				// console.log("Distance from FL : ",distances[0]);
-				// console.log("Distance from FR : ",distances[1]);
-				// console.log("Distance from FLS : ",distances[2]);
-				// console.log("Distance from BLS : ",distances[3]);
-				// console.log("Distance from FRS : ",distances[4]);
-				// console.log("Distance from BRS : ",distances[5]);
-				// console.log("Distance from BL : ",distances[6]);
-				// console.log("Distance from BR : ",distances[7]);
-
 				Module.setX(simulator.output.xi.value);
 				Module.setY(simulator.output.yi.value);
 
@@ -1128,9 +1148,38 @@
 				if(!simulationStatus && !Module.getStatus()){
 					
 					simulatorRun(Module.getStatus(),Module.getSteering(),Module.getAcceleration());
-					console.log("Get distances + set Module + execute : ",Math.floor(Date.now()) - startTime);
+					//console.log("Get distances + set Module + execute : ",Math.floor(Date.now()) - startTime);
 				}
-				else return; // TODO: run again without page reload
+				else{
+					return; // TODO: run again without page reload
+				} 
+
+				// Just diagnostic information
+				// console.log("Distance from FL : ",distances[0]);
+				// console.log("Distance from FR : ",distances[1]);
+				// console.log("Distance from FLS : ",distances[2]);
+				// console.log("Distance from BLS : ",distances[3]);
+				// console.log("Distance from FRS : ",distances[4]);
+				// console.log("Distance from BRS : ",distances[5]);
+				// console.log("Distance from BL : ",distances[6]);
+				// console.log("Distance from BR : ",distances[7]);
+
+				// console.log("Status : ", simulator.output.triggerStatus);
+				// console.log("Time : ", simulator.output.ti.value);
+				// console.log("Position [X,Y]: [", simulator.output.xi.value,",",simulator.output.yi.value,"]");
+				// console.log("Rotation deg: ", simulator.output.degree.value * 180 / Math.PI);
+				// console.log("Velocity: ", simulator.output.velocity.value,"\n\n");
+
+				logObject.telemetry.push({
+					"Status": simulator.output.triggerStatus,
+					"Time": simulator.output.ti.value,
+					"Position": [simulator.output.xi.value, simulator.output.yi.value],
+					"Rotation": simulator.output.degree.value * 180 / Math.PI,
+					"Velocity": simulator.output.velocity.value,
+					"Sensors": distances
+				});
+
+				console.log("Get distances + set Module + execute + log : ",Math.floor(Date.now()) - startTime);
 						
 				setTimeout(
 					move1(
@@ -1149,13 +1198,6 @@
 					&& simulator.output.yi.value >= (endY - 6) && simulator.output.yi.value <= (endY + 6)){
 						simulationStatus = true;
 					}
-				
-				// Just diagnostic information
-				console.log("Status : ", simulator.output.triggerStatus);
-				console.log("Time : ", simulator.output.ti.value);
-				console.log("test X: ", simulator.output.xi.value);
-				console.log("test Y: ", simulator.output.yi.value);
-				console.log("test R: ", simulator.output.degree.value * 180 / Math.PI,"\n\n");
 			}
 		
 			function move1(x, y, degree){
