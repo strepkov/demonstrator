@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test evaluator</title>
+    <meta charset="utf-8">
+</head>
+<body>
+    <canvas id="canvas" width="1600" height="700"></canvas>
+    <div id="color" style="width:200px;height:50px;float:left"></div>
+    <script src="trajectoryEval.js"></script>
+    <script>
+        var img = new Image();
+        img.src = "test_track_cuted_numbers.jpg";
+
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        
+        img.onload = function () {
+            ctx.drawImage(img, 0, 0);
+            img.style.display = 'none';
+        };
+
+        var color = document.getElementById('color');
+        function pick(event) {
+            var x = event.layerX;
+            var y = event.layerY;
+            var pixel = ctx.getImageData(x, y, 1, 1);
+            var data = pixel.data;
+            var rgba = x+" "+ y;
+            color.style.background = rgba;
+            color.textContent = rgba;
+        }
+        canvas.addEventListener('mousemove', pick);
+        
+        ctx.fillStyle = 'white';
+        
+        setTimeout(function()
+            {
+                for(var i=0; i<jsonSimulationData.telemetry.length; i++){
+                    ctx.fillRect(
+                            (800-jsonSimulationData.telemetry[i].Position[0]*4.35),
+                            (200+jsonSimulationData.telemetry[i].Position[1]*4.35),
+                            5,5);
+                }
+            }
+        ,50);
+
+    </script>
+</body>
+</html>
