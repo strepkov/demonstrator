@@ -34,8 +34,8 @@ for(var i=0; i<jsonSimulationData.telemetry.length-1; i++){
                 // Add begin and end points of vector
                 "x0": jsonSimulationData.telemetry[i].Position[0],
                 "y0": jsonSimulationData.telemetry[i].Position[1],
-                "x1": jsonSimulationData.telemetry[i].Position[0]+diffX,
-                "y1": jsonSimulationData.telemetry[i].Position[1]+diffY
+                "x1": jsonSimulationData.telemetry[i].Position[0]-diffX*6, // The constant size influences on arrow length 
+                "y1": jsonSimulationData.telemetry[i].Position[1]-diffY*6
             }
     });
 }
