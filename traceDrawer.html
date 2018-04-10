@@ -41,7 +41,7 @@
 
         setTimeout(function()
             {
-                for(var i=0; i<jsonSimulationData.telemetry.length; i++){
+                for(var i=0; i<jsonSimulationData.telemetry.length-1; i++){
 
                     tempX = 800-jsonSimulationData.telemetry[i].Position[0]*4.35;
                     tempY = 200+jsonSimulationData.telemetry[i].Position[1]*4.35;
