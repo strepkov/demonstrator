@@ -67,7 +67,7 @@ class ControllerMock{
     	}
     	else{
 
-    	    acceleration = math.unit('2 m/s^2');
+    	    acceleration = math.unit('1 m/s^2');
         }
         
         return acceleration;
