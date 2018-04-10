@@ -14,9 +14,10 @@ function readJSONFile(file) {
     rawFile.send(null);
 }
 
-readJSONFile("telemety-log.json");
+readJSONFile("telemetry-log.json");
 
 var distBetweenPoints = new Array();
+var distBetweenPointsSum = 0;
 
 // Read all telemetry records from the file
 for(var i=0; i<jsonSimulationData.telemetry.length-1; i++){
@@ -38,6 +39,9 @@ for(var i=0; i<jsonSimulationData.telemetry.length-1; i++){
                 "y1": jsonSimulationData.telemetry[i].Position[1]-diffY*6
             }
     });
+
+    distBetweenPointsSum += Math.sqrt(Math.pow(diffX,2)+Math.pow(diffY,2));
 }
 
 console.log(distBetweenPoints.length);
+console.log("Length of WASM controller : ",distBetweenPointsSum);
