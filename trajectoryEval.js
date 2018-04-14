@@ -14,7 +14,7 @@ function readJSONFile(file) {
     rawFile.send(null);
 }
 
-readJSONFile("telemetry-log.json");
+readJSONFile("telemetry-log-tsc.json");
 
 var distBetweenPoints = new Array();
 var distBetweenPointsSum = 0;
