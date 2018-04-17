@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Test sender</title>
+        <meta charset="utf-8">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="js-libs/jszip.min.js"></script>
+    </head>
+<body>
+    <div class="result">
+        
+    </div>
+    <script>
+        var fileData; // some data
+
+        function readFile(file) {
+            var rawFile = new XMLHttpRequest();
+            rawFile.open("GET", file, false);
+            rawFile.onreadystatechange = function () {
+                if (rawFile.readyState === 4) {
+                    if (rawFile.status === 200 || rawFile.status == 0) {
+                        fileData = rawFile.responseText;
+                    }
+                }
+            }
+            rawFile.send(null);
+        }
+
+    readFile("telemetry-log.json");
+
+    var zipContainer = new JSZip();
+    zipContainer.file("telemetry-log.txt", fileData);
+
+    zipContainer.generateAsync({type:"base64"}).then(function (content) {
+        
+        $.post("http://127.0.0.1:7070/example/", content, function(data) {
+        $(".result").html(data); 
+        });
+    });
+    
+    </script>
+</body>
+</html>
