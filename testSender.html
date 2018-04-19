@@ -32,10 +32,16 @@
     zipContainer.file("telemetry-log.txt", fileData);
 
     zipContainer.generateAsync({type:"base64"}).then(function (content) {
-        
+
         $.post("http://127.0.0.1:7070/example/", content, function(data) {
         $(".result").html(data); 
         });
+
+        // another way to send the row data to the server
+        // var blob = new Blob([content], {type: 'application/octet-binary'});
+        // var xhr = new XMLHttpRequest();
+        // xhr.open("POST", 'http://127.0.0.1:7070/example/', true);
+        // xhr.send(blob);
     });
     
     </script>
