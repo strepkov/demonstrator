@@ -21,17 +21,20 @@
 				display:block;
 			}
 			a { color: red }
+			span { color:greenyellow }
 		</style>
 
 	</head>
 	
 	<body>
-		<div align="center">
-			<button id="blue-material">Blue</button>
+		<div align="center" style="color: greenyellow">
+			<!-- <button id="blue-material">Blue</button>
 			<button id="silver-material">Pure Chrome</button>
 			<button id="black-material">Black</button>
-			<button id="red-material">Red</button>
+			<button id="red-material">Red</button> -->
 			<button id="move">Start</button>
+			<input type="range" min="0" max="100" value="0" class="slider" id="myRange">
+			Noise :<span id="noise"></span>
 			<button id="create">Export telemetry</button>
 			<a download="telemety-log.json" id="downloadlink" style="display: none">Download telemety-log</a>
 		
@@ -60,8 +63,18 @@
                 window.simulator = Simulator;
             });
         </script>
+
+		<script>
+			var slider = document.getElementById("myRange");
+			var output = document.getElementById("noise");
+			output.innerHTML = slider.value;
 		
-		<script>	
+			slider.oninput = function () {
+				output.innerHTML = this.value;
+			}
+		</script>
+		
+		<script>
 			if ( ! Detector.webgl ) {
 				Detector.addGetWebGLMessage();
 			}
@@ -596,49 +609,49 @@
 			var greyRough = new THREE.MeshLambertMaterial( { color: 0x1D1D1D } );
 			var redRough = new THREE.MeshLambertMaterial( { color: 0x330500 } );//seats
 
-			function setBlue(){
-				var housing = [body, rightDoor, leftDoor, backPlate2, backPlate];
-				for(var i = 0; i<housing.length; i++){
-					setColor(materialBlue, housing[i]);
-				}
-			}
-			var blueButton = document.getElementById('blue-material');
-			blueButton.addEventListener('click', function(){
-				setBlue();
-			});
+			// function setBlue(){
+			// 	var housing = [body, rightDoor, leftDoor, backPlate2, backPlate];
+			// 	for(var i = 0; i<housing.length; i++){
+			// 		setColor(materialBlue, housing[i]);
+			// 	}
+			// }
+			// var blueButton = document.getElementById('blue-material');
+			// blueButton.addEventListener('click', function(){
+			// 	setBlue();
+			// });
 
-			function setSilver(){
-				var housing = [body, rightDoor, leftDoor, backPlate2, backPlate];
-				for(var i = 0; i<housing.length; i++){
-					setColor(pureChrome, housing[i]);
-				}
-			}
-			var silverButton = document.getElementById('silver-material');
-			silverButton.addEventListener('click', function(){
-				setSilver();
-			});
+			// function setSilver(){
+			// 	var housing = [body, rightDoor, leftDoor, backPlate2, backPlate];
+			// 	for(var i = 0; i<housing.length; i++){
+			// 		setColor(pureChrome, housing[i]);
+			// 	}
+			// }
+			// var silverButton = document.getElementById('silver-material');
+			// silverButton.addEventListener('click', function(){
+			// 	setSilver();
+			// });
 
-			function setBlack(){
-				var housing = [body, rightDoor, leftDoor, backPlate2, backPlate];
-				for(var i = 0; i<housing.length; i++){
-					setColor(materialBlack, housing[i]);
-				}
-			}
-			var blackButton = document.getElementById('black-material');
-			blackButton.addEventListener('click', function(){
-				setBlack();
-			});
+			// function setBlack(){
+			// 	var housing = [body, rightDoor, leftDoor, backPlate2, backPlate];
+			// 	for(var i = 0; i<housing.length; i++){
+			// 		setColor(materialBlack, housing[i]);
+			// 	}
+			// }
+			// var blackButton = document.getElementById('black-material');
+			// blackButton.addEventListener('click', function(){
+			// 	setBlack();
+			// });
 			
-			function setRed(){
-				var housing = [body, rightDoor, leftDoor, backPlate2, backPlate];
-				for(var i = 0; i<housing.length; i++){
-					setColor(materialRed, housing[i]);
-				}
-			}
-			var redButton = document.getElementById('red-material');
-			redButton.addEventListener('click', function(){
-				setRed();
-			});
+			// function setRed(){
+			// 	var housing = [body, rightDoor, leftDoor, backPlate2, backPlate];
+			// 	for(var i = 0; i<housing.length; i++){
+			// 		setColor(materialRed, housing[i]);
+			// 	}
+			// }
+			// var redButton = document.getElementById('red-material');
+			// redButton.addEventListener('click', function(){
+			// 	setRed();
+			// });
 
 			var moveButton = document.getElementById('move');
 			moveButton.addEventListener('click', function(){
@@ -1131,11 +1144,14 @@
 				// Read the distances from Simulator, where the track was defined
 				var distances = simulatorGetDistances();
 
-				// TODO: define interface for standart wasm-model
-
-				Module.setFl(distances[0]); Module.setFr(distances[1]);
-				Module.setSlf(distances[2]); Module.setSlb(distances[3]);
-				Module.setSrf(distances[4]); Module.setSrb(distances[5]);
+				// TODO: define interface for standard wasm-model
+				// TODO: which exact value should be randomly generated?
+				Module.setFl(distances[0]*(Math.floor(Math.random() * slider.value) + 95)/100); 
+				Module.setFr(distances[1]*(Math.floor(Math.random() * slider.value) + 95)/100);
+				Module.setSlf(distances[2]*(Math.floor(Math.random() * slider.value) + 95)/100);
+				Module.setSlb(distances[3]*(Math.floor(Math.random() * slider.value) + 95)/100);
+				Module.setSrf(distances[4]*(Math.floor(Math.random() * slider.value) + 95)/100);
+				Module.setSrb(distances[5]*(Math.floor(Math.random() * slider.value) + 95)/100);
 
 				Module.setX(simulator.output.xi.value);
 				Module.setY(simulator.output.yi.value);
