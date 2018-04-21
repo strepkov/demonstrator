@@ -20,14 +20,50 @@
     </head>
 <body>
     <div class="box">
-        <div class="box1"><iframe src="https://ide.embeddedmontiarc.com" height="900" frameborder="0" scrolling="no" width="900" align="left"></iframe></div>
-        <div class="box1"><iframe src="http://0.0.0.0:8000/index.html" height="900" frameborder="0" scrolling="no" width="900" align="right"></iframe></div>
+
+        <iframe id="ide" src="onlineIDE/api/load.html?mountPoint=/" height="900" frameborder="0" scrolling="no" width="900"></iframe>
+
+    </div>
     </div>
     <div>
-        <button>Test1</button>
-        <button>Test2</button>
-        <button>Test3</button>
-        <button>Test4</button>
+        <button onclick="readAllFiles()">Read all files</button>
+        <button onclick="appendFile()">Append test file</button>
     </div>
+    <script>
+
+        function readFile(){
+            readFileName("text.txt");
+        }
+
+        function readFileName(name) {
+            
+            document.getElementById("ide").contentWindow.api.fs.readFile('/'+name,function (err, data) {
+            if (err) throw err;
+            console.log(name);
+            console.log(data);});
+        }
+
+        function readAllFiles() {
+            
+            document.getElementById("ide").contentWindow.api.fs.readdir('/',function (err, data)
+                    {
+                        if (err) throw err;
+                        data.forEach( function (item)
+                            {
+                                if((item.name).includes("emam")){
+
+                                    readFileName(item.name);
+                                }
+                                    
+                            });
+                    });
+        }
+
+        function appendFile(){
+            document.getElementById("ide").contentWindow.api.fs.appendFile('/testFile.emam',"some data",function (err, data) {
+            if (err) throw err;
+            });
+        }
+    </script>
 </body>
 </html>
