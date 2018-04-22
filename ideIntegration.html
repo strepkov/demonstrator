@@ -17,52 +17,26 @@
                 width:1800px;
             }
         </style>
+        <script src="js-libs/jszip.min.js"></script>
     </head>
 <body>
     <div class="box">
-
         <iframe id="ide" src="onlineIDE/api/load.html?mountPoint=/" height="900" frameborder="0" scrolling="no" width="1200"></iframe>
-
-    </div>
     </div>
     <div>
-        <button onclick="readAllFiles()">Read all files</button>
         <button onclick="appendTestModel()">Append test file</button>
+        <button onclick="readAllFiles()">Read all files</button>
+        <button onclick="showContent()">Show Content</button>
+        <button onclick="packData()">Pack Data</button>
+        <button onclick="sendData()">Send Data</button>
     </div>
     <script>
 
-        function readFile(){
-            readFileName("text.txt");
-        }
-
-        function readFileName(name) {
-            
-            document.getElementById("ide").contentWindow.api.fs.readFile('/'+name,function (err, data) {
-            if (err) throw err;
-            console.log(name);
-            console.log(data);});
-        }
-
-        function readAllFiles() {
-            
-            document.getElementById("ide").contentWindow.api.fs.readdir('/',function (err, data)
-                    {
-                        if (err) throw err;
-                        data.forEach( function (item)
-                            {
-                                if((item.name).includes("emam")){
-
-                                    readFileName(item.name);
-                                }
-                                    
-                            });
-                    });
-        }
-
         function appendFile(fileName,fileContent){
-            document.getElementById("ide").contentWindow.api.fs.appendFile(fileName,fileContent,function (err, data) {
-            if (err) throw err;
-            });
+            document.getElementById("ide").contentWindow.api.
+                fs.appendFile(fileName,fileContent,function (err, data) {
+                    if (err) throw err;
+                });
         }
 
         function readFileFromDisk(file) {
@@ -87,6 +61,73 @@
             appendFile("GameOverTrigger.emam", readFileFromDisk("simulator1/GameOverTrigger.emam"));
         }
 
+        // TODO: Read files from ide and pack
+
+        var filesData = Array();
+        var fileNames = Array();
+
+        function readFileName(name) {
+            
+            document.getElementById("ide").contentWindow.api.fs.readFile('/'+name, function (err, data) {
+                if (err) throw err;
+                filesData.push(data);
+                fileNames.push(name);
+            });
+        }
+
+        function readAllFiles() {
+            
+            document.getElementById("ide").contentWindow.api.fs.readdir('/',function (err, data)
+                    {
+                        if (err) throw err;
+                        data.forEach( function (item)
+                            {
+                                if((item.name).includes("emam")){
+
+                                    readFileName(item.name);
+                                }
+                            });
+                    });
+        }
+
+        function showContent(){
+
+            function func(item,index){
+                console.log(item);
+                console.log(filesData[index]);
+            }
+
+            fileNames.forEach(func);
+        }
+
+        var zipContainer = new JSZip();
+
+        function packData(){
+
+            var simulatorZip = zipContainer.folder("simulator1");
+
+            function func(item,index){
+
+                simulatorZip.file(item, filesData[index]);
+                console.log(item," was packed!");
+            }
+
+            fileNames.forEach(func);
+        }
+
+        // TODO: Send files to the server
+
+        function sendData(){
+            zipContainer.generateAsync({type:"blob"}).then(function (content) {
+
+                var blob = new Blob([content], {type: 'application/octet-binary'});
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", 'http://127.0.0.1:7070/example/', true);
+                xhr.send(blob);
+            });
+        }
+
+        // TODO handle folder unzip from the server side
 
     </script>
 </body>
