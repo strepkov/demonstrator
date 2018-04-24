@@ -104,11 +104,12 @@
 
         function packData(){
 
-            var simulatorZip = zipContainer.folder("simulator1");
+            // var simulatorZip = zipContainer.folder("simulator1");
 
             function func(item,index){
 
-                simulatorZip.file(item, filesData[index]);
+                // simulatorZip.file(item, filesData[index]);
+                zipContainer.file(item, filesData[index]);
                 console.log(item," was packed!");
             }
 
@@ -119,11 +120,17 @@
 
         function sendData(){
             zipContainer.generateAsync({type:"blob"}).then(function (content) {
-
+                
                 var blob = new Blob([content], {type: 'application/octet-binary'});
                 var xhr = new XMLHttpRequest();
-                xhr.open("POST", 'http://127.0.0.1:7070/example/', true);
+                xhr.open("POST", 'http://127.0.0.1:7070/receiver/', true);
                 xhr.send(blob);
+                
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4) {
+                        console.log(xhr.responseText);
+                    }
+                }
             });
         }
 
