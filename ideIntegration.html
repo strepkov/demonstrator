@@ -117,25 +117,51 @@
             fileNames.forEach(func);
         }
 
-        // TODO: Send files to the server
+
+        var receivedDataFromServer;
+
+        var t0 = performance.now();
 
         function sendData(){
             zipContainer.generateAsync({type:"blob"}).then(function (content) {
                 
-                var blob = new Blob([content], {type: 'application/octet-binary'});
+                var blob1 = new Blob([content], {type: 'application/octet-binary'});
                 var xhr = new XMLHttpRequest();
-                xhr.open("POST", 'http://127.0.0.1:7070/receiver/', true);
-                xhr.send(blob);
+                //xhr.open("POST", 'http://137.226.168.11:80/receiver/', true);
+                xhr.open("POST", 'http://0.0.0.0:7070/receiver/', true);
+                xhr.send(blob1);
+                xhr.responseType = "blob";
                 
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === 4) {
-                        console.log(xhr.responseText);
+                        receivedDataFromServer = xhr.response;
+                        console.log(xhr.response);
+                        var t1 = performance.now();
+                        // Write to the console a compilation time
+                        console.log("Compilation time: " + ((t1 - t0)/1000) + " seconds.");
+                        saveFileFromResponse();
                     }
                 }
             });
         }
 
-        // TODO handle folder unzip from the server side
+        // TODO: save file from variable to VFS
+
+        function saveFileFromResponse(){
+
+            var new_zip = new JSZip();
+
+            new_zip.loadAsync(receivedDataFromServer).then(function (zip) {
+                Object.keys(zip.files).forEach(function (filename) {
+                    zip.files[filename].async('string').then(function (fileData) {
+                        console.log(filename);
+                        appendFile(".home/" + filename, fileData);
+                    });
+                });
+            });
+        }
+
+        // TODO: read file from VFS to use in index.html file
 
     </script>
 </body>
