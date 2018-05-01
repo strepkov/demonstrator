@@ -52,7 +52,7 @@
 		<script src="js/loaders/AssimpJSONLoader.js"></script>
 		<script src="js/Detector.js"></script>
 		<script src="js/libs/stats.min.js"></script>
-		<script src="mainController.js"></script>
+		<!-- <script src="mainController.js"></script> -->
 		<script src="zone2coord.js"></script>
 
 		<script src="simulator-ts/libs/require.js"></script>
@@ -1070,6 +1070,7 @@
 			// Run logic using Simulator class
 			var jsonSimulationConf;
 			var jsonZone2Coord;
+			var rawWebAssembly;
 
 			var simulationStatus = false;
 
@@ -1101,7 +1102,7 @@
 			zone = jsonSimulationConf.car.end;
 			console.log("X : ", zone2Coord.get(zone)[0]," Y : ", zone2Coord.get(zone)[1]);
 
-			}, 3000);
+			}, 20000);
 
 			// Read the file with configuration
 			function readJSONFile(file)

@@ -21,7 +21,8 @@
     </head>
 <body>
     <div class="box">
-        <iframe id="ide" src="onlineIDE/api/load.html?mountPoint=/" height="900" frameborder="0" scrolling="no" width="1200"></iframe>
+        <iframe id="ide" src="onlineIDE/api/load.html?mountPoint=[EmbeddedMontiArc]/demonstrator/IDE" height="900" frameborder="0" scrolling="no" width="800"></iframe>
+        <iframe id="indexSimulator" src="index.html"  height="900" width="900"></iframe>
     </div>
     <div>
         <button onclick="appendTestModel()">Append test file</button>
@@ -30,8 +31,45 @@
         <button onclick="packData()">Pack Data</button>
         <button onclick="sendData()">Send Data</button>
         <input type="button"  value="Open Simulator" onclick="window.open('index.html','_blank','resizable=yes')"/>
+        <button onclick="checkWasm()">check and pass wasm</button>
     </div>
     <script>
+
+        var testURI;
+
+        function loadMainController(){
+
+            //document.getElementById("indexSimulator").contentWindow.document.getElementById("mainController").text.write("var b = 10;");
+            var doc = document.getElementById("indexSimulator").contentWindow.document;
+            var script_tag = doc.createElement('script');
+            script_tag.id = "mainController";
+            script_tag.text = rawFileData[0];
+            doc.body.appendChild(script_tag);
+
+            //var iframe = document.getElementById("indexSimulator");
+            //console.log(iframe.contentDocument.getElementById("mainController").text);
+            //iframe.src = "onlineIDE/api/static.html?method=raw&mountPoint=[EmbeddedMontiArc]/demonstrator/IDE&path=/.home/mainController.js";
+
+            //iframe.contentWindow.document = filesData[0];
+            // readFileName(".home/mainController.js");
+            // var doc = document.getElementById('mainController').contentWindow.document;
+            // doc.open();
+            // doc.write(filesData[4]);
+            // doc.close();
+            //console.log(document.getElementById("mainController").document.documentURI);
+        }
+
+        function loadWasm(){
+            document.getElementById("indexSimulator").contentWindow.rawWebAssembly = rawFileData[1];
+            setTimeout(function(){
+                loadMainController();
+            },100);
+        }
+
+        function checkWasm(){
+
+            if (checkWasmBinaryData(rawFileData[1])) loadWasm();
+        }
 
         function appendFile(fileName,fileContent){
             document.getElementById("ide").contentWindow.api.
@@ -128,7 +166,7 @@
                 var blob1 = new Blob([content], {type: 'application/octet-binary'});
                 var xhr = new XMLHttpRequest();
                 //xhr.open("POST", 'http://137.226.168.11:80/receiver/', true);
-                xhr.open("POST", 'http://0.0.0.0:7070/receiver/', true);
+                 xhr.open("POST", 'http://0.0.0.0:7070/receiver/', true);
                 xhr.send(blob1);
                 xhr.responseType = "blob";
                 
@@ -147,22 +185,33 @@
 
         // TODO: save file from variable to VFS
 
+        var rawFileData = new Array();
+
         function saveFileFromResponse(){
 
             var new_zip = new JSZip();
 
             new_zip.loadAsync(receivedDataFromServer).then(function (zip) {
                 Object.keys(zip.files).forEach(function (filename) {
-                    zip.files[filename].async('string').then(function (fileData) {
+                    zip.files[filename].async('uint8array').then(function (fileData) {
                         console.log(filename);
-                        appendFile(".home/" + filename, fileData);
+                        //appendFile(".home/" + filename, fileData);
+                        rawFileData.push(fileData);
                     });
                 });
             });
         }
 
-        // TODO: read file from VFS to use in index.html file
+        function checkWasmBinaryData(data){
+                
+                var valid = WebAssembly.validate(data);
+                console.log("The given bytes are "
+                    + (valid ? "" : "not ") + "a valid wasm module");  
+            return valid;            
+        }
 
+
+        // TODO: read file from VFS to use in index.html file
     </script>
 </body>
 </html>
