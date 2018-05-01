@@ -32,6 +32,7 @@
 			<button id="silver-material">Pure Chrome</button>
 			<button id="black-material">Black</button>
 			<button id="red-material">Red</button> -->
+			<button onclick="instantiateWasm()">Instantiate .wasm</button>
 			<button id="move">Start</button>
 			<input type="range" min="0" max="100" value="0" class="slider" id="myRange">
 			Noise :<span id="noise"></span>
@@ -1241,6 +1242,11 @@
 				setPosition(currentCar, x, 0.2, y);
 				rotateCar(currentCar, degree);
 				setTimeout(move, 16);
+			}
+
+			function instantiateWasm(){
+				
+				console.log(rawWebAssembly.byteLength);
 			}
 			
 		</script>

@@ -21,7 +21,7 @@
     </head>
 <body>
     <div class="box">
-        <iframe id="ide" src="onlineIDE/api/load.html?mountPoint=[EmbeddedMontiArc]/demonstrator/IDE" height="900" frameborder="0" scrolling="no" width="800"></iframe>
+        <iframe id="ide" src="onlineIDE/api/load.html?mountPoint=[EmbeddedMontiArc]/demonstrator/IDE" height="900" frameborder="0" scrolling="no" width="400"></iframe>
         <iframe id="indexSimulator" src="index.html"  height="900" width="900"></iframe>
     </div>
     <div>
@@ -59,8 +59,18 @@
             //console.log(document.getElementById("mainController").document.documentURI);
         }
 
+        function loadMainControllerWasm(){
+
+            var doc1 = document.getElementById("indexSimulator").contentWindow.document;
+            var script_tag1 = doc1.createElement('script');
+            script_tag1.id = "mainControllerWasm";
+            script_tag1.text = "var Module = {wasmBinary: function(file) {return rawWebAssembly;}};";
+            doc1.body.appendChild(script_tag1);
+        }
+
         function loadWasm(){
             document.getElementById("indexSimulator").contentWindow.rawWebAssembly = rawFileData[1];
+            //loadMainControllerWasm();
             setTimeout(function(){
                 loadMainController();
             },100);
@@ -193,11 +203,19 @@
 
             new_zip.loadAsync(receivedDataFromServer).then(function (zip) {
                 Object.keys(zip.files).forEach(function (filename) {
-                    zip.files[filename].async('uint8array').then(function (fileData) {
+                    if(filename.includes("wasm")){
+                        zip.files[filename].async('uint8array').then(function (fileData) {
+                        console.log(filename);
+                        //appendFile(".home/" + filename, fileData);
+                        rawFileData.push(fileData);
+                    });}
+                    else{
+                    zip.files[filename].async('string').then(function (fileData) {
                         console.log(filename);
                         //appendFile(".home/" + filename, fileData);
                         rawFileData.push(fileData);
                     });
+                    }
                 });
             });
         }
