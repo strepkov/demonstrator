@@ -35,9 +35,10 @@
 			<button onclick="instantiateWasm()">Instantiate .wasm</button>
 			<button id="move">Start</button>
 			<input type="range" min="0" max="100" value="0" class="slider" id="myRange">
-			Noise :<span id="noise"></span>
+			Noise :<span id="noise">0</span>
 			<button id="create">Export telemetry</button>
 			<a download="telemety-log.json" id="downloadlink" style="display: none">Download telemety-log</a>
+			Simulation Time :<span id="time">0 sec</span>
 		
 		<!--<button onClick="showGameOverScreen()" style="position: absolute; top:50%;" id="restart_trigger">Trigger</button>-->
 		<div style="display: none; position: absolute; top: 0; bottom: 0; left: 0; right: 0; background-color: #000000; opacity: 1;" id="close_layer">
@@ -53,7 +54,7 @@
 		<script src="js/loaders/AssimpJSONLoader.js"></script>
 		<script src="js/Detector.js"></script>
 		<script src="js/libs/stats.min.js"></script>
-		<!-- <script src="mainController.js"></script> -->
+		<script src="mainController.js"></script>
 		<script src="zone2coord.js"></script>
 
 		<script src="simulator-ts/libs/require.js"></script>
@@ -1072,6 +1073,7 @@
 			var jsonSimulationConf;
 			var jsonZone2Coord;
 			var rawWebAssembly;
+			var delayBetweenExecution = 16;
 
 			var simulationStatus = false;
 
@@ -1103,7 +1105,7 @@
 			zone = jsonSimulationConf.car.end;
 			console.log("X : ", zone2Coord.get(zone)[0]," Y : ", zone2Coord.get(zone)[1]);
 
-			}, 20000);
+			}, 3000);
 
 			// Read the file with configuration
 			function readJSONFile(file)
@@ -1188,6 +1190,8 @@
 				// console.log("Rotation deg: ", simulator.output.degree.value * 180 / Math.PI);
 				// console.log("Velocity: ", simulator.output.velocity.value,"\n\n");
 
+				showTime(simulator.output.ti);
+
 				logObject.telemetry.push({
 					"Status": simulator.output.triggerStatus,
 					"Time": simulator.output.ti.value,
@@ -1241,12 +1245,16 @@
 			
 				setPosition(currentCar, x, 0.2, y);
 				rotateCar(currentCar, degree);
-				setTimeout(move, 16);
+				setTimeout(move, delayBetweenExecution);
 			}
 
 			function instantiateWasm(){
 				
 				console.log(rawWebAssembly.byteLength);
+			}
+
+			function showTime(value){
+				document.getElementById("time").innerHTML = Math.round(parseFloat(value)) + " sec";
 			}
 			
 		</script>

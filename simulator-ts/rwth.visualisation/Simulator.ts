@@ -11,8 +11,8 @@ export {Simulator}
 class Simulator {
 
 
-    // fps = 1/s -> fpsTime is 1/fps
-    public fpsTime;
+    // fps = 1/s -> samplingTime is 1/fps
+    public samplingTime;
     private velocity;
     private time;
     private car: Car;
@@ -27,7 +27,7 @@ class Simulator {
         // Initial velocity is 0 m/s, Initial time is 0 s
         this.velocity = math.unit('0 m/s'); // v - m/s
         this.time = math.unit('0 sec'); // t
-        this.fpsTime = math.unit('0.5 sec');
+        this.samplingTime = math.unit('0.5 sec');
         
         this.car = new Car(0,0);
         this.track = new Track();
@@ -72,12 +72,12 @@ class Simulator {
     public calculate() {
         
         // time = t+(1/20)s, for t=0s
-        this.time = math.add(this.time, this.fpsTime);
+        this.time = math.add(this.time, this.samplingTime);
         
         // velocity = v+(input)acceleration*(1/20)s, for v=0 m/ss
-        if ( math.add(this.velocity, math.multiply(this.input.acceleration, this.fpsTime)) < math.unit('60 km/h')){ 
+        if ( math.add(this.velocity, math.multiply(this.input.acceleration, this.samplingTime)) < math.unit('60 km/h')){ 
             
-            this.velocity = math.add(this.velocity, math.multiply(this.input.acceleration, this.fpsTime));
+            this.velocity = math.add(this.velocity, math.multiply(this.input.acceleration, this.samplingTime));
         }
         
         // calculation of car rotation
@@ -94,9 +94,9 @@ class Simulator {
 
         //Calculate positioin of the car
         // x=(input)x+v*t*cos((rad)degree) // degree * Math.PI / 180 - radian conversioin
-        let x = math.add(this.input.x0, math.multiply(this.velocity, math.multiply(this.fpsTime, math.cos(degree))));
+        let x = math.add(this.input.x0, math.multiply(this.velocity, math.multiply(this.samplingTime, math.cos(degree))));
         // y=(input)y+v*t*sin((rad)degree)
-        let y = math.subtract(this.input.y0, math.multiply(this.velocity, math.multiply(this.fpsTime, math.sin(degree))));
+        let y = math.subtract(this.input.y0, math.multiply(this.velocity, math.multiply(this.samplingTime, math.sin(degree))));
 
         this.output.velocity = this.velocity;
         this.output.xi = x;
