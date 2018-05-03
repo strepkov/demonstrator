@@ -22,22 +22,60 @@
 			}
 			a { color: red }
 			span { color:greenyellow }
+			.column {
+    			float: left;
+    			padding: 10px;
+			}
+
+			/* Clear floats after the columns */
+			.row:after {
+			    content: "";
+			    display: table;
+			    clear: both;
+			}
 		</style>
 
 	</head>
 	
 	<body>
-		<div align="center" style="color: greenyellow">
+		<div class="row">
 			<!-- <button id="blue-material">Blue</button>
 			<button id="silver-material">Pure Chrome</button>
 			<button id="black-material">Black</button>
 			<button id="red-material">Red</button> -->
-			<button id="move">Start</button>
-			<input type="range" min="0" max="100" value="0" class="slider" id="myRange">
-			Noise :<span id="noise"></span>
-			<button id="create">Export telemetry</button>
-			<a download="telemety-log.json" id="downloadlink" style="display: none">Download telemety-log</a>
-		
+			<div class="column">
+				<button onclick="instantiateWasm()">Instantiate .wasm</button>
+			</div>
+			<div class="column">
+				<div class="row" align ="left">
+					<button id="move">Start</button>
+				</div> 
+				<div class="row" align ="left">
+					<button id="stop">Stop</button>
+				</div> 
+			</div>
+			<div class="column" style="color: greenyellow">
+				<div class="row" align ="left"> 
+						<input type="range" min="0" max="100" value="0" class="slider" id="myRange">
+						Noise :<span id="noise">0</span>
+				</div>
+				<div class="row" align ="left">
+						<input type="range" min="0" max="100" value="0" class="slider" id="myRangeTime">
+						Execution time :<span id="time">0</span> sec
+				</div>
+				</div>
+			<div class="column">
+				<div class="row" align ="left">
+					<button id="create">Export telemetry</button>
+				</div> 
+				<div class="row" align ="left">
+					<a download="telemety-log.json" id="downloadlink" style="display: none">Download telemety-log</a>
+				</div> 
+			</div>
+			<div class="column" style="color: red">
+				Simulation Time : <span id="time" style="color: red" >0 sec</span>
+			</div>
+
 		<!--<button onClick="showGameOverScreen()" style="position: absolute; top:50%;" id="restart_trigger">Trigger</button>-->
 		<div style="display: none; position: absolute; top: 0; bottom: 0; left: 0; right: 0; background-color: #000000; opacity: 1;" id="close_layer">
 			<div style="margin-top: 20%;" id="restart_layout_content">
@@ -71,6 +109,16 @@
 		
 			slider.oninput = function () {
 				output.innerHTML = this.value;
+			}
+			
+			var sliderTime = document.getElementById("myRangeTime");
+			var outputTime = document.getElementById("time");
+			outputTime.innerHTML = sliderTime.value;
+		
+			sliderTime.oninput = function () {
+				
+				simulationTimeLimit = logSlider(this.value);
+				outputTime.innerHTML = simulationTimeLimit;
 			}
 		</script>
 		
@@ -1070,8 +1118,10 @@
 			// Run logic using Simulator class
 			var jsonSimulationConf;
 			var jsonZone2Coord;
-
+			var rawWebAssembly;
+			var delayBetweenExecution = 16;
 			var simulationStatus = false;
+			var simulationTimeLimit = 3600;
 
 			setTimeout(function(){
 
@@ -1167,6 +1217,8 @@
 					//console.log("Get distances + set Module + execute : ",Math.floor(Date.now()) - startTime);
 				}
 				else{
+
+					simulationStatus = true;
 					return; // TODO: run again without page reload
 				} 
 
@@ -1185,6 +1237,8 @@
 				// console.log("Position [X,Y]: [", simulator.output.xi.value,",",simulator.output.yi.value,"]");
 				// console.log("Rotation deg: ", simulator.output.degree.value * 180 / Math.PI);
 				// console.log("Velocity: ", simulator.output.velocity.value,"\n\n");
+
+				showTime(simulator.output.ti);
 
 				logObject.telemetry.push({
 					"Status": simulator.output.triggerStatus,
@@ -1210,10 +1264,16 @@
 				var endY = zone2Coord.get(zone)[1];
 				
 				// There are taking in to account deviations from the central point of the end zone
-				if(simulator.output.xi.value >= (endX - 6) && simulator.output.xi.value <= (endX + 6) 
-					&& simulator.output.yi.value >= (endY - 6) && simulator.output.yi.value <= (endY + 6)){
-						simulationStatus = true;
-					}
+				// if(simulator.output.xi.value >= (endX - 6) && simulator.output.xi.value <= (endX + 6) 
+				// 	&& simulator.output.yi.value >= (endY - 6) && simulator.output.yi.value <= (endY + 6)){
+				// 		simulationStatus = true;
+				// 	}
+
+				// simulationStatus flag controls the ending of the simulation
+				if (simulator.output.ti.value >= simulationTimeLimit) {
+
+					simulationStatus = true;
+				}
 			}
 		
 			function move1(x, y, degree){
@@ -1239,7 +1299,33 @@
 			
 				setPosition(currentCar, x, 0.2, y);
 				rotateCar(currentCar, degree);
-				setTimeout(move, 16);
+				setTimeout(move, delayBetweenExecution);
+			}
+
+			function instantiateWasm(){
+				
+				console.log(rawWebAssembly.byteLength);
+			}
+
+			var stopButton = document.getElementById('stop');
+			stopButton.addEventListener('click', function(){
+				simulationStatus = true;
+			});
+
+			function showTime(value){
+				document.getElementById("time").innerHTML = Math.round(parseFloat(value)) + " sec";
+			}
+
+			function logSlider(position) {
+				// position will be between 0 and 100
+				var minp = 0;
+				var maxp = 100;
+				// The result should be between
+				var minv = Math.log(1);
+				var maxv = Math.log(3601);
+				// calculate adjustment factor
+				var scale = (maxv-minv) / (maxp-minp);
+				return Math.round(Math.exp(minv + scale*(position-minp)))-1;
 			}
 			
 		</script>
