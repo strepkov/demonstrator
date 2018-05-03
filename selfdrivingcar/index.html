@@ -73,7 +73,7 @@
 				</div> 
 			</div>
 			<div class="column" style="color: red">
-				Simulation Time : <span id="time" style="color: red" >0 sec</span>
+				Simulation Time : <span id="stime" style="color: red" >0 sec</span>
 			</div>
 
 		<!--<button onClick="showGameOverScreen()" style="position: absolute; top:50%;" id="restart_trigger">Trigger</button>-->
@@ -1313,7 +1313,7 @@
 			});
 
 			function showTime(value){
-				document.getElementById("time").innerHTML = Math.round(parseFloat(value)) + " sec";
+				document.getElementById("stime").innerHTML = Math.round(parseFloat(value)) + " sec";
 			}
 
 			function logSlider(position) {
