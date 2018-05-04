@@ -34525,7 +34525,7 @@ define("ControllerMock", ["require", "exports", "math/math"], function (require,
                 acceleration = math.unit('0 m/s^2');
             }
             else {
-                acceleration = math.unit('2 m/s^2');
+                acceleration = math.unit('1 m/s^2');
             }
             return acceleration;
         };
@@ -35000,17 +35000,30 @@ define("Simulator", ["require", "exports", "math/math", "car/Car", "Sinput", "So
         function Simulator() {
             this.velocity = math.unit('0 m/s');
             this.time = math.unit('0 sec');
-            this.fpsTime = math.unit('0.5 sec');
+            this.samplingTime = math.unit('0.5 sec');
             this.car = new Car_1.Car(0, 0);
             this.track = new Track_1.Track();
             this.output = new Soutput_1.Soutput(math.unit('0 m/s'), math.unit('0 m'), math.unit('0 m'), math.unit('0 s'), math.unit('0 deg'), false, false, false, false);
             this.input = new Sinput_1.Sinput(math.unit('0 m/s^2'), math.unit('0 deg'), math.unit('0 m'), math.unit('0 m'), math.unit('0 s'), false, false, false, false);
             this.calculate();
         }
+        Simulator.prototype.resetSimulation = function () {
+            this.output.velocity = math.unit('0 m/s');
+            this.output.xi = math.unit('0 m');
+            this.output.yi = math.unit('0 m');
+            this.output.ti = math.unit('0 s');
+            this.output.degree = math.unit('0 deg');
+            this.input.acceleration = math.unit('0 m/s^2');
+            this.input.steering = math.unit('0 deg');
+            this.input.x0 = math.unit('0 m');
+            this.input.y0 = math.unit('0 m');
+            this.input.t0 = math.unit('0 s');
+            this.input.triggerStatus = false;
+        };
         Simulator.prototype.calculate = function () {
-            this.time = math.add(this.time, this.fpsTime);
-            if (math.add(this.velocity, math.multiply(this.input.acceleration, this.fpsTime)) < math.unit('60 km/h')) {
-                this.velocity = math.add(this.velocity, math.multiply(this.input.acceleration, this.fpsTime));
+            this.time = math.add(this.time, this.samplingTime);
+            if (math.add(this.velocity, math.multiply(this.input.acceleration, this.samplingTime)) < math.unit('60 km/h')) {
+                this.velocity = math.add(this.velocity, math.multiply(this.input.acceleration, this.samplingTime));
             }
             var degree;
             if (this.velocity.equals(math.unit('0 m/s'))) {
@@ -35019,8 +35032,8 @@ define("Simulator", ["require", "exports", "math/math", "car/Car", "Sinput", "So
             else {
                 degree = math.add(this.car.getDegree(), this.input.steering);
             }
-            var x = math.add(this.input.x0, math.multiply(this.velocity, math.multiply(this.fpsTime, math.cos(degree))));
-            var y = math.subtract(this.input.y0, math.multiply(this.velocity, math.multiply(this.fpsTime, math.sin(degree))));
+            var x = math.add(this.input.x0, math.multiply(this.velocity, math.multiply(this.samplingTime, math.cos(degree))));
+            var y = math.subtract(this.input.y0, math.multiply(this.velocity, math.multiply(this.samplingTime, math.sin(degree))));
             this.output.velocity = this.velocity;
             this.output.xi = x;
             this.output.yi = y;

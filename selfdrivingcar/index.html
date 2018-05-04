@@ -44,7 +44,8 @@
 			<button id="black-material">Black</button>
 			<button id="red-material">Red</button> -->
 			<div class="column">
-				<button onclick="instantiateWasm()">Instantiate .wasm</button>
+				<!-- <button onclick="instantiateWasm()">Instantiate .wasm</button> -->
+				<button onclick="resetSimulation()">reset simulation</button>
 			</div>
 			<div class="column">
 				<div class="row" align ="left">
@@ -1122,6 +1123,7 @@
 			var delayBetweenExecution = 16;
 			var simulationStatus = false;
 			var simulationTimeLimit = 3600;
+			
 
 			setTimeout(function(){
 
@@ -1218,7 +1220,7 @@
 				}
 				else{
 
-					simulationStatus = true;
+					simulationStatus = false;
 					return; // TODO: run again without page reload
 				} 
 
@@ -1326,6 +1328,22 @@
 				// calculate adjustment factor
 				var scale = (maxv-minv) / (maxp-minp);
 				return Math.round(Math.exp(minv + scale*(position-minp)))-1;
+			}
+
+			function resetSimulation(){
+				
+				var simulator = window.simulatorInstance;
+
+				//bind the function
+				var resetSimulation = simulator.resetSimulation;
+				var resetSimulator = resetSimulation.bind(simulator);
+				
+				resetSimulator();
+
+				var simulationTimeLimit = 3600;
+
+				setPosition(currentCar, 0, 0.2, 0);
+				rotateCar(currentCar, 0);
 			}
 			
 		</script>
