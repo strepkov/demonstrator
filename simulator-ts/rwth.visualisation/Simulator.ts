@@ -58,6 +58,23 @@ class Simulator {
         this.calculate();
     }
 
+    public resetSimulation(){
+
+        this.output.velocity = math.unit('0 m/s');
+        this.output.xi = math.unit('0 m');
+        this.output.yi = math.unit('0 m');
+        this.output.ti = math.unit('0 s');
+        this.output.degree = math.unit('0 deg');
+        
+        this.input.acceleration = math.unit('0 m/s^2');
+        this.input.steering = math.unit('0 deg');
+        this.input.x0 = math.unit('0 m');
+        this.input.y0 = math.unit('0 m');
+        this.input.t0 = math.unit('0 s');
+
+        this.input.triggerStatus = false;
+    }
+
     // public addSimListener(simListener: Function) {
     //     this.listeners.push(simListener);
     // }
