@@ -66,7 +66,8 @@
             var doc1 = document.getElementById("indexSimulator").contentWindow.document;
             var script_tag1 = doc1.createElement('script');
             script_tag1.id = "mainControllerWasm";
-            script_tag1.text = "var Module = {locateFile: function(file) {return \"controller/\"+file;}}";
+            //script_tag1.text = "var Module = {locateFile: function(file) {return \"controller/\"+file;}}";
+            script_tag1.text = "var Module = {readBinary : function readBinary(filename) {return new Uint8Array(rawWebAssembly);}}";
             // script_tag1.text = "var Module = {}; Module['wasmBinary'] = new Uint8Array(rawWebAssembly);";
             doc1.body.appendChild(script_tag1);
         }
@@ -74,42 +75,10 @@
         function loadWasm(){
             document.getElementById("indexSimulator").contentWindow.rawWebAssembly = rawFileData[1];
 
-            // var importObject = { imports: { imported_func: arg => console.log(arg) } };
-
-            // var myHeaders = new Headers();
-            // myHeaders.append('Content-Type', 'application/wasm');
-
-            // var myBlob = new Uint8Array(rawFileData[1]);
-            // var init = { "status" : 200 , "statusText" : "SuperSmashingGreat!", "headers": myHeaders};
-            // var myResponse = new Response(myBlob,init);
-
-            // checkWasmBinaryData(myBlob);
-
-            // var importObject = { imports: { imported_func: arg => console.log(arg) } };
-
-            // WebAssembly.compileStreaming(myResponse).then(Module => WebAssembly.instantiate(Module, importObject));
-            // .then(instance => instance.exports.exported_func());
+            setTimeout(function(){
+                loadMainControllerWasm();
+            },50);
             
-            // .then(Module => new WebAssembly.instantiate(Module, {
-            //     env: {
-            //         STACKTOP: 0,
-            //         STACK_MAX: 2048,
-            //         abortStackOverflow: function (i32) { console.log("stack oveflow"); },
-            //         memory: new WebAssembly.Memory({ initial: 2048, maximum: 2048 }),
-            //         table: new WebAssembly.Table({
-            //             initial: 0, 
-            //             maximum: 0, 
-            //             element: "anyfunc"
-            //         }),
-            //         memoryBase: 0,
-            //         tableBase: 0,
-            //     },
-            // })).then(instance => {
-            //     // functions exposed in "exports"
-            //     console.log(instance.exports.Init());
-            //     });
-
-            //loadMainControllerWasm();
             setTimeout(function(){
                 loadMainController();
             },100);
