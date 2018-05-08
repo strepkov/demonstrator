@@ -28,9 +28,7 @@
         <button onclick="appendTestModel()">Append test file</button>
         <button onclick="readAllFiles()">Read all files</button>
         <button onclick="showContent()">Show Content</button>
-        <button onclick="packData()">Pack Data</button>
-        <button onclick="sendData()">Send Data</button>
-        <button onclick="checkWasm()">check and pass wasm</button>
+        <button onclick="packData()">Pack and Send</button>
     </div>
     <script>
 
@@ -56,13 +54,17 @@
             
             document.getElementById("indexSimulator").contentWindow.rawWebAssembly = rawFileData[1];
             overrideReadBinaryWasm();
-            loadMainController();
-
+            
+            setTimeout(function(){
+                loadMainController();
+            },100);
+            
             setTimeout(function(){
                 document.getElementById("indexSimulator").contentWindow.initSimulator();
             },500);
         }
 
+        // TODO: rename and better organize
         function checkWasm(){
 
             if (checkWasmBinaryData(rawFileData[1])) loadWasmData();
@@ -138,6 +140,7 @@
 
         var zipContainer = new JSZip();
 
+        // TODO: rename and organize
         function packData(){
 
             // var simulatorZip = zipContainer.folder("simulator1");
@@ -150,6 +153,10 @@
             }
 
             fileNames.forEach(func);
+
+            setTimeout(function(){
+                sendData();
+            },1000);
         }
 
 
@@ -205,6 +212,12 @@
                     }
                 });
             });
+            
+            // wait for async unpack
+            // TODO: find out better solution
+            setTimeout(function(){
+                checkWasm();
+            }, 500);
         }
 
         function checkWasmBinaryData(data){
@@ -219,9 +232,6 @@
             document.getElementById("indexSimulator").contentWindow.showLogsData = flag;
             return "set " + flag;
         }
-
-
-        // TODO: read file from VFS to use in index.html file
     </script>
 </body>
 </html>
