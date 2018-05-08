@@ -72,8 +72,16 @@
 					<a download="telemety-log.json" id="downloadlink" style="display: none">Download telemety-log</a>
 				</div> 
 			</div>
-			<div class="column" style="color: red">
-				Simulation Time : <span id="stime" style="color: red" >0 sec</span>
+			<div class="column">
+				<div class="row" align ="left" style="color: red">
+					Simulation Time : <span id="stime" style="color: red" >0 sec</span>
+				</div>
+				<div class="row" id="notready" align ="left" style="font-size:30px; color: red">
+					Not Ready!
+				</div>
+				<div class="row" id="ready" align ="left" style="font-size:30px; color: green; display: none">
+						Ready!
+				</div>
 			</div>
 
 		<!--<button onClick="showGameOverScreen()" style="position: absolute; top:50%;" id="restart_trigger">Trigger</button>-->
@@ -122,6 +130,11 @@
 				
 				simulationTimeLimit = logSlider(this.value);
 				outputTime.innerHTML = simulationTimeLimit;
+			}
+
+			function readyToGo(){
+				document.getElementById("notready").style.display = 'none';
+				document.getElementById("ready").style.display = 'block';
 			}
 		</script>
 		
@@ -1154,6 +1167,8 @@
 			// Diagnostic information to know the end point
 			zone = jsonSimulationConf.car.end;
 			console.log("X : ", zone2Coord.get(zone)[0]," Y : ", zone2Coord.get(zone)[1]);
+
+			readyToGo();
 
 			}
 
