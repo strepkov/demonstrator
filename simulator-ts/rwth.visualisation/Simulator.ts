@@ -41,7 +41,8 @@ class Simulator {
             false,
             false,
             false,
-            false);
+            false
+        );
 
         this.input = new Sinput(
             math.unit('0 m/s^2'), // acceleration
@@ -65,14 +66,19 @@ class Simulator {
         this.output.yi = math.unit('0 m');
         this.output.ti = math.unit('0 s');
         this.output.degree = math.unit('0 deg');
-        
-        this.input.acceleration = math.unit('0 m/s^2');
-        this.input.steering = math.unit('0 deg');
-        this.input.x0 = math.unit('0 m');
-        this.input.y0 = math.unit('0 m');
-        this.input.t0 = math.unit('0 s');
+        this.output.triggerStatus = false;
 
-        this.input.triggerStatus = false;
+        // this.input.acceleration = math.unit('0 m/s^2');
+        // this.input.steering = math.unit('0 deg');
+        // this.input.x0 = math.unit('0 m');
+        // this.input.y0 = math.unit('0 m');
+        // this.input.t0 = math.unit('0 s');
+        // this.input.triggerStatus = false;
+
+        this.time = math.unit('0 s');
+        this.velocity = math.unit('0 m/s');
+
+        console.log("Simulator is reseted");
     }
 
     // public addSimListener(simListener: Function) {
