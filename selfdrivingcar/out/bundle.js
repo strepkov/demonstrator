@@ -35013,12 +35013,10 @@ define("Simulator", ["require", "exports", "math/math", "car/Car", "Sinput", "So
             this.output.yi = math.unit('0 m');
             this.output.ti = math.unit('0 s');
             this.output.degree = math.unit('0 deg');
-            this.input.acceleration = math.unit('0 m/s^2');
-            this.input.steering = math.unit('0 deg');
-            this.input.x0 = math.unit('0 m');
-            this.input.y0 = math.unit('0 m');
-            this.input.t0 = math.unit('0 s');
-            this.input.triggerStatus = false;
+            this.output.triggerStatus = false;
+            this.time = math.unit('0 s');
+            this.velocity = math.unit('0 m/s');
+            console.log("Simulator is reseted");
         };
         Simulator.prototype.calculate = function () {
             this.time = math.add(this.time, this.samplingTime);

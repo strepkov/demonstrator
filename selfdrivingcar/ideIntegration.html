@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Test IDE integration</title>
+        <meta charset="utf-8">
+        <style>
+            .box1{
+                float:left;
+                margin-right:0px;
+            }
+            .clear{
+                clear:both;
+            }
+            .box {
+                min-width:1800px;
+                width: auto !important;
+                width:1800px;
+            }
+        </style>
+        <script src="js-libs/jszip.min.js"></script>
+    </head>
+<body>
+    <div class="box">
+        <iframe id="ide" src="onlineIDE/api/load.html?mountPoint=[EmbeddedMontiArc]/demonstrator/IDE" height="900" frameborder="0" scrolling="no" width="900"></iframe>
+        <iframe id="indexSimulator" src="index.html"  height="900" width="900"></iframe>
+    </div>
+    <div>
+        <button onclick="appendTestModel()">Append test file</button>
+        <button onclick="readAllFiles()">Read all files</button>
+        <button onclick="showContent()">Show Content</button>
+        <button onclick="packData()">Pack Data</button>
+        <button onclick="sendData()">Send Data</button>
+        <button onclick="checkWasm()">check and pass wasm</button>
+    </div>
+    <script>
+
+        function loadMainController(){
+
+            var doc = document.getElementById("indexSimulator").contentWindow.document;
+            var script_tag = doc.createElement('script');
+            script_tag.id = "mainController";
+            script_tag.text = rawFileData[0];
+            doc.body.appendChild(script_tag);
+        }        
+
+        function overrideReadBinaryWasm(){
+
+            var doc1 = document.getElementById("indexSimulator").contentWindow.document;
+            var script_tag1 = doc1.createElement('script');
+            script_tag1.id = "mainControllerWasm";
+            script_tag1.text = "var Module = {readBinary : function readBinary(filename) {return new Uint8Array(rawWebAssembly);}}";
+            doc1.body.appendChild(script_tag1);
+        }
+
+        function loadWasmData(){
+            
+            document.getElementById("indexSimulator").contentWindow.rawWebAssembly = rawFileData[1];
+            overrideReadBinaryWasm();
+            loadMainController();
+
+            setTimeout(function(){
+                document.getElementById("indexSimulator").contentWindow.initSimulator();
+            },500);
+        }
+
+        function checkWasm(){
+
+            if (checkWasmBinaryData(rawFileData[1])) loadWasmData();
+        }
+
+        function appendFile(fileName,fileContent){
+            document.getElementById("ide").contentWindow.api.
+                fs.appendFile(fileName,fileContent,function (err, data) {
+                    if (err) throw err;
+                });
+        }
+
+        function readFileFromDisk(file) {
+            var rawFile = new XMLHttpRequest();
+            var text;
+            rawFile.open("GET", file, false);
+            rawFile.onreadystatechange = function () {
+                if (rawFile.readyState === 4) {
+                    if (rawFile.status === 200 || rawFile.status == 0) {
+                        text = rawFile.responseText;
+                    }
+                }
+            }
+            rawFile.send(null);
+            return text;
+        }
+        
+        function appendTestModel(){
+            appendFile("MainController.emam", readFileFromDisk("simulator1/MainController.emam"));
+            appendFile("ConstantVelocity.emam", readFileFromDisk("simulator1/ConstantVelocity.emam"));
+            appendFile("SteeringControl.emam", readFileFromDisk("simulator1/SteeringControl.emam"));
+            appendFile("GameOverTrigger.emam", readFileFromDisk("simulator1/GameOverTrigger.emam"));
+        }
+
+        // TODO: Read files from ide and pack
+
+        var filesData = Array();
+        var fileNames = Array();
+
+        function readFileName(name) {
+            
+            document.getElementById("ide").contentWindow.api.fs.readFile('/'+name, function (err, data) {
+                if (err) throw err;
+                filesData.push(data);
+                fileNames.push(name);
+            });
+        }
+
+        function readAllFiles() {
+            
+            document.getElementById("ide").contentWindow.api.fs.readdir('/',function (err, data)
+                    {
+                        if (err) throw err;
+                        data.forEach( function (item)
+                            {
+                                if((item.name).includes("emam")){
+
+                                    readFileName(item.name);
+                                }
+                            });
+                    });
+        }
+
+        function showContent(){
+
+            function func(item,index){
+                console.log(item);
+                console.log(filesData[index]);
+            }
+
+            fileNames.forEach(func);
+        }
+
+        var zipContainer = new JSZip();
+
+        function packData(){
+
+            // var simulatorZip = zipContainer.folder("simulator1");
+
+            function func(item,index){
+
+                // simulatorZip.file(item, filesData[index]);
+                zipContainer.file(item, filesData[index]);
+                console.log(item," was packed!");
+            }
+
+            fileNames.forEach(func);
+        }
+
+
+        var receivedDataFromServer;
+
+        function sendData(){
+            var t0 = performance.now();
+            zipContainer.generateAsync({type:"blob"}).then(function (content) {
+                
+                var blob1 = new Blob([content], {type: 'application/octet-binary'});
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", 'http://137.226.168.11:80/receiver/', true);
+                // xhr.open("POST", 'http://0.0.0.0:7070/receiver/', true);
+                xhr.send(blob1);
+                console.log("files were sent to the server, waiting for responce...");
+                xhr.responseType = "blob";
+                
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4) {
+                        receivedDataFromServer = xhr.response;
+                        console.log(xhr.response);
+                        var t1 = performance.now();
+                        // Write to the console a compilation time
+                        console.log("Compilation time: " + ((t1 - t0)/1000) + " seconds.");
+                        saveFileFromResponse();
+                    }
+                }
+            });
+        }
+
+        // TODO: save file from variable to VFS
+
+        var rawFileData = new Array();
+
+        function saveFileFromResponse(){
+
+            var new_zip = new JSZip();
+
+            new_zip.loadAsync(receivedDataFromServer).then(function (zip) {
+                Object.keys(zip.files).forEach(function (filename) {
+                    if(filename.includes("wasm")){
+                        zip.files[filename].async('uint8array').then(function (fileData) {
+                        console.log(filename);
+                        //appendFile(".home/" + filename, fileData);
+                        rawFileData.push(fileData);
+                    });}
+                    else{
+                    zip.files[filename].async('string').then(function (fileData) {
+                        console.log(filename);
+                        //appendFile(".home/" + filename, fileData);
+                        rawFileData.push(fileData);
+                    });
+                    }
+                });
+            });
+        }
+
+        function checkWasmBinaryData(data){
+                
+                var valid = WebAssembly.validate(data);
+                console.log("The given bytes are "
+                    + (valid ? "" : "not ") + "a valid wasm module");  
+            return valid;            
+        }
+
+        function showLogs(flag){
+            document.getElementById("indexSimulator").contentWindow.showLogsData = flag;
+            return "set " + flag;
+        }
+
+
+        // TODO: read file from VFS to use in index.html file
+    </script>
+</body>
+</html>
