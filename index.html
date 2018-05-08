@@ -44,7 +44,6 @@
 			<button id="black-material">Black</button>
 			<button id="red-material">Red</button> -->
 			<div class="column">
-				<button onclick="instantiateWasm()">Instantiate .wasm</button>
 				<button onclick="resetSimulation()">reset simulation</button>
 			</div>
 			<div class="column">
@@ -1128,7 +1127,7 @@
 			var simulationTimeLimit = 3600;
 			var showLogsData = false;
 
-			setTimeout(function(){
+			function initSimulator(){
 
 			var simulator = new window.simulator.Simulator();
 			window.simulatorInstance = simulator; 
@@ -1156,7 +1155,7 @@
 			zone = jsonSimulationConf.car.end;
 			console.log("X : ", zone2Coord.get(zone)[0]," Y : ", zone2Coord.get(zone)[1]);
 
-			}, 30000);
+			}
 
 			// Read the file with configuration
 			function readJSONFile(file)
@@ -1198,7 +1197,7 @@
 
 				// Read the distances from Simulator, where the track was defined
 				var distances = simulatorGetDistances();
-				
+
 				// TODO: define interface for standard wasm-model
 				Module.setFl(distances[0]*(Math.floor(Math.random() * slider.value) + 95)/100); 
 				Module.setFr(distances[1]*(Math.floor(Math.random() * slider.value) + 95)/100);
@@ -1305,11 +1304,6 @@
 				setPosition(currentCar, x, 0.2, y);
 				rotateCar(currentCar, degree);
 				setTimeout(move, delayBetweenExecution);
-			}
-
-			function instantiateWasm(){
-				
-				console.log(rawWebAssembly.byteLength);
 			}
 
 			var stopButton = document.getElementById('stop');

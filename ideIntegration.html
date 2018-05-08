@@ -30,7 +30,6 @@
         <button onclick="showContent()">Show Content</button>
         <button onclick="packData()">Pack Data</button>
         <button onclick="sendData()">Send Data</button>
-        <input type="button"  value="Open Simulator" onclick="window.open('index.html','_blank','resizable=yes')"/>
         <button onclick="checkWasm()">check and pass wasm</button>
     </div>
     <script>
@@ -58,6 +57,10 @@
             document.getElementById("indexSimulator").contentWindow.rawWebAssembly = rawFileData[1];
             overrideReadBinaryWasm();
             loadMainController();
+
+            setTimeout(function(){
+                document.getElementById("indexSimulator").contentWindow.initSimulator();
+            },500);
         }
 
         function checkWasm(){
@@ -152,16 +155,16 @@
 
         var receivedDataFromServer;
 
-        var t0 = performance.now();
-
         function sendData(){
+            var t0 = performance.now();
             zipContainer.generateAsync({type:"blob"}).then(function (content) {
                 
                 var blob1 = new Blob([content], {type: 'application/octet-binary'});
                 var xhr = new XMLHttpRequest();
-                //xhr.open("POST", 'http://137.226.168.11:80/receiver/', true);
-                 xhr.open("POST", 'http://0.0.0.0:7070/receiver/', true);
+                xhr.open("POST", 'http://137.226.168.11:80/receiver/', true);
+                // xhr.open("POST", 'http://0.0.0.0:7070/receiver/', true);
                 xhr.send(blob1);
+                console.log("files were sent to the server, waiting for responce...");
                 xhr.responseType = "blob";
                 
                 xhr.onreadystatechange = function() {
