@@ -114,6 +114,9 @@
         }
 
         function readAllFiles() {
+
+            filesData = [];
+            fileNames = [];
             
             document.getElementById("ide").contentWindow.api.fs.readdir('/',function (err, data)
                     {
