@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>three.js webgl - Car Visualization</title>
+		<title>WebGL Car Visualization</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<style>
@@ -91,11 +91,12 @@
 		<script src="js/loaders/AssimpJSONLoader.js"></script>
 		<script src="js/Detector.js"></script>
 		<script src="js/libs/stats.min.js"></script>
-		<!-- <script src="mainController.js"></script> -->
+		<!-- <script src="mainController.js"></script>  -->
 		<script src="zone2coord.js"></script>
 
 		<script src="simulator-ts/libs/require.js"></script>
         <script type="text/javascript" src="out/bundle.js"></script>
+
         <script type="text/javascript">
             requirejs(['Simulator'], function(Simulator) {
                 console.log('loading the simulator core...');
@@ -104,6 +105,7 @@
         </script>
 
 		<script>
+			// Noise slider
 			var slider = document.getElementById("myRange");
 			var output = document.getElementById("noise");
 			output.innerHTML = slider.value;
@@ -112,6 +114,7 @@
 				output.innerHTML = this.value;
 			}
 			
+			// Execution time slider
 			var sliderTime = document.getElementById("myRangeTime");
 			var outputTime = document.getElementById("time");
 			outputTime.innerHTML = sliderTime.value;
@@ -1123,7 +1126,7 @@
 			var delayBetweenExecution = 16;
 			var simulationStatus = false;
 			var simulationTimeLimit = 3600;
-			
+			var showLogsData = false;
 
 			setTimeout(function(){
 
@@ -1195,9 +1198,8 @@
 
 				// Read the distances from Simulator, where the track was defined
 				var distances = simulatorGetDistances();
-
+				
 				// TODO: define interface for standard wasm-model
-				// TODO: which exact value should be randomly generated?
 				Module.setFl(distances[0]*(Math.floor(Math.random() * slider.value) + 95)/100); 
 				Module.setFr(distances[1]*(Math.floor(Math.random() * slider.value) + 95)/100);
 				Module.setSlf(distances[2]*(Math.floor(Math.random() * slider.value) + 95)/100);
@@ -1210,35 +1212,38 @@
 
 				Module.setTime(simulator.output.ti.value);
 
-				// Calculate 
+				// Execute model and calculate controller output
 				Module.execute();
 				
 				if(!simulationStatus && !Module.getStatus()){
 					
 					simulatorRun(Module.getStatus(),Module.getSteering(),Module.getAcceleration());
-					//console.log("Get distances + set Module + execute : ",Math.floor(Date.now()) - startTime);
 				}
 				else{
-
 					simulationStatus = false;
-					return; // TODO: run again without page reload
-				} 
+					return;
+				}
 
-				// Just diagnostic information
-				// console.log("Distance from FL : ",distances[0]);
-				// console.log("Distance from FR : ",distances[1]);
-				// console.log("Distance from FLS : ",distances[2]);
-				// console.log("Distance from BLS : ",distances[3]);
-				// console.log("Distance from FRS : ",distances[4]);
-				// console.log("Distance from BRS : ",distances[5]);
-				// console.log("Distance from BL : ",distances[6]);
-				// console.log("Distance from BR : ",distances[7]);
+				if(showLogsData){
 
-				// console.log("Status : ", simulator.output.triggerStatus);
-				// console.log("Time : ", simulator.output.ti.value);
-				// console.log("Position [X,Y]: [", simulator.output.xi.value,",",simulator.output.yi.value,"]");
-				// console.log("Rotation deg: ", simulator.output.degree.value * 180 / Math.PI);
-				// console.log("Velocity: ", simulator.output.velocity.value,"\n\n");
+					// Just diagnostic information
+					console.log("Distance from FL : ",distances[0]);
+					console.log("Distance from FR : ",distances[1]);
+					console.log("Distance from FLS : ",distances[2]);
+					console.log("Distance from BLS : ",distances[3]);
+					console.log("Distance from FRS : ",distances[4]);
+					console.log("Distance from BRS : ",distances[5]);
+					console.log("Distance from BL : ",distances[6]);
+					console.log("Distance from BR : ",distances[7]);
+
+					console.log("Status : ", simulator.output.triggerStatus);
+					console.log("Time : ", simulator.output.ti.value);
+					console.log("Position [X,Y]: [", simulator.output.xi.value,",",simulator.output.yi.value,"]");
+					console.log("Rotation deg: ", simulator.output.degree.value * 180 / Math.PI);
+					console.log("Velocity: ", simulator.output.velocity.value,"\n\n");
+
+					console.log("Get distances + set Module + execute + log : ",Math.floor(Date.now()) - startTime);
+				}
 
 				showTime(simulator.output.ti);
 
@@ -1250,8 +1255,6 @@
 					"Velocity": simulator.output.velocity.value,
 					"Sensors": distances
 				});
-
-				console.log("Get distances + set Module + execute + log : ",Math.floor(Date.now()) - startTime);
 						
 				setTimeout(
 					move1(
@@ -1260,10 +1263,10 @@
 						simulator.output.degree.value * 180 / Math.PI)
 				, 16);
 
-				// Calculate status
-				var zone = jsonSimulationConf.car.end;
-				var endX = zone2Coord.get(zone)[0];
-				var endY = zone2Coord.get(zone)[1];
+				// Calculate status is zones is used
+				// var zone = jsonSimulationConf.car.end;
+				// var endX = zone2Coord.get(zone)[0];
+				// var endY = zone2Coord.get(zone)[1];
 				
 				// There are taking in to account deviations from the central point of the end zone
 				// if(simulator.output.xi.value >= (endX - 6) && simulator.output.xi.value <= (endX + 6) 
@@ -1340,7 +1343,18 @@
 				
 				resetSimulator();
 
-				var simulationTimeLimit = 3600;
+				// var initPosition = simulator.initPosition;
+				// var simulatorInitPosition = initPosition.bind(simulator);
+				// simulatorInitPosition(0,0);
+
+				document.getElementById("myRange").value = 0;
+				document.getElementById("noise").innerHTML = 0;
+
+				document.getElementById("myRangeTime").value = 0;
+				document.getElementById("time").innerHTML = 0;
+
+				var simulationTimeLimit = 3600; // reset time to max
+				showTime(0);
 
 				setPosition(currentCar, 0, 0.2, 0);
 				rotateCar(currentCar, 0);

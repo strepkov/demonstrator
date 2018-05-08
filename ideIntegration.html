@@ -21,7 +21,7 @@
     </head>
 <body>
     <div class="box">
-        <iframe id="ide" src="onlineIDE/api/load.html?mountPoint=[EmbeddedMontiArc]/demonstrator/IDE" height="900" frameborder="0" scrolling="no" width="400"></iframe>
+        <iframe id="ide" src="onlineIDE/api/load.html?mountPoint=[EmbeddedMontiArc]/demonstrator/IDE" height="900" frameborder="0" scrolling="no" width="900"></iframe>
         <iframe id="indexSimulator" src="index.html"  height="900" width="900"></iframe>
     </div>
     <div>
@@ -35,58 +35,34 @@
     </div>
     <script>
 
-        var testURI;
-
         function loadMainController(){
 
-            //document.getElementById("indexSimulator").contentWindow.document.getElementById("mainController").text.write("var b = 10;");
             var doc = document.getElementById("indexSimulator").contentWindow.document;
             var script_tag = doc.createElement('script');
             script_tag.id = "mainController";
             script_tag.text = rawFileData[0];
             doc.body.appendChild(script_tag);
+        }        
 
-            //var iframe = document.getElementById("indexSimulator");
-            //console.log(iframe.contentDocument.getElementById("mainController").text);
-            //iframe.src = "onlineIDE/api/static.html?method=raw&mountPoint=[EmbeddedMontiArc]/demonstrator/IDE&path=/.home/mainController.js";
-
-            //iframe.contentWindow.document = filesData[0];
-            // readFileName(".home/mainController.js");
-            // var doc = document.getElementById('mainController').contentWindow.document;
-            // doc.open();
-            // doc.write(filesData[4]);
-            // doc.close();
-            //console.log(document.getElementById("mainController").document.documentURI);
-        }
-
-        
-
-        function loadMainControllerWasm(){
+        function overrideReadBinaryWasm(){
 
             var doc1 = document.getElementById("indexSimulator").contentWindow.document;
             var script_tag1 = doc1.createElement('script');
             script_tag1.id = "mainControllerWasm";
-            //script_tag1.text = "var Module = {locateFile: function(file) {return \"controller/\"+file;}}";
             script_tag1.text = "var Module = {readBinary : function readBinary(filename) {return new Uint8Array(rawWebAssembly);}}";
-            // script_tag1.text = "var Module = {}; Module['wasmBinary'] = new Uint8Array(rawWebAssembly);";
             doc1.body.appendChild(script_tag1);
         }
 
-        function loadWasm(){
-            document.getElementById("indexSimulator").contentWindow.rawWebAssembly = rawFileData[1];
-
-            setTimeout(function(){
-                loadMainControllerWasm();
-            },50);
+        function loadWasmData(){
             
-            setTimeout(function(){
-                loadMainController();
-            },100);
+            document.getElementById("indexSimulator").contentWindow.rawWebAssembly = rawFileData[1];
+            overrideReadBinaryWasm();
+            loadMainController();
         }
 
         function checkWasm(){
 
-            if (checkWasmBinaryData(rawFileData[1])) loadWasm();
+            if (checkWasmBinaryData(rawFileData[1])) loadWasmData();
         }
 
         function appendFile(fileName,fileContent){
@@ -234,6 +210,11 @@
                 console.log("The given bytes are "
                     + (valid ? "" : "not ") + "a valid wasm module");  
             return valid;            
+        }
+
+        function showLogs(flag){
+            document.getElementById("indexSimulator").contentWindow.showLogsData = flag;
+            return "set " + flag;
         }
 
 
