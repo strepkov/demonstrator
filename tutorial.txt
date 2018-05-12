@@ -1,0 +1,14 @@
+Tutorial
+
+1. Accelerate to a given speed and brake.
+    Implement a model that continuously accelerates to a speed of 50 km/h and stops accelerating upon reaching this speed.
+    After 3 seconds the car is braking until full stop.
+    
+Explanation:
+
+The car has 8 sensors to measure distances to obstacles. They are located: PICTURE
+You have an access to acceleration and rotation of the car. Changing these two parameter you may control the behavior ot the car.
+
+You have to come up with controller which will be able to move the car in accordance with the task.
+
+To be able to reach 50 km/h speed, you have to accelerate the car continuously until it reaches the desired speed.
