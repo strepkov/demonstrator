@@ -8,7 +8,7 @@ export {Car}
 class Car {
 
     private position: number[];
-    private degree: number;
+    private degree;
     private sensors: Array<Sensor>; // Position of the sensor
 
     public constructor(x: number, y:number) {
@@ -37,12 +37,12 @@ class Car {
         return this.position;
     }
 
-    public setDegree(degree: number) {
+    public setDegree(degree) {
         
         this.degree = degree;
     }
 
-    public getDegree(): number {
+    public getDegree(){
         
         return this.degree;
     }

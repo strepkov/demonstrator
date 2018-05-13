@@ -27,7 +27,7 @@ class Simulator {
         // Initial velocity is 0 m/s, Initial time is 0 s
         this.velocity = math.unit('0 m/s'); // v - m/s
         this.time = math.unit('0 sec'); // t
-        this.samplingTime = math.unit('0.5 sec');
+        this.samplingTime = math.unit('0.3 sec');
         
         this.car = new Car(0,0);
         this.track = new Track();
@@ -98,34 +98,22 @@ class Simulator {
         this.time = math.add(this.time, this.samplingTime);
         
         // velocity = v+(input)acceleration*(1/20)s, for v=0 m/ss
-        if ( math.add(this.velocity, math.multiply(this.input.acceleration, this.samplingTime)) < math.unit('60 km/h')){ 
-            
-            this.velocity = math.add(this.velocity, math.multiply(this.input.acceleration, this.samplingTime));
-        }
+        this.velocity = math.add(this.velocity, math.multiply(this.input.acceleration, this.samplingTime));
         
         // calculation of car rotation
-        let degree;
+        let degree = this.normalizeDegrees(math.add(this.car.getDegree(), this.input.steering)); // adjust steering angle
 
-        if(this.velocity.equals(math.unit('0 m/s'))){
-
-             degree = this.car.getDegree();
-        }
-        else{
-
-            degree = math.add(this.car.getDegree(), this.input.steering); // adjust steeriing angle
-        }
-
-        //Calculate positioin of the car
-        // x=(input)x+v*t*cos((rad)degree) // degree * Math.PI / 180 - radian conversioin
+        // x=(input)x+v*t*cos(degree)
         let x = math.add(this.input.x0, math.multiply(this.velocity, math.multiply(this.samplingTime, math.cos(degree))));
-        // y=(input)y+v*t*sin((rad)degree)
+
+        // y=(input)y+v*t*sin(degree)
         let y = math.subtract(this.input.y0, math.multiply(this.velocity, math.multiply(this.samplingTime, math.sin(degree))));
 
         this.output.velocity = this.velocity;
         this.output.xi = x;
         this.output.yi = y;
         this.output.ti = this.time;
-        this.output.degree = degree,
+        this.output.degree = degree;
         this.output.doorStatus = this.input.doorStatus;
         this.output.indicatorStatus = this.input.indicatorStatus;
         this.output.lightTimerStatus = this.input.lightTimerStatus;
@@ -170,5 +158,12 @@ class Simulator {
         // this.onSimFrameFinished();
 
         return this.output.triggerStatus;
+    }
+
+    public normalizeDegrees(degree){
+
+        if(Math.abs(degree.value * 180 / Math.PI) > 360){
+            return math.unit((degree.value % 360),'deg');
+        } else return degree;
     }
 }
