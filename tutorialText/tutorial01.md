@@ -37,21 +37,21 @@ component MainController{
         out Q(-180°:180°) steering,         //car's steering
         out B status;                       //whether the simulation is still running
 
-    // When we have finished with the interface's description, we have to instantiate the actual controller
-    // and connect it to the interface.
+```
+When we have finished with the interface's description, we have to instantiate the actual controller and connect it to the interface.
+
+```sh
 
     instance VelocityController velocityController;
 
     connect velocity->velocityController.velocity;
     connect velocityController.acceleration->acceleration;
+```
+Here we have connected the incoming port - velocity(mainController) to our instantiated controller and its corresponding incoming port velocity. Then we connect outgoing port of velocityController.acceleration to the outgoing port of our MainController.
 
-    //Here we have connected the incoming port - velocity(mainController) to our instantiated controller and its corresponding 
-    //incoming port velocity. Then we connect outgoing port of velocityController.acceleration to the outgoing
-    //port of our MainController.
+Lastly we are going to instantiate the controller which will stop the execution when the conditions will be reached. For this controller we will need incoming ports: velocity and time and outgoing: status. Connect them correspondingly.
 
-    //Lastly we are going to instantiate the controller which will stop the execution when the conditions will be reached.
-    //For this controller we will need incoming ports: velocity and time and outgoing: status. Connect them correspondingly.
-
+```sh
     instance StopSimulationController stopSimulationController;
 
     connect velocity->stopSimulationController.velocity;
