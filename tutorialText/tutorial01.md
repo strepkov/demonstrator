@@ -36,6 +36,9 @@ component MainController{
         out Q(-2m/s^2:2m/s^2) acceleration, //car's acceleration 
         out Q(-180°:180°) steering,         //car's steering
         out B status;                       //whether the simulation is still running
+	
+  // implementation is skipped here, as it is your task to model the behavior
+}
 
 ```
 When we have finished with the interface's description, we have to instantiate the actual controller and connect it to the interface.
