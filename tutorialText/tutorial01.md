@@ -8,7 +8,7 @@ The car has 8 sensors to measure distances to obstacles. They are located respec
 
 ![alt text](../tutorialText/car_with_sensors.jpg)
 
-To solve this task it's needed to use only acceleration of the car. Changing the acceleration you may control the behavior ot the car. To be able to reach 50 km/h speed, you have to accelerate the car continuously until it reaches the desired speed. Let's start with the mainController which defines the interface to the simulator:
+To solve this task it's needed to use only acceleration of the car. Changing the acceleration you may control the behavior of the car. To be able to reach 50 km/h speed, you have to accelerate the car continuously until it reaches the desired speed. Let's start with the mainController which defines the interface to the simulator:
 
 ```sh
 package controller; // The name of the folder where all .emam files are located.
