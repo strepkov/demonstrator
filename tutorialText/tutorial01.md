@@ -1,33 +1,30 @@
 # Tutorial(draft)
 
 ##### 1. Accelerate to a given speed and brake.
-Implement the model that continuously accelerates to 50 km/h and then brakes until the car stops.
+Implement the model that continuously accelerates to 10 m/s and then stops.
     
 ##### Basic explonation:
 The car has 8 sensors to measure distances to obstacles. They are located respectively: 
 
 ![alt text](../tutorialText/car_with_sensors.jpg)
 
-To solve this task it's needed to use only acceleration of the car. Changing the acceleration you may control the behavior of the car. To be able to reach 50 km/h speed, you have to accelerate the car continuously until it reaches the desired speed. Let's start with the mainController which defines the interface to the simulator:
+To solve this task it's needed to use only acceleration of the car. Changing the acceleration you may control the behavior of the car. To be able to reach 10 m/s speed, you have to accelerate the car continuously until it reaches the desired speed. Let's start with a mainController which defines the interface to the simulator. We should create a new file which has the same name like component has with .emam extension.
 
 ```sh
-package controller; // The name of the folder where all .emam files are located.
-
-import VelocityController; // here has being imported the actual controller
-import StopSimulationController;
+package controller;                         // The name of the folder where all .emam files are located.
 
 component MainController{
-    ports // There are listed the incoming ports, where data is transferred from the sensors.
-        in Q(0m:200m) fl,                   //front left
-        in Q(0m:200m) fr,                   //front right
-        in Q(0m:200m) slf,                  //side left front
-        in Q(0m:200m) slb,                  //side left back
-        in Q(0m:200m) srf,                  //side right front
-        in Q(0m:200m) srb,                  //side right back
-        in Q(0m:200m) bl,                   //back left
-        in Q(0m:200m) br,                   //back right
+    ports                                   
+        in Q(0m:200m) fl,                   //front left sensor with range from 0 meters to 200 meters
+        in Q(0m:200m) fr,                   //front right sensor
+        in Q(0m:200m) slf,                  //side left front sensor
+        in Q(0m:200m) slb,                  //side left back sensor
+        in Q(0m:200m) srf,                  //side right front sensor
+        in Q(0m:200m) srb,                  //side right back sensor
+        in Q(0m:200m) bl,                   //back left sensor
+        in Q(0m:200m) br,                   //back right sensor
 
-        in Q(0s:oos) time,                  //simulation time
+        in Q(0s:oos) time,                  //simulation time from 0s to infinity
         in Q(0km/h:250km/h) velocity,       //car's velocity
 
         in Q(-200m:200m) x,                 //car's position X
@@ -36,12 +33,54 @@ component MainController{
         out Q(-2m/s^2:2m/s^2) acceleration, //car's acceleration 
         out Q(-180°:180°) steering,         //car's steering
         out B status;                       //whether the simulation is still running
-	
-  // implementation is skipped here, as it is your task to model the behavior
 }
-
 ```
-When we have finished with the interface's description, we have to instantiate the actual controller and connect it to the interface.
+After examination of the example, we should notice:
+- Component has ports incoming and outgoing
+- For each port must be specified a type (Q is Double or B is Boolean) with a valid range.
+- After each port name has to be a comma and the last one must have a semicolon.
+- The possible units are:
+    distance:
+     - meters(m)
+     - kilometers(km)
+    time
+     - seconds(s)
+     - minutes(m)
+     - hours(h)
+    velocity
+     - km/h
+     - m/s
+    acceleration
+     - m/s^2
+    rotation
+     - degrees(°)
+
+It was the default interface for the Simulator. It has to be define for all possible controllers. Then you may create your own components which will be connected to the mainController. Let's create a simple component and connect it to the main one. To do that, we have to create new file with following content:
+
+```sh
+package controller;
+
+component ExampleController {
+	port
+		in Q(0km/h : 250km/h) velocity,     //incoming port velocity with given range
+		out Q(-2m/s^2:2m/s^2) acceleration, //outgoing port which controls the acceleration of the car
+		out B status;                       //outgoing port which stops the simulation process
+
+	implementation Math{
+		
+		if (velocity <= 10)
+    	    acceleration = 1m/s^2;          //until the car reaches 10 m/s accelerate with 1m/s^2
+    	else
+    		status = 1;                     //When reach the velocity 10 m/s -> stop the simulation
+        end
+	}
+}
+```
+What we see here
+Instantiation
+Connection
+
+//When we have finished with the interface's description, we have to instantiate the actual controller and connect it to the interface.
 
 ```sh
 
