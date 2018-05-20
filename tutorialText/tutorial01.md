@@ -25,13 +25,13 @@ component MainController{
         in Q(0m:200m) br,                   //back right sensor
 
         in Q(0s:oos) time,                  //simulation time from 0s to infinity
-        in Q(0km/h:250km/h) velocity,       //car's velocity
+        in Q(0m/s:25m/s) velocity,          //car velocity
 
-        in Q(-200m:200m) x,                 //car's position X
-        in Q(-200m:200m) y,                 //car's position Y
+        in Q(-200m:200m) x,                 //car position X
+        in Q(-200m:200m) y,                 //car position Y
 
-        out Q(-2m/s^2:2m/s^2) acceleration, //car's acceleration 
-        out Q(-180°:180°) steering,         //car's steering
+        out Q(-2m/s^2:2m/s^2) acceleration, //car acceleration 
+        out Q(-180°:180°) steering,         //car steering
         out B status;                       //whether the simulation is still running
 }
 ```
@@ -40,20 +40,11 @@ After examination of the example, we should notice:
 - For each port must be specified a type (Q is Double or B is Boolean) with a valid range.
 - After each port name has to be a comma and the last one must have a semicolon.
 - The possible units are:
-    distance:
-     - meters(m)
-     - kilometers(km)
-    time
-     - seconds(s)
-     - minutes(m)
-     - hours(h)
-    velocity
-     - km/h
-     - m/s
-    acceleration
-     - m/s^2
-    rotation
-     - degrees(°)
+    - Distance: meters(m), kilometers(km)
+    - Time: seconds(s), minutes(m), hours(h)
+    - Velocity: km/h, m/s
+    - Acceleration: m/s^2
+    - Rotation: degrees(°)
 
 It was the default interface for the Simulator. It has to be define for all possible controllers. Then you may create your own components which will be connected to the mainController. Let's create a simple component and connect it to the main one. To do that, we have to create new file with following content:
 
@@ -62,34 +53,43 @@ package controller;
 
 component ExampleController {
 	port
-		in Q(0km/h : 250km/h) velocity,     //incoming port velocity with given range
+		in Q(0m/s : 25m/s) velocity,     //incoming port velocity with given range
 		out Q(-2m/s^2:2m/s^2) acceleration, //outgoing port which controls the acceleration of the car
 		out B status;                       //outgoing port which stops the simulation process
 
 	implementation Math{
 		
-		if (velocity <= 10)
+		if (velocity <= 10 m/s)
     	    acceleration = 1m/s^2;          //until the car reaches 10 m/s accelerate with 1m/s^2
     	else
-    		status = 1;                     //When reach the velocity 10 m/s -> stop the simulation
+    		status = 1;                     //When reach the velocity 10 m/s -> stop the simulation //Should be TRUE instead of 1
         end
 	}
 }
 ```
-What we see here
-Instantiation
-Connection
 
-//When we have finished with the interface's description, we have to instantiate the actual controller and connect it to the interface.
+There is one incoming port and two outgoing. Firstly we should reach the speed 10 m/s then stop the simulation. The logic of the controller is implemented inside the Math{}. Inside the Math{} scope you can see if-else-end constructions and the example how to use it.
+When we have created the ExampleController we should import it into the MainController and then instantiate it:
 
 ```sh
+package controller;
 
-    instance VelocityController velocityController;
+import ExampleController; // here has being imported the actual controller
 
-    connect velocity->velocityController.velocity;
-    connect velocityController.acceleration->acceleration;
+component MainController{ ...
+}
+
+instance ExampleController exampleController;
+
 ```
-Here we have connected the incoming port - velocity(mainController) to our instantiated controller and its corresponding incoming port velocity. Then we connect outgoing port of velocityController.acceleration to the outgoing port of our MainController.
+Now is time to connect the controller to the MainController.
+
+```sh
+    connect velocity->exampleController.velocity;
+    connect exampleController.acceleration->acceleration;
+    connect exampleController.status->status;
+```
+Here we have connected the incoming port - velocity(mainController) to our instantiated controller and its corresponding incoming port velocity. Then we connect outgoing port of velocityController.acceleration to the outgoing port of our MainController. And finally the status port of the ExampleController to status of the MainController.
 
 Lastly we are going to instantiate the controller which will stop the execution when the conditions will be reached. For this controller we will need incoming ports: velocity and time and outgoing: status. Connect them correspondingly.
 
@@ -99,27 +99,6 @@ Lastly we are going to instantiate the controller which will stop the execution 
     connect velocity->stopSimulationController.velocity;
     connect time->stopSimulationController.time;
     connect stopSimulationController.status->status;
-}
-```
-Now is time to write the an actual controller to solve the given task. We have to start again from defining the package
-and component name :
-
-```sh
-package simulator;
-
-component VelocityController {
-	port                                    //Add incoming and outgoing ports
-		in Q(0km/h : 250km/h) velocity,     //For out task we need only the velocity and acceleration
-		out Q(-2m/s^2:2m/s^2) acceleration; //We are going to control velocity just changing the acceleration
-
-	implementation Math{                    //Inside Math tag is written the logic of the controller
-
-    	if (velocity > 50 km/h)             //If a velocity gets more than 50 km/h then start to brake
-    	    acceleration = -1m/s^2;         //until then accelerate with 1m/s^2.
-    	else
-    	    acceleration = 1m/s^2;
-        end
-	}
 }
 ```
 
