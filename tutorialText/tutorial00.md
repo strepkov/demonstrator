@@ -1,14 +1,14 @@
 # Tutorial(draft)
 
-##### 1. Accelerate to a given speed and brake.
+##### 0. Accelerate to the given speed.
 Implement the model that continuously accelerates to 10 m/s and then stops.
     
 ##### Basic explonation:
 The car has 8 sensors to measure distances to obstacles. They are located respectively: 
 
-![alt text](../tutorialText/car_with_sensors.jpg)
+![alt text](../tutorialText/car-with-sensors.jpg)
 
-To solve this task it's needed to use only acceleration of the car. Changing the acceleration you may control the behavior of the car. To be able to reach 10 m/s speed, you have to accelerate the car continuously until it reaches the desired speed. Let's start with a mainController which defines the interface to the simulator. We should create a new file which has the same name like component has with .emam extension.
+To solve this task it's needed to use only acceleration of the car. Changing the acceleration you may control the behavior of the car. To be able to reach 10 m/s speed, you have to accelerate the car continuously until it reaches the desired speed. Let's start with a MainController which defines the interface to the simulator. We should create a new file which has the same name like component has with .emam extension.
 
 ```sh
 package controller;                         // The name of the folder where all .emam files are located.
@@ -68,7 +68,7 @@ component ExampleController {
 }
 ```
 
-There is one incoming port and two outgoing. Firstly we should reach the speed 10 m/s then stop the simulation. The logic of the controller is implemented inside the Math{}. Inside the Math{} scope you can see if-else-end constructions and the example how to use it.
+There is one incoming port and two outgoing. Firstly we should reach the speed 10 m/s then stop the simulation. The logic of the controller is implemented inside the Math{}. Inside the Math{} scope you can see __if-else-end__ constructions and the example how to use it.
 When we have created the ExampleController we should import it into the MainController and then instantiate it:
 
 ```sh
@@ -76,8 +76,9 @@ package controller;
 
 import ExampleController; // here has being imported the actual controller
 
-component MainController{ ...
-}
+component MainController{ 
+    ...
+
 
 instance ExampleController exampleController;
 
@@ -89,41 +90,12 @@ Now is time to connect the controller to the MainController.
     connect exampleController.acceleration->acceleration;
     connect exampleController.status->status;
 ```
-Here we have connected the incoming port - velocity(mainController) to our instantiated controller and its corresponding incoming port velocity. Then we connect outgoing port of velocityController.acceleration to the outgoing port of our MainController. And finally the status port of the ExampleController to status of the MainController.
 
-Lastly we are going to instantiate the controller which will stop the execution when the conditions will be reached. For this controller we will need incoming ports: velocity and time and outgoing: status. Connect them correspondingly.
+Here we have connected the incoming port - velocity(mainController) to our instantiated controller and its corresponding incoming port velocity. Then we connect the outgoing port of velocityController.acceleration to the outgoing port of our MainController. And finally the status port of the ExampleController to status of the MainController.
 
-```sh
-    instance StopSimulationController stopSimulationController;
+Finally the connections scheme should look like that:
 
-    connect velocity->stopSimulationController.velocity;
-    connect time->stopSimulationController.time;
-    connect stopSimulationController.status->status;
-}
-```
-
-Finally we have to define the conditions to stop the simulation process. To be able to do it, we are gonna use the velocity and the simulation time. Our stop conditions will be the reaching 0 km/h velocity and the simulation time has to more than, let's say, 2 seconds. Because if we have only 0 km/h velocity condition then at the very beginning when the car has not even started to move, the simulation had been finished.  
-
-```sh
-package simulator;
-
-component StopSimulationController {
-    port
-        in Q(0km/h:250km/h) velocity,
-        in Q(0s:oos) time,
-        out B status;
-
-    implementation Math{
-
-        B timeCondition = time > 2s;
-        B velocityCondition = velocity <= 0 km/h;
-
-        if (timeCondition && velocityCondition)     // if we satisfy both these conditions then set status to true
-            status = true;                          // and finish the simulation.
-        end
-    }
-}
-```
+![alt text](../tutorialText/car-with-controller.png)
 
 Eventually we should send these files to the server to process it and then execute in the simulator.
 
