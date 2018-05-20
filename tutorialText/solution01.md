@@ -37,7 +37,7 @@ component MainController{
     connect velocityController.status->status;
 }
 ```
-We have imported the VelocityController, instantiate it and then connect to the MainController.
+We import the VelocityController, instantiate it and then connect to the MainController.
 Now we have to write the VelocityController. It has to have only one incoming port and two outgoing ones.
 
 ```sh
