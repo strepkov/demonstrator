@@ -1,4 +1,4 @@
-# Tutorial(draft)
+# Tutorial(Zero)
 
 ##### 0. Accelerate to the given speed.
 Implement the model that continuously accelerates to 10 m/s and then stops.
@@ -33,7 +33,6 @@ component MainController{
         out Q(-2m/s^2:2m/s^2) acceleration, //car acceleration 
         out Q(-180°:180°) steering,         //car steering
         out B status;                       //whether the simulation is still running
-}
 ```
 After examination of the example, we should notice:
 - Component has ports incoming and outgoing
@@ -89,6 +88,7 @@ Now is time to connect the controller to the MainController.
     connect velocity->exampleController.velocity;
     connect exampleController.acceleration->acceleration;
     connect exampleController.status->status;
+}
 ```
 
 Here we have connected the incoming port - velocity(mainController) to our instantiated controller and its corresponding incoming port velocity. Then we connect the outgoing port of velocityController.acceleration to the outgoing port of our MainController. And finally the status port of the ExampleController to status of the MainController.
