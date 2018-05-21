@@ -78,6 +78,9 @@ class Simulator {
         this.time = math.unit('0 s');
         this.velocity = math.unit('0 m/s');
 
+        this.car.setPosition([0,0]);
+        this.car.setDegree(math.unit('0 deg'));
+
         console.log("Simulator is reseted");
     }
 
