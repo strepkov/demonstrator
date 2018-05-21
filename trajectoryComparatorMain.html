@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test evaluator</title>
+    <meta charset="utf-8">
+    <style>
+        body {
+				margin: 0px;
+				overflow: hidden;
+			}
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="686" height="300"></canvas>
+    <!-- <div id="color" style="width:200px;height:50px;float:left"></div> -->
+    <!-- <button onclick="fillSimulationData()">Read simulation data</button> -->
+    <script src="telemetryLoader.js"></script>
+    <script>
+        var img = new Image();
+        img.src = "test_track_cuted_numbers.jpg";
+
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        
+        img.onload = function () {
+            ctx.drawImage(img,0,0,686,300);
+            img.style.display = 'none';
+        };
+
+        // var color = document.getElementById('color');
+        // function pick(event) {
+        //     var x = event.layerX;
+        //     var y = event.layerY;
+        //     var pixel = ctx.getImageData(x, y, 1, 1);
+        //     var data = pixel.data;
+        //     var rgba = x+" "+ y;
+        //     color.style.background = rgba;
+        //     color.textContent = rgba;
+        // }
+        // canvas.addEventListener('mousemove', pick);
+        
+        var tempX;
+        var tempY;
+        var tempXEnd;
+        var tempYEnd;
+        var multiplayer = 1.85;
+
+        ctx.lineWidth=2;
+
+        setTimeout(function()
+            {
+                for(var i=0; i<jsonSimulationData1.telemetry.length-1; i++){
+
+                    tempX = 340-jsonSimulationData1.telemetry[i].Position[0]*multiplayer;
+                    tempY = 88+jsonSimulationData1.telemetry[i].Position[1]*multiplayer;
+
+                    tempXEnd = 340-jsonSimulationData1.telemetry[i+1].Position[0]*multiplayer;
+                    tempYEnd = 88+jsonSimulationData1.telemetry[i+1].Position[1]*multiplayer;
+
+                    ctx.fillStyle = 'white';
+                    ctx.strokeStyle = 'white';
+
+                    ctx.fillRect(tempX,tempY,1,1);
+
+                    ctx.beginPath();
+                    ctx.moveTo(tempX, tempY);
+                    ctx.lineTo(tempXEnd, tempYEnd);
+                    
+                    ctx.stroke();     
+                }
+            }
+        ,1500);
+
+        function fillSimulationData(){
+            var jsonSimulationData = parent.window.simulationLog;
+            console.log(jsonSimulationData);
+            
+            setTimeout(function()
+            {
+                for(var i=0; i<jsonSimulationData.telemetry.length-1; i++){
+
+                    tempX = 340-jsonSimulationData.telemetry[i].Position[0]*multiplayer;
+                    tempY = 88+jsonSimulationData.telemetry[i].Position[1]*multiplayer;
+
+                    tempXEnd = 340-jsonSimulationData.telemetry[i+1].Position[0]*multiplayer;
+                    tempYEnd = 88+jsonSimulationData.telemetry[i+1].Position[1]*multiplayer;
+
+                    ctx.fillStyle = 'red';
+                    ctx.strokeStyle = 'red';
+
+                    ctx.fillRect(tempX,tempY,1,1);
+
+                    ctx.beginPath();
+                    ctx.moveTo(tempX, tempY);
+                    ctx.lineTo(tempXEnd, tempYEnd);
+                    
+                    ctx.stroke();     
+                }
+                }
+            ,10);
+        }
+
+        setInterval(fillSimulationData, 200);
+
+    </script>
+</body>
+</html>

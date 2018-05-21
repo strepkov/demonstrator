@@ -4,32 +4,31 @@
         <title>Test IDE integration</title>
         <meta charset="utf-8">
         <style>
-            .box1{
-                float:left;
-                margin-right:0px;
-            }
-            .clear{
-                clear:both;
-            }
-            .box {
-                min-width:1800px;
-                width: auto !important;
-                width:1800px;
-            }
+            body {
+				margin: 0px;
+				overflow: hidden;
+			}
         </style>
         <script src="js-libs/jszip.min.js"></script>
     </head>
 <body>
-    <div class="box">
-        <iframe id="ide" src="onlineIDE/api/load.html?mountPoint=[EmbeddedMontiArc]/demonstrator/IDE" height="900" frameborder="0" scrolling="no" width="900"></iframe>
-        <iframe id="indexSimulator" src="index.html"  height="900" width="900"></iframe>
-    </div>
     <div>
-        <button onclick="appendTestModel()">Append test file</button>
-        <button onclick="readAllFiles()">Read all files</button>
-        <button onclick="showContent()">Show Content</button>
-        <button onclick="packData()">Pack and Send</button>
+        <div class="column">
+            <iframe id="ide" src="onlineIDE/api/load.html?mountPoint=[EmbeddedMontiArc]/demonstrator/IDE" height="900" scrolling="no" width="900" align="left"></iframe>
+        </div>
+        <div class="column">
+                <div class="row">
+                    <iframe id="indexSimulator" src="index.html"  height="600" width="686" frameborder="0"></iframe>        
+                </div>
+                <div class="row">
+                    <iframe src="trajectoryComparatorMain.html" height="300" frameborder="0" width="686"></iframe>
+                </div>
+        </div> 
     </div>
+    <button onclick="appendTestModel()">Append test file</button>
+    <button onclick="readAllFiles()">Read all files</button>
+    <button onclick="showContent()">Show Content</button>
+    <button onclick="packData()">Pack and Send</button>
     <script>
 
         function loadMainController(){
@@ -235,6 +234,15 @@
             document.getElementById("indexSimulator").contentWindow.showLogsData = flag;
             return "set " + flag;
         }
+
+        var simulationLog;
+
+        function getSimulationLog(){
+            window.simulationLog = document.getElementById("indexSimulator").contentWindow.logObject;
+        }
+
+        // TODO: read the actual changing of the trajectory
+        setInterval(getSimulationLog, 500);
     </script>
 </body>
 </html>
