@@ -44,7 +44,13 @@
 			<button id="black-material">Black</button>
 			<button id="red-material">Red</button> -->
 			<div class="column">
-				<button onclick="resetSimulation()">reset simulation</button>
+				<div class="row" align ="left">
+					<button onclick="resetSimulation()">reset</button>
+				</div> 
+				<div class="row" align ="left">
+					<button id="create">exprt</button>
+					<a download="telemety-log.json" id="downloadlink" style="display: none">Download telemety-log</a>
+				</div> 
 			</div>
 			<div class="column">
 				<div class="row" align ="left">
@@ -61,25 +67,17 @@
 				</div>
 				<div class="row" align ="left">
 						<input type="range" min="0" max="100" value="0" class="slider" id="myRangeTime">
-						Execution time :<span id="time">0</span> sec
+						Time :<span id="time">0</span> sec
 				</div>
-				</div>
-			<div class="column">
-				<div class="row" align ="left">
-					<button id="create">Export telemetry</button>
-				</div> 
-				<div class="row" align ="left">
-					<a download="telemety-log.json" id="downloadlink" style="display: none">Download telemety-log</a>
-				</div> 
 			</div>
 			<div class="column">
 				<div class="row" align ="left" style="color: red">
 					Simulation Time : <span id="stime" style="color: red" >0 sec</span>
 				</div>
-				<div class="row" id="notready" align ="left" style="font-size:30px; color: red">
+				<div class="row" id="notready" align ="left" style="font-size:28px; color: red">
 					Not Ready!
 				</div>
-				<div class="row" id="ready" align ="left" style="font-size:30px; color: green; display: none">
+				<div class="row" id="ready" align ="left" style="font-size:28px; color: green; display: none">
 						Ready!
 				</div>
 			</div>
@@ -97,7 +95,7 @@
 		<script src="js/OrbitControls.js"></script>
 		<script src="js/loaders/AssimpJSONLoader.js"></script>
 		<script src="js/Detector.js"></script>
-		<script src="js/libs/stats.min.js"></script>
+		<!-- <script src="js/libs/stats.min.js"></script> -->
 		<!-- <script src="mainController.js"></script>  -->
 		<script src="zone2coord.js"></script>
 
@@ -588,9 +586,9 @@
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				container.appendChild( renderer.domElement );
 				
-				// Stats
-				stats = new Stats();
-				container.appendChild( stats.dom );
+				// Stats FPS
+				// stats = new Stats();
+				// container.appendChild( stats.dom );
 
 				// Events
 				window.addEventListener( 'resize', onWindowResize, false );
@@ -1091,7 +1089,7 @@
 			function animate() {
 				requestAnimationFrame( animate );
 				render();
-				stats.update();
+				//stats.update();
 			}
 			
 			//
@@ -1100,7 +1098,7 @@
 				scene.add(currentCar2);
 				scene.add(currentCar3);
 				renderer.render( scene, camera );
-				stats.update();
+				//stats.update();
 			}
 
 			// Create an export log
