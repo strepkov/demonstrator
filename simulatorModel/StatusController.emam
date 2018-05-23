@@ -4,7 +4,6 @@ component StatusController {
     port
         in Q(-200m:200m) x,
         in Q(-200m:200m) y,
-        in Q(0s:oos) time,
         out B status;
 
     implementation Math{
