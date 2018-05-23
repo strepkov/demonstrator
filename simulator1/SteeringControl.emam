@@ -2,44 +2,36 @@ package simulator1;
 
 component SteeringControl {
     port
-        // Distances of the sensors to the track
-        in Q(0m:200m) fl,               //frontleft
-        in Q(0m:200m) fr,               //frontright
-        in Q(0m:200m) slf,              //sideleftfront
-        in Q(0m:200m) slb,              //sideleftback
-        in Q(0m:200m) srf,              //siderightfront
-        in Q(0m:200m) srb,              //siderightback
-        out Q(-180°:180°) steering;     //out angle
+        
+        in Q(0m:200m) fl,
+        in Q(0m:200m) fr,
+        in Q(0m:200m) slf,
+        in Q(0m:200m) slb,
+        in Q(0m:200m) srf,
+        in Q(0m:200m) srb,
+        out Q(-180 deg:180 deg) steering;
 
     implementation Math{
 
         Q(0m:2m) threshold = 0.1m;
         Q(-2m:0m) thresholdN = -0.1m;
 
-        B comp1 = ( ((fl-fr) > threshold) && ((slf-slb) > threshold) ) && ((srb-srf) > threshold);
-        B comp2 = ( ((fl-fr) < thresholdN) && ((slf-slb) < thresholdN) ) && ((srb-srf) < thresholdN);
+        B comp1 = (((fl-fr) > threshold) && ((slf-slb) > threshold)) && ((srb-srf) > threshold);
+        B comp2 = (((fl-fr) < thresholdN) && ((slf-slb) < thresholdN)) && ((srb-srf) < thresholdN);
         B comp3 = (slf<slb) && (srf<srb);
 
-        Q resComp3;
-
         if (comp3)
-            resComp3 = -1°;
+            steering = -1 deg;
         else
-            resComp3 = 0°;
+            steering = 0 deg;
         end
         
-        Q resComp2;
-        
         if (comp2)
-            resComp2 = 5°;
-        else
-            resComp2 = resComp3;
+            steering = 5 deg;
         end
 
         if (comp1)
-            steering = -5°;
-        else
-            steering = resComp2;
+            steering = -5 deg;
         end
     }
 }

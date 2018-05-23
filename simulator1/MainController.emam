@@ -1,26 +1,26 @@
-package simulator1;
+package simulator;
 
 import SteeringControl;
 import ConstantVelocity;
 import GameOverTrigger;
 
 component MainController{
-    ports // Distances of the sensors to the track
-        in Q(0m:200m) fl,               //frontleft
-        in Q(0m:200m) fr,               //frontright
-        in Q(0m:200m) slf,              //sideleftfront
-        in Q(0m:200m) slb,              //sideleftback
-        in Q(0m:200m) srf,              //siderightfront
-        in Q(0m:200m) srb,              //siderightback
+    ports 
+        in Q(0m:200m) fl,
+        in Q(0m:200m) fr,
+        in Q(0m:200m) slf,
+        in Q(0m:200m) slb,
+        in Q(0m:200m) srf,
+        in Q(0m:200m) srb,
 
-        in Q time,
-        in Q(0km/h:250km/h) velocity,
+        in Q(0s:oos) time,
+        in Q(0m/s:25m/s) velocity,
 
-        in Q x,
-        in Q y,
+        in Q(-200m:200m) x,
+        in Q(-200m:200m) y,
 
         out Q(-2m/s^2:2m/s^2) acceleration,
-        out Q(-180°:180°) steering,
+        out Q(-180deg:180deg) steering,
         out B status;
 
     instance SteeringControl steeringControl;

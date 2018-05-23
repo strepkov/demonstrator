@@ -2,15 +2,13 @@ package simulator1;
 
 component ConstantVelocity {
 	port
-		in Q(0km/h : 250km/h) velocity,
-		in Q time,
+		in Q(0m/s : 25m/s) velocity,
+		in Q(0s:oos) time,
 		out Q(-2m/s^2:2m/s^2) acceleration;
 
 	implementation Math{
 
-		B cond = time < 1;
-
-    	if (cond)
+    	if (velocity > 10 m/s)
     	    acceleration = 0m/s^2;
     	else
     	    acceleration = 1m/s^2;
