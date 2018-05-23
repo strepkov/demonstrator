@@ -1,6 +1,6 @@
-package simulator;
+package simulatorModel;
 
-component GameOverTrigger {
+component StatusController {
     port
         in Q(-200m:200m) x,
         in Q(-200m:200m) y,

@@ -1,6 +1,6 @@
-package simulator1;
+package simulatorModel;
 
-component ConstantVelocity {
+component VelocityController {
 	port
 		in Q(0m/s : 25m/s) velocity,
 		in Q(0s:oos) time,

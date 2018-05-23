@@ -1,4 +1,4 @@
-package simulator;
+package simulatorModel;
 
 import SteeringControl;
 import ConstantVelocity;

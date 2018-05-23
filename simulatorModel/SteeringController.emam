@@ -1,6 +1,6 @@
-package simulator1;
+package simulatorModel;
 
-component SteeringControl {
+component SteeringController {
     port
         
         in Q(0m:200m) fl,
