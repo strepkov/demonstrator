@@ -26,12 +26,14 @@
         </div> 
     </div>
     <button onclick="appendTestModel()">Append test file</button>
-    <button onclick="showContent()">Show Content</button>
+    <!-- <button onclick="showContent()">Show Content</button> -->
     <button onclick="readAllFiles()">Read, pack and send files</button>
     <!-- <button onclick="packData()">Pack and Send</button> -->
     <script>
 
         function loadMainController(){
+
+            // TODO: clean the tag if it exists
 
             var doc = document.getElementById("indexSimulator").contentWindow.document;
             var script_tag = doc.createElement('script');
@@ -51,7 +53,13 @@
 
         function loadWasmData(){
             
+            // TODO: clean the variable if it exists
+            if (typeof document.getElementById("indexSimulator").contentWindow.rawWebAssembly !== 'undefined') {
+                // do we have to clean the tag or it just replaced?
+            }
+
             document.getElementById("indexSimulator").contentWindow.rawWebAssembly = rawFileData[1];
+
             overrideReadBinaryWasm();
             
             setTimeout(function(){
@@ -112,7 +120,10 @@
             });
         }
 
+        // TODO: rename
         function readAllFiles() {
+
+            document.getElementById("indexSimulator").contentWindow.notReadyToGo();
 
             filesData = [];
             fileNames = [];
@@ -198,6 +209,12 @@
         var rawFileData = new Array();
 
         function saveFileFromResponse(){
+
+            // delete files from previous compilation
+            while (rawFileData.length) 
+					{ 
+						rawFileData.pop(); 
+					}
 
             var new_zip = new JSZip();
 
