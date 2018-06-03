@@ -13,9 +13,9 @@
 <body>
     <canvas id="canvas" width="686" height="300"></canvas>
     <!-- <div id="color" style="width:200px;height:50px;float:left"></div> -->
-    <!-- <button onclick="fillSimulationData()">Read simulation data</button> -->
     <script src="telemetryLoader.js"></script>
     <script>
+        // Load background image
         var img = new Image();
         img.src = "test_track_cuted_numbers.jpg";
 
@@ -27,6 +27,7 @@
             img.style.display = 'none';
         };
 
+        // show coordinates under a cursor (for test purposes)
         // var color = document.getElementById('color');
         // function pick(event) {
         //     var x = event.layerX;
@@ -47,60 +48,48 @@
 
         ctx.lineWidth=2;
 
-        setTimeout(function()
-            {
-                for(var i=0; i<jsonSimulationData1.telemetry.length-1; i++){
-
-                    tempX = 340-jsonSimulationData1.telemetry[i].Position[0]*multiplayer;
-                    tempY = 88+jsonSimulationData1.telemetry[i].Position[1]*multiplayer;
-
-                    tempXEnd = 340-jsonSimulationData1.telemetry[i+1].Position[0]*multiplayer;
-                    tempYEnd = 88+jsonSimulationData1.telemetry[i+1].Position[1]*multiplayer;
-
-                    ctx.fillStyle = 'white';
-                    ctx.strokeStyle = 'white';
-
-                    ctx.fillRect(tempX,tempY,1,1);
-
-                    ctx.beginPath();
-                    ctx.moveTo(tempX, tempY);
-                    ctx.lineTo(tempXEnd, tempYEnd);
-                    
-                    ctx.stroke();     
-                }
-            }
-        ,1500);
-
-        function fillSimulationData(){
-            var jsonSimulationData = parent.window.simulationLog;
-            console.log(jsonSimulationData);
+        // fill the sample solution trajectory
+        function loadSampleTrajectory(){
             
-            setTimeout(function()
-            {
-                for(var i=0; i<jsonSimulationData.telemetry.length-1; i++){
-
-                    tempX = 340-jsonSimulationData.telemetry[i].Position[0]*multiplayer;
-                    tempY = 88+jsonSimulationData.telemetry[i].Position[1]*multiplayer;
-
-                    tempXEnd = 340-jsonSimulationData.telemetry[i+1].Position[0]*multiplayer;
-                    tempYEnd = 88+jsonSimulationData.telemetry[i+1].Position[1]*multiplayer;
-
-                    ctx.fillStyle = 'red';
-                    ctx.strokeStyle = 'red';
-
-                    ctx.fillRect(tempX,tempY,1,1);
-
-                    ctx.beginPath();
-                    ctx.moveTo(tempX, tempY);
-                    ctx.lineTo(tempXEnd, tempYEnd);
-                    
-                    ctx.stroke();     
-                }
-                }
-            ,10);
+            for(var i=0; i<jsonSimulationData1.telemetry.length-1; i++){
+                
+                tempX = 340-jsonSimulationData1.telemetry[i].Position[0]*multiplayer;
+                tempY = 88+jsonSimulationData1.telemetry[i].Position[1]*multiplayer;
+                tempXEnd = 340-jsonSimulationData1.telemetry[i+1].Position[0]*multiplayer;
+                tempYEnd = 88+jsonSimulationData1.telemetry[i+1].Position[1]*multiplayer;
+                
+                drawTrajectory(tempX,tempY,tempXEnd,tempYEnd,'white');                    
+            }
         }
 
-        setInterval(fillSimulationData, 200);
+        function fillSimulationData(jsonSimulationData){
+            
+            for(var i=0; i<jsonSimulationData.telemetry.length-1; i++){
+                
+                tempX = 340-jsonSimulationData.telemetry[i].Position[0]*multiplayer;
+                tempY = 88+jsonSimulationData.telemetry[i].Position[1]*multiplayer;
+                tempXEnd = 340-jsonSimulationData.telemetry[i+1].Position[0]*multiplayer;
+                tempYEnd = 88+jsonSimulationData.telemetry[i+1].Position[1]*multiplayer;
+                
+                drawTrajectory(tempX,tempY,tempXEnd,tempYEnd,'red');
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded",function(){
+            setTimeout(function(){
+                loadSampleTrajectory();
+            },0);
+        });
+
+        function drawTrajectory(x0,y0,x1,y1,color){
+            ctx.fillStyle = color;
+            ctx.strokeStyle = color;
+            ctx.fillRect(x0,y0,1,1);
+            ctx.beginPath();
+            ctx.moveTo(x0, y0);
+            ctx.lineTo(x1, y1);
+            ctx.stroke();     
+        }
 
     </script>
 </body>

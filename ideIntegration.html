@@ -21,7 +21,7 @@
                     <iframe id="indexSimulator" src="index.html"  height="600" width="686" frameborder="0"></iframe>        
                 </div>
                 <div class="row">
-                    <iframe src="trajectoryComparatorMain.html" height="300" frameborder="0" width="686"></iframe>
+                    <iframe id="trajectoryComparator" src="trajectoryComparatorMain.html" height="300" frameborder="0" width="686"></iframe>
                 </div>
         </div> 
     </div>
@@ -235,14 +235,11 @@
             return "set " + flag;
         }
 
-        var simulationLog;
-
         function getSimulationLog(){
-            window.simulationLog = document.getElementById("indexSimulator").contentWindow.logObject;
+            var simulationLog = document.getElementById("indexSimulator").contentWindow.logObject;
+            document.getElementById("trajectoryComparator").contentWindow.fillSimulationData(simulationLog);
         }
-
-        // TODO: read the actual changing of the trajectory
-        setInterval(getSimulationLog, 500);
+        
     </script>
 </body>
 </html>
