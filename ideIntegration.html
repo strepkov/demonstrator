@@ -26,9 +26,9 @@
         </div> 
     </div>
     <button onclick="appendTestModel()">Append test file</button>
-    <button onclick="readAllFiles()">Read all files</button>
     <button onclick="showContent()">Show Content</button>
-    <button onclick="packData()">Pack and Send</button>
+    <button onclick="readAllFiles()">Read, pack and send files</button>
+    <!-- <button onclick="packData()">Pack and Send</button> -->
     <script>
 
         function loadMainController(){
@@ -128,6 +128,10 @@
                                 }
                             });
                     });
+
+            setTimeout(function(){
+                packData();
+            },100);
         }
 
         function showContent(){
@@ -238,6 +242,11 @@
         function getSimulationLog(){
             var simulationLog = document.getElementById("indexSimulator").contentWindow.logObject;
             document.getElementById("trajectoryComparator").contentWindow.fillSimulationData(simulationLog);
+        }
+
+        function reloadTrajectoryPage(){
+            console.log("reload!");
+            document.getElementById('trajectoryComparator').contentWindow.location.reload();
         }
         
     </script>

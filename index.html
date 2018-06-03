@@ -1351,6 +1351,15 @@
 				//bind the function
 				var resetSimulation = simulator.resetSimulation;
 				var resetSimulator = resetSimulation.bind(simulator);
+
+				// clean the logObject
+				while (logObject.telemetry.length) 
+					{ 
+						logObject.telemetry.pop(); 
+					}
+				
+				// reload page to clean all drawings
+				parent.reloadTrajectoryPage();
 				
 				resetSimulator();
 
