@@ -11,7 +11,7 @@ component SteeringController {
         in Q(0m:200m) srb,
         in Q(0m:200m) br,
         in Q(0m:200m) bl,
-        out Q(-180 deg:180 deg) steering;
+        out Q(-180:180) steering;
 
     implementation Math{
 
@@ -23,17 +23,17 @@ component SteeringController {
         B comp3 = (slf<slb) && (srf<srb);
 
         if (comp3)
-            steering = -1 deg;
+            steering = -1;
         else
-            steering = 0 deg;
+            steering = 0;
         end
         
         if (comp2)
-            steering = 5 deg;
+            steering = 5;
         end
 
         if (comp1)
-            steering = -5 deg;
+            steering = -5;
         end
     }
 }

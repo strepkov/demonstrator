@@ -1,8 +1,8 @@
 package simulatorModel;
 
-import SteeringControl;
-import ConstantVelocity;
-import GameOverTrigger;
+import SteeringController;
+import VelocityController;
+import StatusController;
 
 component MainController{
     ports 
@@ -20,26 +20,26 @@ component MainController{
         in Q(-200m:200m) y,
 
         out Q(-2m/s^2:2m/s^2) acceleration,
-        out Q(-180deg:180deg) steering,
+        out Q(-180:180) steering,
         out B status;
 
-    instance SteeringControl steeringControl;
-    instance ConstantVelocity constantVelocity;
-    instance GameOverTrigger trigger;
+    instance SteeringController steeringController;
+    instance VelocityController velocityController;
+    instance StatusController trigger;
 
-    connect time->constantVelocity.time;
-    connect velocity->constantVelocity.velocity;
-    connect fl->steeringControl.fl;
-    connect fr->steeringControl.fr;
-    connect slf->steeringControl.slf;
-    connect slb->steeringControl.slb;
-    connect srf->steeringControl.srf;
-    connect srb->steeringControl.srb;
-    connect x->trigger.x;
-    connect y->trigger.y;
+    connect time->velocityController.time;
+    connect velocity->velocityController.velocity;
+    connect fl->steeringController.fl;
+    connect fr->steeringController.fr;
+    connect slf->steeringController.slf;
+    connect slb->steeringController.slb;
+    connect srf->steeringController.srf;
+    connect srb->steeringController.srb;
+    connect x->trigger.inx;
+    connect y->trigger.iny;
     connect time ->trigger.time;
 
-    connect constantVelocity.acceleration->acceleration;
-    connect steeringControl.steering->steering;
+    connect velocityController.acceleration->acceleration;
+    connect steeringController.steering->steering;
     connect trigger.status->status;
 }

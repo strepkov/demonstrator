@@ -2,15 +2,15 @@ package simulatorModel;
 
 component StatusController {
     port
-        in Q(-200m:200m) x,
-        in Q(-200m:200m) y, 
+        in Q(-200m:200m) inx,
+        in Q(-200m:200m) iny,
         out B status;
 
     implementation Math{
 
         // the track boundaries
-        B boundariesX = (x > 200m) || (x < -200m);
-        B boundariesY = (y > 120m) || (y < -50m);      
+        B boundariesX = (inx > 200m) || (inx < -200m);
+        B boundariesY = (iny > 120m) || (iny < -50m);
   
         status = boundariesX || boundariesY;
     }
