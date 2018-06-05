@@ -53,10 +53,10 @@
 
         function loadWasmData(){
             
-            // TODO: clean the variable if it exists
-            if (typeof document.getElementById("indexSimulator").contentWindow.rawWebAssembly !== 'undefined') {
-                // do we have to clean the tag or it just replaced?
-            }
+            // // TODO: clean the variable if it exists
+            // if (typeof document.getElementById("indexSimulator").contentWindow.rawWebAssembly !== 'undefined') {
+            //     // do we have to clean the tag or it just replaced?
+            // }
 
             document.getElementById("indexSimulator").contentWindow.rawWebAssembly = rawFileData[1];
 
@@ -64,7 +64,7 @@
             
             setTimeout(function(){
                 loadMainController();
-            },200);
+            },500);
             
             setTimeout(function(){
                 document.getElementById("indexSimulator").contentWindow.initSimulator();
@@ -113,7 +113,7 @@
 
         function readFileName(name) {
             
-            document.getElementById("ide").contentWindow.api.fs.readFile('/'+name, function (err, data) {
+            document.getElementById("ide").contentWindow.api.fs.readFile('/' + name, function (err, data) {
                 if (err) throw err;
                 filesData.push(data);
                 fileNames.push(name);
@@ -127,21 +127,37 @@
 
             filesData = [];
             fileNames = [];
+            var dirRoot = '/';
+            var folderName;
             
-            document.getElementById("ide").contentWindow.api.fs.readdir('/',function (err, data)
-                    {
-                        if (err) throw err;
-                        data.forEach( function (item)
-                            {
-                                if((item.name).includes("emam")){
+            var apiFs = document.getElementById("ide").contentWindow.api.fs;
+            
+            apiFs.readdir(dirRoot,function (err, dir){
+                
+                if (err) throw err;
+                dir.forEach( function (item){
+                    // The folder(item) has to be a root directory for a model
+                    if(item.mime == "folder" && !(item.name).includes(".")){
 
-                                    readFileName(item.name);
+                        folderName = item.name;
+                        apiFs.readdir(dirRoot+item.name, function (err, dirInternal){
+                
+                            if (err) throw err;
+                            dirInternal.forEach( function (file){
+             
+                                if((file.name).includes(".emam") || (file.name).includes(".stream")){
+
+                                    readFileName(item.name + "/" +file.name);
                                 }
                             });
-                    });
+                        });
+                        
+                    }
+                });
+            });
 
             setTimeout(function(){
-                packData();
+                packData(folderName);
             },100);
         }
 
@@ -158,26 +174,20 @@
         var zipContainer = new JSZip();
 
         // TODO: rename and organize
-        function packData(){
+        function packData(folderName){
 
-            // var simulatorZip = zipContainer.folder("simulator1");
+            function addToZip(item,index){
 
-            function func(item,index){
-
-                // simulatorZip.file(item, filesData[index]);
                 zipContainer.file(item, filesData[index]);
                 console.log(item," was packed!");
             }
 
-            fileNames.forEach(func);
+            fileNames.forEach(addToZip);
 
             setTimeout(function(){
                 sendData();
             },1000);
         }
-
-
-        var receivedDataFromServer;
 
         function sendData(){
             var t0 = performance.now();
@@ -189,16 +199,21 @@
                 // xhr.open("POST", 'http://0.0.0.0:7070/receiver/', true);
                 xhr.send(blob1);
                 console.log("files were sent to the server, waiting for responce...");
+                // TODO: why the server does not set response type?
                 xhr.responseType = "blob";
                 
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === 4) {
-                        receivedDataFromServer = xhr.response;
-                        console.log(xhr.response);
+
                         var t1 = performance.now();
                         // Write to the console a compilation time
                         console.log("Compilation time: " + ((t1 - t0)/1000) + " seconds.");
-                        saveFileFromResponse();
+
+                        if(xhr.response){
+                            saveFileFromResponse(xhr.response);
+                        } else {
+                            console.log("response contains nothing");
+                        }
                     }
                 }
             });
@@ -208,11 +223,12 @@
 
         var rawFileData = new Array();
 
-        function saveFileFromResponse(){
+        function saveFileFromResponse(receivedDataFromServer){
 
             // delete files from previous compilation
             while (rawFileData.length) 
-					{ 
+					{   
+                        console.log("clean previous data from server!");
 						rawFileData.pop(); 
 					}
 
