@@ -182,7 +182,9 @@
                 console.log(item," was packed!");
             }
 
-            fileNames.forEach(addToZip);
+            setTimeout(function(){
+                fileNames.forEach(addToZip);
+            },100);
 
             setTimeout(function(){
                 sendData();
@@ -196,7 +198,7 @@
                 var blob1 = new Blob([content], {type: 'application/octet-binary'});
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", 'http://137.226.168.11:80/receiver/', true);
-                // xhr.open("POST", 'http://0.0.0.0:7070/receiver/', true);
+                //xhr.open("POST", 'http://0.0.0.0:7070/receiver/', true);
                 xhr.send(blob1);
                 console.log("files were sent to the server, waiting for responce...");
                 // TODO: why the server does not set response type?

@@ -1,6 +1,6 @@
 Test driven development
 
-We are goint to apply test dreaven development way to create our models for the simulator. It means that we will start from creating tests in advance and only then a controller which satisfy the tests.
+We are going to apply test driven development way to create our models for the simulator. It means that we will start from creating tests in advance and only then a controller which satisfy the tests.
 Let's start with simple example:
 
 ```sh
@@ -14,10 +14,10 @@ stream VelocityControllerTest for VelocityController {
 }
 ```
 
-We are going to analize it line by line. From the very beggining we have to declare the pakage name. If we have a chain of folders then they have to be separated by points. Example: folder1.folder2.folderWithTests.
-Then you can see the reserved word STREAM, which is followed by the name of the test. It has to coincide with the file name where the test is written. After the reserved word FOR must be written the actual controller which will be tested. Inside the test scope should be written incomming and outgoing ports of the controller. Here we have 3 ports: 2 incoming velocity and time and one outgoing acceleration. The reserved word TICK devides "discrete" data on chunks. Then we can see the first value for velocity is 0m/s and 0s for time then we have to have the respective value on the acceleration port. It has to be 1m/s^2 in our case.
+We are going to analyse it line by line. From the very beginning we have to declare the package name. If we have a chain of folders then they have to be separated by points. Example: folder1.folder2.folderWithTests.
+Then you can see the reserved word STREAM, which is followed by the name of the test. It has to coincide with the file name where the test is written. After the reserved word FOR must be written the actual controller which will be tested. Inside the test scope should be written incoming and outgoing ports of the controller. Here we have 3 ports: 2 incoming velocity and time and one outgoing acceleration. The reserved word TICK divides "discrete" data on chunks. Then we can see the first value for velocity is 0m/s and 0s for time then we have to have the respective value on the acceleration port. It has to be 1m/s^2 in our case.
 
-When we have eventually created the test for the VelocityController, it is time to  implement the controller. To sytisfy the tests the controller could be something like this one:
+When we have eventually created the test for the VelocityController, it is time to  implement the controller. To satisfy the tests the controller could be something like this one:
 
 ```sh
 package simulatorModel;

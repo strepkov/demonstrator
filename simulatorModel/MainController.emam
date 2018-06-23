@@ -37,7 +37,6 @@ component MainController{
     connect srb->steeringController.srb;
     connect x->trigger.inx;
     connect y->trigger.iny;
-    connect time ->trigger.time;
 
     connect velocityController.acceleration->acceleration;
     connect steeringController.steering->steering;
