@@ -1,0 +1,15 @@
+image: maven:3-jdk-8
+
+GhPagesJob:
+  script:
+  - git clone https://ci-se:${cise}@git.rwth-aachen.de/monticore/EmbeddedMontiArc/utilities/demonstrator --branch gh-pages --single-branch gh_pages
+  - cd gh_pages
+  - rm ".gitlab-ci.yml"
+  - git add -A
+  - git config --global user.email "ci-se@se-rwth.de"
+  - git config --global user.name "ci-se"
+  - git commit -m "remove .gitlab-ci.yml"
+  - git remote add mine https://ci-se:${cise}@github.com/EmbeddedMontiArc/demonstrator
+  - git push -f -u mine
+  only:
+  - gh-pages
