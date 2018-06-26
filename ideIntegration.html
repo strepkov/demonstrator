@@ -33,13 +33,23 @@
 
         function loadMainController(){
 
-            // TODO: clean the tag if it exists
+            // if(document.getElementById("indexSimulator").contentWindow.document.getElementById('mainController')){
+            //     var elements = document.getElementById("indexSimulator").contentWindow.document.getElementById('mainController');
+            //     while (elements[0]) elements[0].parentNode.removeChild(elements[0]);
+            // }
 
-            var doc = document.getElementById("indexSimulator").contentWindow.document;
-            var script_tag = doc.createElement('script');
-            script_tag.id = "mainController";
-            script_tag.text = rawFileData[0];
-            doc.body.appendChild(script_tag);
+            return new Promise((resolve, reject) => {
+                var doc = document.getElementById("indexSimulator").contentWindow.document;
+                var script_tag = doc.createElement('script');
+                script_tag.id = "mainController";
+                script_tag.text = rawFileData[0];
+                doc.body.appendChild(script_tag);
+
+                setTimeout(()=>{
+                    resolve();
+                },100)
+            });
+
         }        
 
         function overrideReadBinaryWasm(){
@@ -52,23 +62,18 @@
         }
 
         function loadWasmData(){
-            
-            // // TODO: clean the variable if it exists
-            // if (typeof document.getElementById("indexSimulator").contentWindow.rawWebAssembly !== 'undefined') {
-            //     // do we have to clean the tag or it just replaced?
-            // }
 
             document.getElementById("indexSimulator").contentWindow.rawWebAssembly = rawFileData[1];
-
-            overrideReadBinaryWasm();
             
             setTimeout(function(){
-                loadMainController();
-            },500);
+                overrideReadBinaryWasm();
+            },0);
             
             setTimeout(function(){
-                document.getElementById("indexSimulator").contentWindow.initSimulator();
-            },1000);
+                loadMainController().then(
+                    document.getElementById("indexSimulator").contentWindow.initSimulator, 
+                    ()=>{console.error("error during loading a main controller tag!")});
+            },100);
         }
 
         // TODO: rename and better organize
@@ -99,6 +104,7 @@
             return text;
         }
         
+        // Test function to don't create every time controller's file to test the system 
         function appendTestModel(){
             appendFile("MainController.emam", readFileFromDisk("simulator1/MainController.emam"));
             appendFile("ConstantVelocity.emam", readFileFromDisk("simulator1/ConstantVelocity.emam"));
@@ -106,7 +112,7 @@
             appendFile("GameOverTrigger.emam", readFileFromDisk("simulator1/GameOverTrigger.emam"));
         }
 
-        // TODO: Read files from ide and pack
+        // Read files from ide and pack
 
         var filesData = Array();
         var fileNames = Array();
@@ -120,7 +126,7 @@
             });
         }
 
-        // TODO: rename
+        // traverse the folder(project name) 
         function readAllFiles() {
 
             document.getElementById("indexSimulator").contentWindow.notReadyToGo();
@@ -146,7 +152,6 @@
                             dirInternal.forEach( function (file){
              
                                 if((file.name).includes(".emam") || (file.name).includes(".stream")){
-
                                     readFileName(item.name + "/" +file.name);
                                 }
                             });
@@ -157,38 +162,33 @@
             });
 
             setTimeout(function(){
-                packData(folderName);
+                packData(folderName).then(sendData,function(){
+                    console.log("packing problem happened!");
+                });
             },100);
         }
 
+        // show the content which was red from IDE
         function showContent(){
 
-            function func(item,index){
+            fileNames.forEach(function(item,index){
                 console.log(item);
                 console.log(filesData[index]);
-            }
-
-            fileNames.forEach(func);
+            });
         }
 
         var zipContainer = new JSZip();
 
-        // TODO: rename and organize
         function packData(folderName){
-
-            function addToZip(item,index){
-
-                zipContainer.file(item, filesData[index]);
-                console.log(item," was packed!");
-            }
-
-            setTimeout(function(){
-                fileNames.forEach(addToZip);
-            },100);
-
-            setTimeout(function(){
-                sendData();
-            },1000);
+            return new Promise((resolve, reject) => {
+                fileNames.forEach(function(item,index){
+                    zipContainer.file(item, filesData[index]);
+                    console.log(item," was packed!");
+                });
+                setTimeout(()=>{
+                    resolve();
+                },0)
+            });
         }
 
         function sendData(){
@@ -210,12 +210,9 @@
                         var t1 = performance.now();
                         // Write to the console a compilation time
                         console.log("Compilation time: " + ((t1 - t0)/1000) + " seconds.");
-
-                        if(xhr.response){
-                            saveFileFromResponse(xhr.response);
-                        } else {
-                            console.log("response contains nothing");
-                        }
+                        
+                        saveFileFromResponse(xhr.response);
+                        
                     }
                 }
             });
@@ -255,7 +252,6 @@
             });
             
             // wait for async unpack
-            // TODO: find out better solution
             setTimeout(function(){
                 checkWasm();
             }, 500);
