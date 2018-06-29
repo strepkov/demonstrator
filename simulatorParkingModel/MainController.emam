@@ -1,0 +1,52 @@
+package simulatorParkingModel;
+
+import VelocityController;
+import SearchParkingPlaceController;
+import ParkingController;
+
+component MainController{
+    ports 
+        in Q fl,
+        in Q fr,
+        in Q slf,
+        in Q slb,
+        in Q srf,
+        in Q srb,
+        in Q bl,
+        in Q br,
+
+        in Q time,
+        in Q(0km/h:250km/h) velocity,
+
+        in Q(-200m:200m) x,
+        in Q(-200m:200m) y,
+
+        out Q(-2m/s^2:2m/s^2) acceleration,
+        out Q(-180:180) steering,
+        out B status;
+
+
+    instance VelocityController velocityController;
+
+    connect velocity->velocityController.velocity;
+    connect velocityController.acceleration->acceleration;
+
+    instance SearchParkingPlaceController searchParkingPlaceController;
+
+    connect slf->searchParkingPlaceController.frs;
+    connect slb->searchParkingPlaceController.brs;
+    
+    instance ParkingController parkingController;
+    
+    connect bl->parkingController.bl;
+    connect br->parkingController.br;
+    connect fr->parkingController.fr;
+    connect fl->parkingController.fl;
+    
+    connect searchParkingPlaceController.foundPlace->velocityController.reverseMove;
+    connect searchParkingPlaceController.foundPlace->parkingController.reverseMove;
+    connect parkingController.steering->steering;
+    connect parkingController.status->status;
+    
+    connect parkingController.move->velocityController.move;
+}

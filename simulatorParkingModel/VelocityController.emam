@@ -1,0 +1,34 @@
+package simulatorParkingModel;
+
+component VelocityController {
+	port                                    
+		in Q(0km/h : 250km/h) velocity,
+		in B reverseMove,
+		in B move,
+		out Q(-2m/s^2:2m/s^2) acceleration; 
+
+	implementation Math{                    
+
+    	if (velocity > 1 m/s)
+    	    acceleration = 0m/s^2;
+    	else
+    		acceleration = 1m/s^2;
+        end
+        
+        if reverseMove
+        	acceleration = -1m/s^2;
+        end
+        
+        if (velocity < -1 m/s)
+        	acceleration = 0m/s^2;
+        end
+        
+        if (reverseMove && move)
+            acceleration = 1m/s^2;
+        end
+        
+        if (reverseMove && move && (velocity > 1 m/s))
+            acceleration = 0m/s^2;
+        end
+	}
+}

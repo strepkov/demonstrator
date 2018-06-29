@@ -1,0 +1,38 @@
+package simulatorParkingModel;
+
+component SearchParkingPlaceController {
+    port
+        in Q frs,
+        in Q brs,
+        out B foundPlace;
+
+    implementation Math{
+        
+        static Q first = 0;
+        static Q second = 0;
+        static Q third = 0;
+        static Q found = 0;
+
+        if (frs > brs) && (second == 1)  && (third == 1)
+            found = 1;
+            second = 0;
+            third = 0;
+        end
+        
+        if frs > brs
+            first = 1;
+        end
+        
+        if frs < brs
+            second = 1;
+        end
+        
+        if (frs == brs) && (first == 1) && (second == 1)
+            first = 0;
+            second = 0;
+            third = 1;
+        end
+        
+        foundPlace = found > 0;
+    }
+}
