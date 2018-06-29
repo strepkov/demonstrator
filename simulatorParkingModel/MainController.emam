@@ -45,8 +45,8 @@ component MainController{
     
     connect searchParkingPlaceController.foundPlace->velocityController.reverseMove;
     connect searchParkingPlaceController.foundPlace->parkingController.reverseMove;
-    connect parkingController.steering->steering;
+    connect parkingController.steeringAngle->steering;
     connect parkingController.status->status;
     
-    connect parkingController.move->velocityController.move;
+    connect parkingController.moveForward->velocityController.moveForward;
 }
