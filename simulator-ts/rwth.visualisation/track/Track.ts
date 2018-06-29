@@ -14,9 +14,13 @@ class Track {
         this.walls.push(new WallLinear([58, 10], [-122, 10])); // Along this line cars are located
 
         // Should be something |_| box like a car
-        this.walls.push(new WallLinear([20, 10], [20, 3]));
-        this.walls.push(new WallLinear([30, 10], [30, 3]));
-        this.walls.push(new WallLinear([20, 3], [30, 3]));
+        this.walls.push(new WallLinear([20, 10], [20, 6]));
+        this.walls.push(new WallLinear([24, 10], [24, 6]));
+        this.walls.push(new WallLinear([20, 6], [24, 6]));
+        // Should be something |_| box like a car
+        this.walls.push(new WallLinear([41, 10], [41, 6]));
+        this.walls.push(new WallLinear([45, 10], [45, 6]));
+        this.walls.push(new WallLinear([41, 6], [45, 6]));
         
         this.walls.push(new WallLinear([109, -36], [58, -9.5]));
         this.walls.push(new WallLinear([114, -18], [58, 10]));

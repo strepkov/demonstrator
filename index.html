@@ -305,7 +305,7 @@
 				currentCar2 = object;
 				currentCar2.position.y = 0.2;
 				currentCar2.position.x = 8;
-				currentCar2.position.z = 20;
+				currentCar2.position.z = 22;
 				
 				currentCar2.updateMatrixWorld();
 				var vector = new THREE.Vector3();
@@ -399,7 +399,7 @@
 				currentCar3 = object;
 				currentCar3.position.y = 0.2;
 				currentCar3.position.x = 8;
-				currentCar3.position.z = 40;
+				currentCar3.position.z = 44;
 				
 				currentCar3.updateMatrixWorld();
 				var vector = new THREE.Vector3();
@@ -1224,6 +1224,8 @@
 				Module.setSlb(distances[3]*(Math.floor(Math.random() * slider.value) + 95)/100);
 				Module.setSrf(distances[4]*(Math.floor(Math.random() * slider.value) + 95)/100);
 				Module.setSrb(distances[5]*(Math.floor(Math.random() * slider.value) + 95)/100);
+				Module.setBl(distances[6]*(Math.floor(Math.random() * slider.value) + 95)/100);
+				Module.setBr(distances[7]*(Math.floor(Math.random() * slider.value) + 95)/100);
 
 				Module.setX(simulator.output.xi.value);
 				Module.setY(simulator.output.yi.value);
@@ -1373,6 +1375,10 @@
 				// var simulatorInitPosition = initPosition.bind(simulator);
 				// simulatorInitPosition(0,0);
 
+				showTime(0);
+
+				initSimulator();
+
 				document.getElementById("myRange").value = 0;
 				document.getElementById("noise").innerHTML = 0;
 
@@ -1380,7 +1386,6 @@
 				document.getElementById("time").innerHTML = 0;
 
 				var simulationTimeLimit = 3600; // reset time to max
-				showTime(0);
 
 				setPosition(currentCar, 0, 0.2, 0);
 				rotateCar(currentCar, 0);
