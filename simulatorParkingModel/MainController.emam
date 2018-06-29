@@ -42,7 +42,8 @@ component MainController{
     connect br->parkingController.br;
     connect fr->parkingController.fr;
     connect fl->parkingController.fl;
-    
+    connect slf->parkingController.slf;
+    connect slb->parkingController.slb;
     connect searchParkingPlaceController.foundPlace->velocityController.reverseMove;
     connect searchParkingPlaceController.foundPlace->parkingController.reverseMove;
     connect parkingController.steeringAngle->steering;

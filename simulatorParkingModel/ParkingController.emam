@@ -6,6 +6,8 @@ component ParkingController {
         in Q br,
         in Q fl,
         in Q fr,
+        in Q slf,
+        in Q slb,
         in B reverseMove,
         out Q steeringAngle,
         out B moveForward,
@@ -23,18 +25,18 @@ component ParkingController {
             steeringAngle = 2;
         end
         
-        if (reverseMove && (br < 7))
+        if (reverseMove && (bl < 2))
             steeringAngle = -2;
         end
         
         // Car has to be parallel to the road edge
         // Go forward when the back closer then 2m
-        if (reverseMove && ((br == bl) || ((br < 2) && (bl < 2))))
+        if (reverseMove && ((br == bl) || ((br < 3) && (bl < 3))))
             forwardState = 1;
         end
         
         // Stop when the car closer then 3m to front car
-        if ((fr < 3) && forwardState)
+        if (((fr < 2) || (fl < 2)) && forwardState)
             status = 1;
         else
             status = 0;
@@ -43,6 +45,15 @@ component ParkingController {
         // if car moving forward, does not change the car angle
         if forwardState
             steeringAngle = 0;
+        end
+        
+        // align the car
+        if (forwardState && (slf > slb))
+            steeringAngle = -0.5;
+        end
+        
+        if (forwardState && (slf < slb))
+            steeringAngle = 0.5;
         end
         
         moveForward = forwardState;
