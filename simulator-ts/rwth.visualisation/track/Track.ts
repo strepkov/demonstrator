@@ -14,13 +14,13 @@ class Track {
         this.walls.push(new WallLinear([58, 10], [-122, 10])); // Along this line cars are located
 
         // Should be something |_| box like a car
-        this.walls.push(new WallLinear([20, 10], [20, 6]));
-        this.walls.push(new WallLinear([24, 10], [24, 6]));
-        this.walls.push(new WallLinear([20, 6], [24, 6]));
+        // this.walls.push(new WallLinear([20, 10], [20, 6]));
+        // this.walls.push(new WallLinear([24, 10], [24, 6]));
+        // this.walls.push(new WallLinear([20, 6], [24, 6]));
         // Should be something |_| box like a car
-        this.walls.push(new WallLinear([41, 10], [41, 6]));
-        this.walls.push(new WallLinear([45, 10], [45, 6]));
-        this.walls.push(new WallLinear([41, 6], [45, 6]));
+        // this.walls.push(new WallLinear([41, 10], [41, 6]));
+        // this.walls.push(new WallLinear([45, 10], [45, 6]));
+        // this.walls.push(new WallLinear([41, 6], [45, 6]));
         
         this.walls.push(new WallLinear([109, -36], [58, -9.5]));
         this.walls.push(new WallLinear([114, -18], [58, 10]));
@@ -38,5 +38,20 @@ class Track {
         this.walls.push(new WallCurved([-123, 51.3], 41, [-123, 90.8], [-164, 51.3]));
         this.walls.push(new WallCurved([-123, 51.3], 61, [-183, 51.3], [-122, -9.5]));
         this.walls.push(new WallCurved([-123, 51.3], 41, [-164, 51.3], [-122, 10]));
+    }
+
+    public addRectangularObject(centralPoint:number[], width:number, hight:number){
+
+        let point1:number[] = [(centralPoint[1]+hight/2),(centralPoint[0]-width/2)];
+        let point2:number[] = [(centralPoint[1]-hight/2),(centralPoint[0]-width/2)];
+        let point3:number[] = [(centralPoint[1]+hight/2),(centralPoint[0]+width/2)];
+        let point4:number[] = [(centralPoint[1]-hight/2),(centralPoint[0]+width/2)];
+
+        this.walls.push(new WallLinear(point1, point2));
+        this.walls.push(new WallLinear(point2, point4));
+        this.walls.push(new WallLinear(point4, point3));
+        this.walls.push(new WallLinear(point3, point1));
+
+        console.log("Added an object:",point1,point2,point3,point4);
     }
 }
