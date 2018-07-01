@@ -305,7 +305,7 @@
 				currentCar2 = object;
 				currentCar2.position.y = 0.2;
 				currentCar2.position.x = 8;
-				currentCar2.position.z = 22;
+				currentCar2.position.z = 19;
 				
 				currentCar2.updateMatrixWorld();
 				var vector = new THREE.Vector3();
@@ -1171,6 +1171,15 @@
 			// Diagnostic information to know the end point
 			zone = jsonSimulationConf.car.end;
 			console.log("X : ", zone2Coord.get(zone)[0]," Y : ", zone2Coord.get(zone)[1]);
+
+			// add objects for current task
+			// TODO: modify to read the objects from configuration .json file
+			
+			var addObject = simulator.addObjectOnTrack;
+			var addObjectOnTrack = addObject.bind(simulator);
+
+			addObjectOnTrack([8,19],5,5);
+			addObjectOnTrack([8,41],5,5);
 
 			readyToGo();
 

@@ -52,6 +52,6 @@ class Track {
         this.walls.push(new WallLinear(point4, point3));
         this.walls.push(new WallLinear(point3, point1));
 
-        console.log("Added an object:",point1,point2,point3,point4);
+        console.log("Added the object:",point1,point2,point3,point4);
     }
 }

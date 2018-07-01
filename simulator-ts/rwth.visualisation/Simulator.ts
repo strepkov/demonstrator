@@ -32,9 +32,6 @@ class Simulator {
         this.car = new Car(0,0);
         this.track = new Track();
 
-        this.track.addRectangularObject([8,19],5,5);
-        this.track.addRectangularObject([8,41],5,5);
-
         this.output = new Soutput(
             math.unit('0 m/s'),
             math.unit('0 m'),
@@ -85,6 +82,11 @@ class Simulator {
         this.car.setDegree(math.unit('0 deg'));
 
         console.log("Simulator is reseted");
+    }
+
+    public addObjectOnTrack(centralPoint:number[], width:number, hight:number){
+
+        this.track.addRectangularObject(centralPoint, width, hight);
     }
 
     // public addSimListener(simListener: Function) {
