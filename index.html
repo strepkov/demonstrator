@@ -304,8 +304,8 @@
 			carLoader.load( 'models/assimp/AudiAvus.json', function ( object ) {
 				currentCar2 = object;
 				currentCar2.position.y = 0.2;
-				currentCar2.position.x = 8;
-				currentCar2.position.z = 19;
+				currentCar2.position.x = 7.5;
+				currentCar2.position.z = 22;
 				
 				currentCar2.updateMatrixWorld();
 				var vector = new THREE.Vector3();
@@ -398,7 +398,7 @@
 			carLoader.load( 'models/assimp/AudiAvus.json', function ( object ) {
 				currentCar3 = object;
 				currentCar3.position.y = 0.2;
-				currentCar3.position.x = 8;
+				currentCar3.position.x = 7.5;
 				currentCar3.position.z = 44;
 				
 				currentCar3.updateMatrixWorld();
@@ -1134,57 +1134,6 @@
 				}, false);
 			})();
 
-
-			// Run logic using Simulator class
-			var jsonSimulationConf;
-			var jsonZone2Coord;
-			var rawWebAssembly;
-			var delayBetweenExecution = 16;
-			var simulationStatus = false;
-			var simulationTimeLimit = 3600;
-			var showLogsData = false;
-
-			function initSimulator(){
-
-			var simulator = new window.simulator.Simulator();
-			window.simulatorInstance = simulator; 
-
-			// Init the model, which is the controller of the car
-			Module.init();
-			
-			readJSONFile("simulation.json");
-			// Now is possible to use jsonConfFile
-			// example : console.log(jsonSimulationConf.car.start);
-			
-			// Diagnostic information to know the start point
-			var zone = jsonSimulationConf.car.start;
-			console.log("X : ", zone2Coord.get(zone)[0]," Y : ", zone2Coord.get(zone)[1]);
-
-			// Set initial car position for simulator
-			var initPosition = simulator.initPosition;
-			var simulatorInitPosition = initPosition.bind(simulator);
-			//simulatorInitPosition(zone2Coord.get(zone)[0], zone2Coord.get(zone)[1]);
-
-			// TODO: fix parameters sequence
-			setPosition(currentCar,zone2Coord.get(zone)[1], 0.2, zone2Coord.get(zone)[0]);
-			
-			// Diagnostic information to know the end point
-			zone = jsonSimulationConf.car.end;
-			console.log("X : ", zone2Coord.get(zone)[0]," Y : ", zone2Coord.get(zone)[1]);
-
-			// add objects for current task
-			// TODO: modify to read the objects from configuration .json file
-			
-			var addObject = simulator.addObjectOnTrack;
-			var addObjectOnTrack = addObject.bind(simulator);
-
-			addObjectOnTrack([8,19],5,5);
-			addObjectOnTrack([8,41],5,5);
-
-			readyToGo();
-
-			}
-
 			// Read the file with configuration
 			function readJSONFile(file)
 			{
@@ -1202,6 +1151,63 @@
         					}
     				}
     			rawFile.send(null);
+			}
+
+			// Run logic using Simulator class
+			var jsonSimulationConf;
+			var rawWebAssembly;
+			var delayBetweenExecution = 16;
+			var simulationStatus = false;
+			var simulationTimeLimit = 3600;
+			var showLogsData = false;
+
+			(function(){
+				readJSONFile("simulation.json");
+				// Now is possible to use jsonConfFile
+				// console.log(jsonSimulationConf.car.start);
+			})();
+
+			// Set a start position for a car
+			// var zone = jsonSimulationConf.car.start;
+			// var carInitialPosition = [zone2Coord.get(zone)[0],zone2Coord.get(zone)[1]];
+			// TODO: something wrong with zone2Coord...
+			var carInitialPosition = [0,2];
+			setPosition(currentCar,carInitialPosition[1], 0.2, carInitialPosition[0]);
+
+			function initSimulator(){
+
+			var simulator = new window.simulator.Simulator();
+			window.simulatorInstance = simulator;
+
+			// Init the model, which is the controller of the car
+			Module.init();
+			
+			// Diagnostic information to know the start point
+			// console.log("X : ", zone2Coord.get(zone)[0]," Y : ", zone2Coord.get(zone)[1]);
+
+			// Set initial car position for simulator
+			var initPosition = simulator.initPosition;
+			var simulatorInitPosition = initPosition.bind(simulator);
+			// set math model position
+			simulatorInitPosition(carInitialPosition[0], carInitialPosition[1]);
+			// set visualization position
+			setPosition(currentCar,carInitialPosition[1], 0.2, carInitialPosition[0]);
+			
+			// Diagnostic information to know the end point
+			// zone = jsonSimulationConf.car.end;
+			// console.log("X : ", zone2Coord.get(zone)[0]," Y : ", zone2Coord.get(zone)[1]);
+
+			// add objects for current task
+			// TODO: modify to read the objects from configuration .json file
+			
+			var addObject = simulator.addObjectOnTrack;
+			var addObjectOnTrack = addObject.bind(simulator);
+
+			addObjectOnTrack([7.5,22],4,5);
+			addObjectOnTrack([7.5,44],4,5);
+
+			readyToGo();
+
 			}
 
 			// Intermidiate point for interpolation
@@ -1396,7 +1402,7 @@
 
 				var simulationTimeLimit = 3600; // reset time to max
 
-				setPosition(currentCar, 0, 0.2, 0);
+				setPosition(currentCar, carInitialPosition[1], 0.2, carInitialPosition[0]);
 				rotateCar(currentCar, 0);
 			}
 			
