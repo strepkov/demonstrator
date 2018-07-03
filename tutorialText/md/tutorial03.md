@@ -10,7 +10,7 @@ Each module should be as simple as possible.
 
 To solve this tutorial you have to use at least 6 sensors, which measure the distance to objects which are located in front/left side/back of the car. The speed has to be around 0.5-1 m/s. At the picture you can see the main idea how the parking has to be done:
 
-![alt text](parking_process1.jpg)
+![alt text](../img/parking_process1.jpg)
 
 The parking process can be divided in 4 steps:  
 1. Go straight until a place have been found.
