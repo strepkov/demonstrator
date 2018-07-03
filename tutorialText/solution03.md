@@ -2,7 +2,7 @@
 
 ### To carry out a parallel parking between two cars.
 
-To solve that tutorial you have to use the MainController, like you did in the other tutorials. Here we are using the sensors fl and fr in the MainController.
+To solve that tutorial you have to use the MainController, like you did in the other tutorials:
 
 ```sh
 package simulatorParkingModel;
@@ -60,7 +60,7 @@ component MainController{
 }
 ```
 We import VelocityController, SearchParkingPlaceController and ParkingController instantiate them and then connect correspondingly. 
-Now we should write the VelocityController, which controls the moving speed of the car:
+Now we should create a VelocityController, which controls the speed of the car:
 
 ```sh
 package simulatorParkingModel;
@@ -100,9 +100,9 @@ component VelocityController {
 }
 ```
 
-The controller has three states. First one when the car looking for a place for parking and has speed 1m/s. Second, when the car is moving back. And the third one when it moves forward to be closer to the front car.
+The controller has three states. First one is when the car is looking for a place for parking and has speed 1m/s. Second, when the car is moving back. And the third one is when it is moving forward to be closer to the front car.
 
-Next controller is the SearchParkingPlaceController. The idea here is to pass the first car and find the "end" of the second car to start parking process form right point.
+Next controller is a SearchParkingPlaceController. The idea is to pass the first car and find the "end" of the second car to start parking process form a right point.
 
 ```sh
 package simulatorParkingModel;
@@ -145,7 +145,7 @@ component SearchParkingPlaceController {
 }
 ```
 
-We are using here the side sensors to measure the distances to the cars and a side of the road. Using static variables we can save the states(e.g. the distance has changed from 5m to 1m and then from 1m to 5m -> we have passed the car).
+We are using here the side sensors to measure the distances to the cars and the side of the road. Using static variables we can save the states(e.g. the distance has changed from 5m to 1m and then from 1m to 5m -> we have passed the car).
 
 Next controller will be the most important one because it manages the parking process:
 
@@ -212,4 +212,4 @@ component ParkingController {
     }
 }
 ```
-The idea is that we going back until it reached certain point, changing an angle of the car. When we are going back and the distance, from the back left sensor to the road border, is less then 2m, start rotate the car in opposite direction until it is in parallel with the road. Then stop when the limit of the back distance is reached and go closer to the front car. All these steps are nicely illustrated at the picture in the tutorial03.
+The idea is that the car is going back until it reached a certain point, changing an angle of the car. When we are going back and the distance, from the back left sensor to the road border, is less then 2m, start rotate the car in opposite direction until it is in parallel with the road. Then stop when the limit of the back distance is reached and go closer to the front car. All these steps are nicely illustrated at the picture in the tutorial03.
