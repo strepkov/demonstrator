@@ -24,27 +24,28 @@
                     <iframe id="trajectoryComparator" src="trajectoryComparatorMain.html" height="300" frameborder="0" width="686"></iframe>
                 </div>
         </div>
-        <div id="rightSide2" class="column">
-                <div class="row">
-                    <iframe id="indexSimulator" src="index.html"  height="600" width="686" frameborder="0"></iframe>        
-                </div>
-                <div class="row">
-                    <iframe id="trajectoryComparator" src="trajectoryComparatorMain.html" height="300" frameborder="0" width="686"></iframe>
-                </div>
+        <div id="rightSide2" class="column" style="display: none">
+            // Change the way of defining the current tutorial link
+            <iframe id="indexSimulator" src="tutorialText/html/tutorial03.md.html"  height="900" width="686" frameborder="0"></iframe>        
         </div>
     </div>
     <button onclick="appendTestModel()">Append test file</button>
     <!-- <button onclick="showContent()">Show Content</button> -->
     <button onclick="readAllFiles()">Read, pack and send files</button>
     <!-- <button onclick="packData()">Pack and Send</button> -->
-    <button onclick="showTutorial()">Read, pack and send files</button>
+    <button onclick="showTutorial()">Show tutorial/simulator</button>
+
     <script>
 
-    // style="display: none"
-
         function showTutorial(){
-				document.getElementById("rightSide1").style.display = 'none';
-				document.getElementById("notready").style.display = 'block';
+
+            if(document.getElementById("rightSide2").style.display == 'none'){
+                document.getElementById("rightSide1").style.display = 'none';
+				document.getElementById("rightSide2").style.display = 'block';
+            }else {
+                document.getElementById("rightSide1").style.display = 'block';
+				document.getElementById("rightSide2").style.display = 'none';
+            }
 		}
 
         function loadMainController(){
