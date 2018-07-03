@@ -16,20 +16,36 @@
         <div class="column">
             <iframe id="ide" src="onlineIDE/api/load.html?mountPoint=[EmbeddedMontiArc]/demonstrator/IDE" height="900" scrolling="no" width="900" align="left"></iframe>
         </div>
-        <div class="column">
+        <div id="rightSide1" class="column">
                 <div class="row">
                     <iframe id="indexSimulator" src="index.html"  height="600" width="686" frameborder="0"></iframe>        
                 </div>
                 <div class="row">
                     <iframe id="trajectoryComparator" src="trajectoryComparatorMain.html" height="300" frameborder="0" width="686"></iframe>
                 </div>
-        </div> 
+        </div>
+        <div id="rightSide2" class="column">
+                <div class="row">
+                    <iframe id="indexSimulator" src="index.html"  height="600" width="686" frameborder="0"></iframe>        
+                </div>
+                <div class="row">
+                    <iframe id="trajectoryComparator" src="trajectoryComparatorMain.html" height="300" frameborder="0" width="686"></iframe>
+                </div>
+        </div>
     </div>
     <button onclick="appendTestModel()">Append test file</button>
     <!-- <button onclick="showContent()">Show Content</button> -->
     <button onclick="readAllFiles()">Read, pack and send files</button>
     <!-- <button onclick="packData()">Pack and Send</button> -->
+    <button onclick="showTutorial()">Read, pack and send files</button>
     <script>
+
+    // style="display: none"
+
+        function showTutorial(){
+				document.getElementById("rightSide1").style.display = 'none';
+				document.getElementById("notready").style.display = 'block';
+		}
 
         function loadMainController(){
 
