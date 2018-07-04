@@ -203,9 +203,26 @@
 			var tireBackRight = new THREE.Object3D();
 			var tireBackLeft = new THREE.Object3D();
 
-			// Load the Car Object here
-			
+			// Add the cone on the track
+			var coneLoader = new THREE.ObjectLoader();
+			coneLoader.load('models/cone.json', function ( object ) {
+				scene.add( object );
+				object.position.x = 9;
+				object.position.y = 0.3;
+				object.position.z = 10;
+				
+			}, onProgress, onError );
 
+			var coneLoader = new THREE.ObjectLoader();
+			coneLoader.load('models/cone.json', function ( object ) {
+				scene.add( object );
+				object.position.x = 8;
+				object.position.y = 0.3;
+				object.position.z = 12;
+				
+			}, onProgress, onError );
+
+			// Load the Car Object here
 			var carLoader = new THREE.AssimpJSONLoader();
 
 			carLoader.load( 'models/assimp/AudiAvus.json', function ( object ) {
