@@ -205,20 +205,41 @@
 
 			// Add the cone on the track
 			var coneLoader = new THREE.ObjectLoader();
+			
+			// The cone hear the car
 			coneLoader.load('models/cone.json', function ( object ) {
 				scene.add( object );
-				object.position.x = 9;
+				object.position.x = 4;
 				object.position.y = 0.3;
-				object.position.z = 10;
+				object.position.z = -97;
+
+				var obj2 = object.clone();
+				scene.add(obj2);
+				obj2.position.x -=6;
 				
 			}, onProgress, onError );
 
-			var coneLoader = new THREE.ObjectLoader();
 			coneLoader.load('models/cone.json', function ( object ) {
-				scene.add( object );
-				object.position.x = 8;
+				scene.add( object );		// 1, -75
+				object.position.x = 1;
 				object.position.y = 0.3;
-				object.position.z = 12;
+				object.position.z = -75;
+
+				var obj2 = object.clone(); 	// 1, -50
+				scene.add(obj2);
+				obj2.position.z +=25;
+
+				var obj3 = obj2.clone(); 	// 1, -25
+				scene.add(obj3);
+				obj3.position.z +=25;
+
+				var obj4 = obj3.clone();	// 1, 0
+				scene.add(obj4);
+				obj4.position.z +=25;
+
+				var obj5 = obj4.clone();	// 1, 25
+				scene.add(obj5);
+				obj5.position.z +=25;
 				
 			}, onProgress, onError );
 
@@ -316,194 +337,6 @@
 				
 			}, onProgress, onError );
 			
-
-			// Second car is loading here
-			carLoader.load( 'models/assimp/AudiAvus.json', function ( object ) {
-				currentCar2 = object;
-				currentCar2.position.y = 0.2;
-				currentCar2.position.x = 7.5;
-				currentCar2.position.z = 22;
-				
-				currentCar2.updateMatrixWorld();
-				var vector = new THREE.Vector3();
-				vector.setFromMatrixPosition( leftFrontIndicator.matrixWorld );
-				//console.log(vector);
-				
-				// Children Car IDs
-				body = object.getObjectByName("3DSMesh_6", true);
-				steel = object.getObjectByName("3DSMesh_31", true);
-				logo = object.getObjectByName("3DSMesh_34", true);
-				pipes = object.getObjectByName("3DSMesh_26", true);
-				bumper = object.getObjectByName("3DSMesh_25", true);
-				engine = object.getObjectByName("3DSMesh_35", true);
-				dashboard = object.getObjectByName("3DSMesh_42", true);
-				dashboardDisplay = object.getObjectByName("3DSMesh_41", true);
-				steeringWheel = object.getObjectByName("3DSMesh_43");
-				wipers = object.getObjectByName("3DSMesh_52", true);
-				
-				leftDoor = object.getObjectByName("3DSMesh_10", true);
-				rightDoor = object.getObjectByName("3DSMesh_12", true);
-				rightMirror = object.getObjectByName("3DSMesh_51", true);
-				leftMirror = object.getObjectByName("3DSMesh_27", true);
-				
-				backlights = object.getObjectByName("3DSMesh_28", true);
-				frontlights = object.getObjectByName("3DSMesh_40", true);
-				rightFrontIndicator = object.getObjectByName("3DSMesh_48", true);
-				leftFrontIndicator = object.getObjectByName("3DSMesh_2", true);
-				rightBackIndicator = object.getObjectByName("3DSMesh_0", true);
-				leftBackIndicator = object.getObjectByName("3DSMesh_50", true);
-				
-				rightBrakeLight = object.getObjectByName("3DSMesh_1", true);
-				leftBrakeLight = object.getObjectByName("3DSMesh_49", true);
-				
-				carGlass = object.getObjectByName("3DSMesh_33", true);
-				leftWindow = object.getObjectByName("3DSMesh_9", true);
-				rightWindow = object.getObjectByName("3DSMesh_11", true);
-				
-				wheelFrontRight = object.getObjectByName("3DSMesh_19", true);
-				wheelFrontLeft = object.getObjectByName("3DSMesh_21", true);
-				wheelBackRight = object.getObjectByName("3DSMesh_17", true);
-				wheelBackLeft = object.getObjectByName("3DSMesh_23", true);		
-				
-				tireFrontRight = object.getObjectByName("3DSMesh_20", true);
-				tireFrontLeft = object.getObjectByName("3DSMesh_22", true);
-				tireBackRight = object.getObjectByName("3DSMesh_18", true);
-				tireBackLeft = object.getObjectByName("3DSMesh_24", true);
-				
-				backPlate2 = object.getObjectByName("3DSMesh_45", true);
-				backPlate = object.getObjectByName("3DSMesh_46", true);
-				
-				seatRight = object.getObjectByName("3DSMesh_13", true);
-				seatLeft = object.getObjectByName("3DSMesh_15", true);
-				carpet = object.getObjectByName("3DSMesh_30", true);
-				currentCar2.add(rightDoor);
-				/* 
-				// Initial Color of Car Housing -> Shiny Blue
-				// Set metallic parts to a steel material -> PuredarkChrome
-				// Set textil objects to fabric color -> Rough Red
-				*/
-				var housing = [body, rightDoor, leftDoor, backPlate2, backPlate];
-				for(var i = 0; i<housing.length; i++){
-					setColor(materialBlack, housing[i]);
-				}
-				
-				var darkChromeObjects = [dashboardDisplay, rightMirror, leftMirror, engine, pipes, logo, steel, wheelBackLeft, wheelBackRight, wheelFrontLeft, wheelFrontRight ]
-				for(var i = 0; i<darkChromeObjects.length; i++){
-					setColor(pureChrome, darkChromeObjects[i]);
-				}
-				
-				var blackObjects = [steeringWheel, wipers, dashboard, bumper, tireBackLeft,tireBackRight, tireFrontLeft, tireFrontRight];
-				for(var i = 0; i<blackObjects.length; i++){
-					setColor(blackRough, blackObjects[i]);
-				}
-				var redObjects = [carpet, seatLeft, seatRight];
-				for(var i = 0; i<redObjects.length; i++){
-					setColor(redRough, redObjects[i]);
-				}
-				
-				// Set glass material
-				var blueGlassMaterial = [carGlass, rightWindow, leftWindow];
-				for(var i = 0; i<blueGlassMaterial.length; i++){
-					setColor(blueGlass, blueGlassMaterial[i]);
-				}
-				setColor(redGlass, backlights);
-				setColor(yellowGlass, frontlights);
-				
-			}, onProgress, onError );
-
-			// Third car is loading here
-			carLoader.load( 'models/assimp/AudiAvus.json', function ( object ) {
-				currentCar3 = object;
-				currentCar3.position.y = 0.2;
-				currentCar3.position.x = 7.5;
-				currentCar3.position.z = 44;
-				
-				currentCar3.updateMatrixWorld();
-				var vector = new THREE.Vector3();
-				vector.setFromMatrixPosition( leftFrontIndicator.matrixWorld );
-				//console.log(vector);
-				
-				// Children Car IDs
-				body = object.getObjectByName("3DSMesh_6", true);
-				steel = object.getObjectByName("3DSMesh_31", true);
-				logo = object.getObjectByName("3DSMesh_34", true);
-				pipes = object.getObjectByName("3DSMesh_26", true);
-				bumper = object.getObjectByName("3DSMesh_25", true);
-				engine = object.getObjectByName("3DSMesh_35", true);
-				dashboard = object.getObjectByName("3DSMesh_42", true);
-				dashboardDisplay = object.getObjectByName("3DSMesh_41", true);
-				steeringWheel = object.getObjectByName("3DSMesh_43");
-				wipers = object.getObjectByName("3DSMesh_52", true);
-				
-				leftDoor = object.getObjectByName("3DSMesh_10", true);
-				rightDoor = object.getObjectByName("3DSMesh_12", true);
-				rightMirror = object.getObjectByName("3DSMesh_51", true);
-				leftMirror = object.getObjectByName("3DSMesh_27", true);
-				
-				backlights = object.getObjectByName("3DSMesh_28", true);
-				frontlights = object.getObjectByName("3DSMesh_40", true);
-				rightFrontIndicator = object.getObjectByName("3DSMesh_48", true);
-				leftFrontIndicator = object.getObjectByName("3DSMesh_2", true);
-				rightBackIndicator = object.getObjectByName("3DSMesh_0", true);
-				leftBackIndicator = object.getObjectByName("3DSMesh_50", true);
-				
-				rightBrakeLight = object.getObjectByName("3DSMesh_1", true);
-				leftBrakeLight = object.getObjectByName("3DSMesh_49", true);
-				
-				carGlass = object.getObjectByName("3DSMesh_33", true);
-				leftWindow = object.getObjectByName("3DSMesh_9", true);
-				rightWindow = object.getObjectByName("3DSMesh_11", true);
-				
-				wheelFrontRight = object.getObjectByName("3DSMesh_19", true);
-				wheelFrontLeft = object.getObjectByName("3DSMesh_21", true);
-				wheelBackRight = object.getObjectByName("3DSMesh_17", true);
-				wheelBackLeft = object.getObjectByName("3DSMesh_23", true);		
-				
-				tireFrontRight = object.getObjectByName("3DSMesh_20", true);
-				tireFrontLeft = object.getObjectByName("3DSMesh_22", true);
-				tireBackRight = object.getObjectByName("3DSMesh_18", true);
-				tireBackLeft = object.getObjectByName("3DSMesh_24", true);
-				
-				backPlate2 = object.getObjectByName("3DSMesh_45", true);
-				backPlate = object.getObjectByName("3DSMesh_46", true);
-				
-				seatRight = object.getObjectByName("3DSMesh_13", true);
-				seatLeft = object.getObjectByName("3DSMesh_15", true);
-				carpet = object.getObjectByName("3DSMesh_30", true);
-				currentCar3.add(rightDoor);
-				/* 
-				// Initial Color of Car Housing -> Shiny Blue
-				// Set metallic parts to a steel material -> PuredarkChrome
-				// Set textil objects to fabric color -> Rough Red
-				*/
-				var housing = [body, rightDoor, leftDoor, backPlate2, backPlate];
-				for(var i = 0; i<housing.length; i++){
-					setColor(materialBlue, housing[i]);
-				}
-				
-				var darkChromeObjects = [dashboardDisplay, rightMirror, leftMirror, engine, pipes, logo, steel, wheelBackLeft, wheelBackRight, wheelFrontLeft, wheelFrontRight ]
-				for(var i = 0; i<darkChromeObjects.length; i++){
-					setColor(pureChrome, darkChromeObjects[i]);
-				}
-				
-				var blackObjects = [steeringWheel, wipers, dashboard, bumper, tireBackLeft,tireBackRight, tireFrontLeft, tireFrontRight];
-				for(var i = 0; i<blackObjects.length; i++){
-					setColor(blackRough, blackObjects[i]);
-				}
-				var redObjects = [carpet, seatLeft, seatRight];
-				for(var i = 0; i<redObjects.length; i++){
-					setColor(redRough, redObjects[i]);
-				}
-				
-				// Set glass material
-				var blueGlassMaterial = [carGlass, rightWindow, leftWindow];
-				for(var i = 0; i<blueGlassMaterial.length; i++){
-					setColor(blueGlass, blueGlassMaterial[i]);
-				}
-				setColor(redGlass, backlights);
-				setColor(yellowGlass, frontlights);
-				
-			}, onProgress, onError );
 			
 			function showGameOverScreen(){
 				document.getElementById('close_layer').style.display = 'inline';
@@ -528,7 +361,7 @@
 			buildingLoader.load( 'models/assimp/interior/build.json', function ( object ) {
 				scene.add( object );
 				// Adapt the position of the building to the Environment
-				object.position.x = -35;
+				object.position.x = -35 - 20;
 				object.position.z += 35;
 				object.scale.multiplyScalar(0.3);
 				
@@ -554,9 +387,9 @@
 				scene.add(obj2);
 				obj2.position.z -=60;
 				
-				var obj3 = obj2.clone();
-				scene.add(obj3);
-				obj3.position.z -=60;
+				// var obj3 = obj2.clone();
+				// scene.add(obj3);
+				// obj3.position.z -=60;
 				
 			}, onProgress, onError );
 			
@@ -580,7 +413,7 @@
 				
 				// Camera
 				camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 2000 );
-				camera.position.set( 20, 17, -20 );
+				camera.position.set( 20, 20, -150 );
 				
 				// Scene
 				scene = new THREE.Scene();	
@@ -1118,8 +951,8 @@
 			//
 			function render() {
 				scene.add(currentCar);
-				scene.add(currentCar2);
-				scene.add(currentCar3);
+				// scene.add(currentCar2);
+				// scene.add(currentCar3);
 				renderer.render( scene, camera );
 				//stats.update();
 			}
@@ -1188,7 +1021,7 @@
 			// var zone = jsonSimulationConf.car.start;
 			// var carInitialPosition = [zone2Coord.get(zone)[0],zone2Coord.get(zone)[1]];
 			// TODO: something wrong with zone2Coord...
-			var carInitialPosition = [0,2];
+			var carInitialPosition = [-100,1];
 			setPosition(currentCar,carInitialPosition[1], 0.2, carInitialPosition[0]);
 
 			function initSimulator(){
@@ -1222,6 +1055,13 @@
 
 			addObjectOnTrack([7.5,22],4,5);
 			addObjectOnTrack([7.5,44],4,5);
+				
+			// cones
+			addObjectOnTrack([1,-75],6,1);
+			addObjectOnTrack([1,-50],6,1);
+			addObjectOnTrack([1,-25],6,1);
+			addObjectOnTrack([1,0],6,1);
+			addObjectOnTrack([1,25],6,1);
 
 			readyToGo();
 
