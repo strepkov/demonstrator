@@ -2,7 +2,7 @@
 
 ### To carry out a parallel parking between two cars.
 Implement a model that manages a parking between two cars. The model has to have several modules which are responsible for different actions. One of the examples could be:
-1. Module with controls the speed of the car, depends form the current action(e.g. parking, searching a parking place).
+1. Module which controls the speed of the car, depends form the current action(e.g. parking, searching a parking place).
 3. Module which looking for a gap between cars for the parking.
 2. Module which controls a steering of the car during the parking process.
 
