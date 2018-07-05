@@ -26,16 +26,40 @@
         </div>
         <div id="rightSide2" class="column" style="display: none">
             <!-- Change the way of defining the current tutorial link -->
-            <iframe id="indexSimulator" src="tutorialText/html/tutorial03.md.html"  height="900" width="686" frameborder="0"></iframe>        
+            <iframe id="tutorialFrame" src="tutorials/html/tutorial03.md.html" height="900" width="686" frameborder="0"></iframe>        
         </div>
     </div>
-    <button onclick="appendTestModel()">Append test file</button>
-    <!-- <button onclick="showContent()">Show Content</button> -->
-    <button onclick="readAllFiles()">Read, pack and send files</button>
-    <!-- <button onclick="packData()">Pack and Send</button> -->
-    <button onclick="showTutorial()">Show tutorial/simulator</button>
+    <div>
+        <!-- <button onclick="appendTestModel()">Append test file</button> -->
+        <!-- <button onclick="showContent()">Show Content</button> -->
+        <button onclick="readAllFiles()">Read, pack and send files</button>
+        <!-- <button onclick="packData()">Pack and Send</button> -->
+        <button onclick="showTutorial()">Show tutorial/simulator</button>
+        <div style="width:200px;">
+            <select id="tutorialSelect" onchange="showSelectedTutorial()">
+              <option value="0">Tutorial0</option>
+              <option value="1">Tutorial1</option>
+              <option value="2">Tutorial2</option>
+              <option value="3">Tutorial3</option>
+              <option value="4">Tutorial4</option>
+            </select>
+        </div>
+    </div>
 
     <script>
+
+        function showSelectedTutorial(){
+
+            var tutorialList = document.getElementById("tutorialSelect");
+            var selectedTutorial = tutorialList.options[tutorialList.selectedIndex].value;
+            console.log(selectedTutorial);
+            
+            // The list of tutorials
+            var tutorialPath = "tutorials/html/tutorial";
+            var link = ["00.md.html", "01.md.html", "02.md.html","03.md.html"];
+
+            document.getElementById('tutorialFrame').src = tutorialPath + link[selectedTutorial];
+        }
 
         function showTutorial(){
 

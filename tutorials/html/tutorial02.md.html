@@ -112,40 +112,14 @@
   </head>
   <body>
     <div class="beginning-of-doc"></div>
-    <h1 id="tutorial03">Tutorial(03)</h1>
+    <h1 id="tutorial02">Tutorial(02)</h1>
 
-<h3 id="tocarryoutaparallelparkingbetweentwocars">To carry out a parallel parking between two cars.</h3>
+<h3 id="accelerateandthenstopabout10metersbeforeanobstacle">Accelerate and then stop about 10 meters before an obstacle.</h3>
 
-<p>Implement a model that manages a parking between two cars. The model has to have several modules which are responsible for different actions. One of the examples could be:</p>
+<p>Implement the model that continuously accelerate the car with acceleration 1 m/s^2 and then the simulation is ended when the distance to an obstacle about 10 meters.</p>
 
-<ol>
-<li>Module with controls the speed of the car, depends form the current action(e.g. parking, searching a parking place).</li>
+<p>To solve this tutorial you have to use two front sensors, which measure the distance to objects which are located in front of the car. Hint: you can use logical operations the same way like you get used to do it in other languages(or ||, and &amp;&amp;). The actual obstacle will be the border of the road in front of the car.</p>
 
-<li>Module which looking for a gap between cars for the parking.</li>
-
-<li>Module which controls a steering of the car during the parking process.</li>
-</ol>
-
-<p>Each module should be as simple as possible.</p>
-
-<p>To solve this tutorial you have to use at least 6 sensors, which measure the distance to objects which are located in front/left side/back of the car. The speed has to be around 0.5-1 m/s. At the picture you can see the main idea how the parking has to be done:</p>
-
-<p><img src="../img/parking_process1.jpg" alt="alt text" /></p>
-
-<p>The parking process can be divided in 4 steps:  </p>
-
-<ol>
-<li>Go straight until a place have been found.</li>
-
-<li>When the place is found, go back and rotate the car.</li>
-
-<li>When the car has reached appropriate point, rotate car in other direction to fit into given gap between the cars.</li>
-
-<li>When the car is close to the car behind, stop and go forward until it reaches certain distance to the front car.</li>
-</ol>
-
-<p><strong>Important to know, this wed-simulator is a simplified version and it does not change the angle of front wheels but an angle of the car entirely.</strong></p>
-
-<p>Show the <a href="solutions/solution03.md.html">solution</a>.</p>
+<p>Show the <a href="solutions/solution02.md.html">solution</a>.</p>
   </body>
 </html>
