@@ -6,7 +6,7 @@ Implement the model that continuously accelerates to 10 m/s and then stops.
 ##### Basic explonation:
 The car has 8 sensors to measure distances to obstacles. They are located respectively: 
 
-![alt text](../tutorialText/car-with-sensors.jpg)
+![alt text](../img/car-with-sensors.jpg)
 
 To solve this task it's needed to use only acceleration of the car. Changing the acceleration you may control the behavior of the car. To be able to reach 10 m/s speed, you have to accelerate the car continuously until it reaches the desired speed. Let's start with a MainController which defines the interface to the simulator. We should create a new file which has the same name like component has with .emam extension.
 
@@ -95,7 +95,7 @@ Here we have connected the incoming port - velocity(mainController) to our insta
 
 Finally the connections scheme should look like that:
 
-![alt text](../tutorialText/car-with-controller.png)
+![alt text](../img/car-with-controller.png)
 
 Eventually we should send these files to the server to process it and then execute in the simulator.
 

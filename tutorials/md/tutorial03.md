@@ -20,4 +20,4 @@ The parking process can be divided in 4 steps:
 
 **Important to know, this wed-simulator is a simplified version and it does not change the angle of front wheels but an angle of the car entirely.**
 
-Show the [solution](solution03.md).
+Show the [solution](solutions/solution03.md).

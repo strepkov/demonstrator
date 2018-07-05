@@ -5,4 +5,4 @@ Implement the model that continuously accelerates 10 seconds with acceleration 1
 
 To solve this task you have to use the MainController with defined interface to the simulator(from the tutorial 00) and then create your own controller which behaves in desired way.
 
-Show the [solution](solution01.md).
+Show the [solution](solutions/solution01.md).
