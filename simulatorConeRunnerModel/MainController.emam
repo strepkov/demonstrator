@@ -1,0 +1,44 @@
+package simulatorConeRunnerModel;
+
+import VelocityController;
+import ConeRunner;
+
+component MainController{
+    ports 
+        in Q fl,
+        in Q fr,
+        in Q slf,
+        in Q slb,
+        in Q srf,
+        in Q srb,
+        in Q bl,
+        in Q br,
+
+        in Q time,
+        in Q(0km/h:250km/h) velocity,
+
+        in Q(-200m:200m) x,
+        in Q(-200m:200m) y,
+
+        out Q(-2m/s^2:2m/s^2) acceleration,
+        out Q(-180:180) steering,
+        out B status;
+
+
+    instance VelocityController velocityController;
+
+    connect velocity->velocityController.velocity;
+    connect velocityController.acceleration->acceleration;
+
+    instance ConeRunner coneRunner;
+
+    connect fl->coneRunner.fl;
+    connect fr->coneRunner.fr;
+    connect slf->coneRunner.slf;
+    connect srf->coneRunner.srf;
+    connect slb->coneRunner.slb;
+    connect srb->coneRunner.srb;
+    connect x->coneRunner.x;
+    connect coneRunner.status->status; 
+    connect coneRunner.steering->steering;
+}
