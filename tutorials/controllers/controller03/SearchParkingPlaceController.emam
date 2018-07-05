@@ -1,4 +1,4 @@
-package simulatorParkingModel;
+package controller03;
 
 component SearchParkingPlaceController {
     port
