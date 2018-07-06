@@ -2,10 +2,10 @@
 
 ### To carry out a parallel parking between two cars.
 
-To solve that tutorial you have to use the MainController, like you did in the other tutorials:
+To solve that tutorial you have to use the MainController, like you did in the other tutorials. The difference here in other connections between the components:
 
 ```sh
-package simulatorParkingModel;
+package controller03;
 
 import VelocityController;
 import SearchParkingPlaceController;
@@ -63,7 +63,7 @@ We import VelocityController, SearchParkingPlaceController and ParkingController
 Now we should create a VelocityController, which controls the speed of the car:
 
 ```sh
-package simulatorParkingModel;
+package controller03;
 
 component VelocityController {
 	port                                    
@@ -105,7 +105,7 @@ The controller has three states. First one is when the car is looking for a plac
 Next controller is a SearchParkingPlaceController. The idea is to pass the first car and find the "end" of the second car to start parking process form a right point.
 
 ```sh
-package simulatorParkingModel;
+package controller03;
 
 component SearchParkingPlaceController {
     port
@@ -150,7 +150,7 @@ We are using here the side sensors to measure the distances to the cars and the 
 Next controller will be the most important one because it manages the parking process:
 
 ```sh
-package simulatorParkingModel;
+package controller03;
 
 component ParkingController {
     port

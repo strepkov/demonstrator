@@ -9,7 +9,7 @@ Each module should be as simple as possible.
 
 To solve this tutorial you may use from 4 to 6 sensors, which measure the distance to objects which are located in front/side of the car. The speed has to be around 1-2 m/s. At the picture you can see the main idea how the driving has to be done:
 
-![alt text](../img/drive_cones.jpg)
+![alt text](../img/drive_cones.png)
 
 The parking process can be divided in several steps steps:  
 1. Go straight until a cone it closer the 10m then start to rotate the car to round the cone.
