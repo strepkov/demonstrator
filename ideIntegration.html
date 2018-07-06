@@ -26,7 +26,7 @@
         </div>
         <div id="rightSide2" class="column" style="display: none">
             <!-- Change the way of defining the current tutorial link -->
-            <iframe id="tutorialFrame" src="tutorials/html/tutorial03.md.html" height="900" width="686" frameborder="0"></iframe>        
+            <iframe id="tutorialFrame" src="tutorials/html/tutorial00.md.html" height="900" width="686" frameborder="0"></iframe>        
         </div>
     </div>
     <div>
@@ -56,9 +56,10 @@
             
             // The list of tutorials
             var tutorialPath = "tutorials/html/tutorial";
-            var link = ["00.md.html", "01.md.html", "02.md.html","03.md.html"];
+            var tutorialExtension = ".md.html";
+            var link = ["00","01","02","03","04"];
 
-            document.getElementById('tutorialFrame').src = tutorialPath + link[selectedTutorial];
+            document.getElementById('tutorialFrame').src = tutorialPath + link[selectedTutorial] + tutorialExtension;
         }
 
         function showTutorial(){
