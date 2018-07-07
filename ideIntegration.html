@@ -248,13 +248,17 @@
                 
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === 4) {
-
-                        var t1 = performance.now();
-                        // Write to the console a compilation time
-                        console.log("Compilation time: " + ((t1 - t0)/1000) + " seconds.");
-                        
-                        saveFileFromResponse(xhr.response);
-                        
+                        if (xhr.status == 200){
+                            var t1 = performance.now();
+                            // Write to the console a compilation time
+                            console.log("Compilation time: " + ((t1 - t0)/1000) + " seconds.");
+                            saveFileFromResponse(xhr.response);    
+                        }
+                        if (xhr.status == 500){
+                            
+                            console.log(xhr.status);
+                            console.log(xhr.statusText);
+                        }
                     }
                 }
             });
@@ -301,9 +305,13 @@
 
         function checkWasmBinaryData(data){
                 
-                var valid = WebAssembly.validate(data);
+            var valid = false;
+            
+            if (data != undefined){
+                valid = WebAssembly.validate(data);
                 console.log("The given bytes are "
-                    + (valid ? "" : "not ") + "a valid wasm module");  
+                    + (valid ? "" : "not ") + "a valid wasm module"); 
+            }
             return valid;            
         }
 
