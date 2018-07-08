@@ -1,0 +1,13 @@
+{
+    "car" : 
+    {
+        "start" : "-100:1",
+        "end" : "z43"
+    },
+    "trackObject" :
+    {
+        "position" : "1:-75",
+        "width" : "6",
+        "height" : "1"
+    }
+}

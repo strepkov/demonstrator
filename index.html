@@ -1010,19 +1010,80 @@
 			var simulationStatus = false;
 			var simulationTimeLimit = 3600;
 			var showLogsData = false;
+			var tutorialConfiguration = "tutorials/initialData/tutorial03.json";
+			var carInitialPosition = [];
+			var trackObjects = [];
 
+			// Fill the initial data from the configuration file
 			(function(){
-				readJSONFile("simulation.json");
-				// Now is possible to use jsonConfFile
-				// console.log(jsonSimulationConf.car.start);
+				readJSONFile(tutorialConfiguration);
+
+				// Read all objects from configuration
+				if(jsonSimulationConf != undefined){
+
+					Object.keys(jsonSimulationConf)
+					.forEach(
+						function(name){
+							if (name == "car"){
+
+								var carJSON = jsonSimulationConf[name];
+								var initPosition = carJSON.start;
+								// Read a start position for the car
+								// Whether it's an grid position or coordinates directly
+								if (initPosition.match(/[a-z]/i)){
+									carInitialPosition = [zone2Coord.get(initPosition)[0], zone2Coord.get(initPosition)[1]];
+								} else {
+									var separatorPosition = initPosition.indexOf(":");
+									var x = initPosition.substr(0,(separatorPosition));
+									var y = initPosition.substr((separatorPosition+1),(initPosition.length - separatorPosition));
+									carInitialPosition = [x,y];
+								}
+							}
+							// Add objects to the track
+							if(name == "trackObject"){
+								var objectJSON = jsonSimulationConf[name];
+								var objectPosition = objectJSON.position;
+
+								if (objectPosition.match(/[a-z]/i)){
+									if (objectJSON.width != undefined && objectJSON.height != undefined)
+										trackObjects.push([	zone2Coord.get(objectPosition)[0], 
+															zone2Coord.get(objectPosition)[1],
+															objectJSON.width,
+															objectJSON.height]);
+								} else {
+									var separatorPosition = objectPosition.indexOf(":");
+									var x = objectPosition.substr(0,(separatorPosition));
+									var y = objectPosition.substr((separatorPosition+1),(objectPosition.length - separatorPosition));
+									if (objectJSON.width != undefined && objectJSON.height != undefined)
+										trackObjects.push([	x,y,
+															objectJSON.width,
+															objectJSON.height]);
+								}
+							}
+					});
+				}
 			})();
 
-			// Set a start position for a car
-			// var zone = jsonSimulationConf.car.start;
-			// var carInitialPosition = [zone2Coord.get(zone)[0],zone2Coord.get(zone)[1]];
-			// TODO: something wrong with zone2Coord...
-			var carInitialPosition = [-100,1];
+			console.log(carInitialPosition[0], carInitialPosition[1]);
 			setPosition(currentCar,carInitialPosition[1], 0.2, carInitialPosition[0]);
+
+			console.log("Number of objects: ",trackObjects.length);
+			// for (var i in trackObjects) {
+			// 	console.log(trackObjects[i]);
+			// 	addObjectOnTrack([	(trackObjects[i])[0],
+			// 						(trackObjects[i])[1]],
+			// 						(trackObjects[i])[2],
+			// 						(trackObjects[i])[3]);
+			// }
+
+			console.log((trackObjects[0])[0]);
+			console.log((trackObjects[0])[1]);
+			console.log((trackObjects[0])[2]);
+			console.log((trackObjects[0])[3]);
+
+			var arr = [+(trackObjects[0])[0],+(trackObjects[0])[1]];
+			console.log(arr);
+			
 
 			function initSimulator(){
 
@@ -1031,10 +1092,7 @@
 
 			// Init the model, which is the controller of the car
 			Module.init();
-			
-			// Diagnostic information to know the start point
-			// console.log("X : ", zone2Coord.get(zone)[0]," Y : ", zone2Coord.get(zone)[1]);
-
+	
 			// Set initial car position for simulator
 			var initPosition = simulator.initPosition;
 			var simulatorInitPosition = initPosition.bind(simulator);
@@ -1042,10 +1100,6 @@
 			simulatorInitPosition(carInitialPosition[0], carInitialPosition[1]);
 			// set visualization position
 			setPosition(currentCar,carInitialPosition[1], 0.2, carInitialPosition[0]);
-			
-			// Diagnostic information to know the end point
-			// zone = jsonSimulationConf.car.end;
-			// console.log("X : ", zone2Coord.get(zone)[0]," Y : ", zone2Coord.get(zone)[1]);
 
 			// add objects for current task
 			// TODO: modify to read the objects from configuration .json file
@@ -1057,6 +1111,15 @@
 			addObjectOnTrack([7.5,44],4,5);
 				
 			// cones
+			// for (var i in trackObjects) {
+			// 	console.log(trackObjects[i]);
+			// 	addObjectOnTrack([	(trackObjects[i])[0],
+			// 						(trackObjects[i])[1]],
+			// 						(trackObjects[i])[2],
+			// 						(trackObjects[i])[3]);
+			// }
+			var arr = [+(trackObjects[0])[0],+(trackObjects[0])[1]];
+			addObjectOnTrack(arr,(trackObjects[0])[2],(trackObjects[0])[3]);
 			addObjectOnTrack([1,-75],6,1);
 			addObjectOnTrack([1,-50],6,1);
 			addObjectOnTrack([1,-25],6,1);
