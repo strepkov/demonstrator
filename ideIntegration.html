@@ -31,6 +31,8 @@
     </div>
     <div>
         <!-- <button onclick="appendTestModel()">Append test file</button> -->
+        <button onclick="appendTestTutorial3()">Append tutorial 3</button>
+        <button onclick="appendTestTutorial4()">Append tutorial 4</button>
         <!-- <button onclick="showContent()">Show Content</button> -->
         <button onclick="readAllFiles()">Read, pack and send files</button>
         <!-- <button onclick="packData()">Pack and Send</button> -->
@@ -124,7 +126,11 @@
             if (checkWasmBinaryData(rawFileData[1])) loadWasmData();
         }
 
-        function appendFile(fileName,fileContent){
+        function appendFile(dirName,fileName,fileContent){
+            document.getElementById("ide").contentWindow.api.
+                fs.mkdir(dirName,function (err, data) {
+                    if (err) throw err;
+                });
             document.getElementById("ide").contentWindow.api.
                 fs.appendFile(fileName,fileContent,function (err, data) {
                     if (err) throw err;
@@ -147,11 +153,28 @@
         }
         
         // Test function to don't create every time controller's file to test the system 
-        function appendTestModel(){
-            appendFile("MainController.emam", readFileFromDisk("simulator1/MainController.emam"));
-            appendFile("ConstantVelocity.emam", readFileFromDisk("simulator1/ConstantVelocity.emam"));
-            appendFile("SteeringControl.emam", readFileFromDisk("simulator1/SteeringControl.emam"));
-            appendFile("GameOverTrigger.emam", readFileFromDisk("simulator1/GameOverTrigger.emam"));
+        // function appendTestModel(){
+        //     appendFile("MainController.emam", readFileFromDisk("simulator1/MainController.emam"));
+        //     appendFile("ConstantVelocity.emam", readFileFromDisk("simulator1/ConstantVelocity.emam"));
+        //     appendFile("SteeringControl.emam", readFileFromDisk("simulator1/SteeringControl.emam"));
+        //     appendFile("GameOverTrigger.emam", readFileFromDisk("simulator1/GameOverTrigger.emam"));
+        // }
+
+        function appendTestTutorial3(){
+            appendFile("/controller03","controller03/MainController.emam", readFileFromDisk("tutorials/controllers/controller03/MainController.emam"));
+            appendFile("/controller03","controller03/ParkingController.emam", readFileFromDisk("tutorials/controllers/controller03/ParkingController.emam"));
+            appendFile("/controller03","controller03/SearchParkingPlaceController.emam", readFileFromDisk("tutorials/controllers/controller03/SearchParkingPlaceController.emam"));
+            appendFile("/controller03","controller03/VelocityController.emam", readFileFromDisk("tutorials/controllers/controller03/VelocityController.emam"));
+
+            document.getElementById("indexSimulator").contentWindow.presentationObjects = 3;
+        }
+
+        function appendTestTutorial4(){
+            appendFile("/controller04","controller04/MainController.emam", readFileFromDisk("tutorials/controllers/controller04/MainController.emam"));
+            appendFile("/controller04","controller04/ConeRunner.emam", readFileFromDisk("tutorials/controllers/controller04/ConeRunner.emam"));
+            appendFile("/controller04","controller04/VelocityController.emam", readFileFromDisk("tutorials/controllers/controller04/VelocityController.emam"));
+
+            document.getElementById("indexSimulator").contentWindow.presentationObjects = 4;
         }
 
         // Read files from ide and pack
