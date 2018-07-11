@@ -38,3 +38,23 @@ To create the playground, the seven most important components are linked:
 7. A Trajectory builder and comparator. It builds in real time a trajectory of the car movements and does a comparison between a sample trajectory and generated one. The comparator allows having some deviation from the sample trajectory.
 
 ![alt text](img/architecture.png)
+
+## How to use it and how it is work
+Students are going to use the web-playground to understand how to work with C&C models languages like MontiArc. The main idea of the playground to increase interest in the learning process using a gaming form of the tutorials. There are several simple steps in the learning process: 
+1. The first tutorial is a task which already has a solution but the idea behind that to show the main constructions and principles of the language and the playground.
+2. Next tutorials have tasks with increasing complexity and every time there is some hint, which motivates students to use particular constructions.
+3. The visualization of the process gives the feeling of the language and understanding of the binding between writing the code and real actions which were caused by the written code.
+4. The process of writing tests shows the benefits of test-driven development and understanding the importance of independent testing of the components.
+
+The process of using the web-playground is very simple. Students don't have to install any applications on the computer and it is possible to use it from any platform, whether it is Mac, Windows or Linux. Only one important condition has to be satisfied - to have a "fresh" version of a browser. IDE, tutorial, visualization are located in one window and has a very intuitive interface.
+A standard sequence of steps is the following:
+1. Open the web-playground in a browser.
+2. Read a tutorial
+3. Write code with tests
+4. Send a model controller to the server, to execute tests and compile the controller.
+5. When the simulator displays the ready state, it means that you may run a visualization execution. If the solution contains errors, a student receives an error message with description.
+6. It's possible to restart the simulation process, add some noise to the sensors to emulate more natural measurements, or specify the period of the simulation process. 
+7. After the execution, the current trajectory is compared with the sample solution and the student is notified whether he passed the test or not.
+
+![alt text](img/screen-simulator.png)
+![alt text](img/screen-task.png)
