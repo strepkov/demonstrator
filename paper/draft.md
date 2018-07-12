@@ -1,4 +1,5 @@
-# Teaching playground for MontiArc language.
+# Teaching playground for EmbeddedMontiArc language.
+> our domain is also embeddedmontiarc.com, it is important since MontiArc and EmbeddedMontiArc are different tools
 
 ## Abstract
 Self-driving vehicles are a very important part of our future. To inspire students to be involved in the future technology we invented a web-playground which allows creating controllers for a simulator and almost instantly see the result in 3D. We believe that visualization will motivate students and make the studying process more attractive due to the gaming form. Besides that, they are going to study how to work with C&C model language - MontiArc, to achieve the best results in short terms.
