@@ -10,7 +10,16 @@ Besides that, they are going to study how to work with C&C model language - Mont
 
 ## Running example
 We are going to show two examples of tutorials in which a controller, for given tasks, will be created. 
-The first task is to carry out parallel parking between two cars. 
+The first task is to carry out parallel parking between two cars.
+
+Thereby the following requirements should be met:
+(R1) Das Auto baut keinen Unfall während des Parkvorgangs
+
+(R2) Am Ende des Parkvorgangs steht das Auto senkrecht zum Bordstein
+
+(R3) Abstand zum vorderen und zum hinteren Auto soll ungefähr gleich sein
+
+(R4) Das Auto soll nur 3 Züge zum Einparken brauchen
 
 
 To prepare a simulator environment for a tutorial, a configuration file is used.  The configuration defines the initial position of the car, objects on the track and their positions.
