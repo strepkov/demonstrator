@@ -10,7 +10,9 @@ Besides that, they are going to study how to work with C&C model language - Mont
 
 ## Running example
 We are going to show two examples of tutorials in which a controller, for given tasks, will be created. 
-The first task is to carry out parallel parking between two cars.
+The first task is to carry out parallel parking between two cars, and the last task is to sucessfully pass the elk test.
+
+### Parking Tutorial
 
 Thereby the following requirements should be met:
 (R1) Das Auto baut keinen Unfall während des Parkvorgangs
@@ -19,8 +21,12 @@ Thereby the following requirements should be met:
 
 (R3) Abstand zum vorderen und zum hinteren Auto soll ungefähr gleich sein
 
-(R4) Das Auto soll nur 3 Züge zum Einparken brauchen
+(R4) Das Auto soll nur 3 Züge zum Einparken brauchen (sowie bei deinem Bild)
 
+
+### Elk Test Tutorial
+
+TODO: Write down here the requirements of the Elk Test
 
 To prepare a simulator environment for a tutorial, a configuration file is used.  The configuration defines the initial position of the car, objects on the track and their positions.
 To check the possible solution, which has been implemented by a student, a comparison of the trajectories is involved. Each tutorial has a bunch of files, which includes: description of a tutorial, solution description, already implemented controller, environment configuration file and sample trajectory for the tutorial.
