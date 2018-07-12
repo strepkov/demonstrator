@@ -42,35 +42,34 @@ To prepare the simulator environment for tutorials, a configuration file is used
 In this section we present how tutorials are met by other tool vendors for their languages. We have taken in consideration different tutorials from different areas.
 
 ### Rust
-Rust is a very popular programming language the prevalence of which is growing every day. It has really nice tutorial which describes language constructs with gradually increasing complexity. It has really nice index, where users can easily jump from one topic to another almost instantly and then just go back. They use highlighted ares to show some code examples, which facilitate understanding of the presented material.
+Rust is a very popular programming language the prevalence of which is growing every day. It has a consistent tutorial which describes language constructs with gradually increasing complexity. It has the informative and structured index, where users can easily jump from one topic to another almost instantly and then just go back to the place where he was reading before. They use highlighted ares to show some code examples, which facilitate understanding of presented materials.
 
 ### Microsoft Z3 Solver
-https://rise4fun.com/z3/tutorial
+Z3 is a state-of-the art theorem prover from Microsoft. They provide similar experience compare to Rust tutorial but have some improvements, which actually simplify the studying process. We meant the possibility to execute the code from the current tutorial directly in the browser and see the result almost instantly due to in-browser execution. It helps to see the direct binding between written commands and the real result, that improves understanding of given material.
 
 ### Octave Online 
-https://octave-online.net/
+Octave Online is web-playground fot a high-level language Octave, which is primarily intended for numerical computations. It has a simple and intuitive interface despite the complexity of the internal implementation. It provides directly in a browser fast execution with errors handling. Even if you do complex computations it is not needed to install any software on the PC. Everything works out of the box.
 
 ### Wolfram Alpha
-https://www.wolframalpha.com/examples/
+Wolfram Alpha is a very powerful tool, which works by using expert-level knowledge and algorithms to automatically answer questions, do analysis and generate reports. It has one very interesting and useful feature, which provide the interactive visualization of the given data. The idea behind that is that you can "feel" how one or another parameter influences on the final result. It promote a better understanding of dependencies between the components or elements of the system.
 
 ### TypeScript Playground
-http://www.typescriptlang.org/play/
+TypeScript is a typed superset of JavaScript. It has a clean and simple playground which shows the difference and benefits of TypeScript over JavaScript. It has preloaded examples which actually show this difference and a user can see distinction in the direct comparison. What, again, gives the better understanding and facilitates further analysis(R7).
 
-TODO: Try out the tutorials for you, and then write down the properties you like about the tutorial.
-These properties we will derive as requirements for our Tooling.
+<!-- TODO: Try out the tutorials for you, and then write down the properties you like about the tutorial. -->
+Thoroughly analyzed the projects described above, we have derived the following list of requirements for our tool:
 
-These are only examples (please change it and adapt it)
+(R1) The tool must have 3D visualization for demonstration purposes
+(R2) It has to have simple, clean and intuitive interface
+(R3) It should work on any operation system and without installation 
+(R4) Automatic verification of obtained results should be implemented (which tutorial has something like this?)
+(R5) Integrated testing support (which tutorial has something like this?)
+(R6) Import and use existing 3D models for the simulator to simplify the process of creation new tutorials (which tutorial has something like this?)
+(R7) Trajectory drawing for better visual perception and visual comparison of results
 
-(R1) It can be tried out online and you can load nearly done examples per one click into the editor
-
+<!-- (R1) It can be tried out online and you can load nearly done examples per one click into the editor
 (R2) Syntax-Highlighting is good
-
-(R3) Examples are small code snippets, need only max. 20 Minutes to read a part of the tutorial
-> This means we must split up our driving controller into different small scenarios
-
-(R4) ....
-
-
+(R3) Examples are small code snippets, need only max. 20 Minutes to read a part of  -->
 
 ## Architecture
 To create the playground, the seven most important components are linked: 
