@@ -10,7 +10,7 @@ The first task is to carry out parallel parking between two cars. There is an in
 2. A module which looking for a gap between cars for the parking.
 3. A module which controls a steering angle of the car during the parking process.
 
-<img src="img/controller03.svg" alt="drawing" width="1000px" height="500px"/>
+<img src="https://git.rwth-aachen.de/monticore/EmbeddedMontiArc/utilities/demonstrator/raw/presentation1007/paper/img/controller03.svg" alt="drawing" width="1000px" height="500px"/>
 
 The velocity controller has three states. The first one is activated when the car is looking for a place for parking. The second one, when the car is moving back during a parking process. And the third one, when it is moving forward to get closer to the front car.
 The controller, which is looking for a parking place, uses side sensors to find the gap between cars and the point where to stop and to begin the parking process.
@@ -20,7 +20,7 @@ The second task is to run between cones to pass maneuverability test. To solve t
 1. A Module which controls the speed of the car.
 2. A Module which controls the steering angle of the car.
 
-<img src="img/controller04.svg" alt="drawing" width="600px" height="500px"/>
+<img src="https://git.rwth-aachen.de/monticore/EmbeddedMontiArc/utilities/demonstrator/raw/presentation1007/paper/img/controller04.svg" alt="drawing" width="600px" height="500px"/>
 
 The velocity module controls a speed of the car don't allow to drive too fast to be able to react on the cones. And the steering module reacts on cones by changing the directions of driving.
 We are using the side left forward and side right forward sensors to measure distances to cones. When these sensors have passed a cone, we assume that it is time to start the car rotation in opposite direction. Pretty simple!
