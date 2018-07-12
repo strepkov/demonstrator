@@ -10,25 +10,9 @@ Besides that, they are going to study how to work with C&C model language - Mont
 
 ## Running example
 We are going to show two examples of tutorials in which a controller, for given tasks, will be created. 
-The first task is to carry out parallel parking between two cars. There is an interface for the simulator which is given. It has 8 sensors to measure distances to objects, velocity,  steering angle, acceleration, a position of the car and execution time. Now we have to invent other modules and connect it in the way to solve our task. In this particular example, we use three components which are responsible for different actions during the parking process. 
-1. A module which controls the velocity of the car depends on the current action(e.g. parking, searching a parking place).
-2. A module which looking for a gap between cars for the parking.
-3. A module which controls a steering angle of the car during the parking process.
+The first task is to carry out parallel parking between two cars. 
 
-<img src="https://git.rwth-aachen.de/monticore/EmbeddedMontiArc/utilities/demonstrator/raw/presentation1007/paper/img/controller03.svg" alt="drawing" width="1000px" height="500px"/>
 
-The velocity controller has three states. The first one is activated when the car is looking for a place for parking. The second one, when the car is moving back during a parking process. And the third one, when it is moving forward to get closer to the front car.
-The controller, which is looking for a parking place, uses side sensors to find the gap between cars and the point where to stop and to begin the parking process.
-The idea of the parking controller is that the car is going back until it reached a certain point, changing an angle of the car. The back and side sensors are involved in this process. Then the car stops when the critical distance is reached and get closer to the front car. All these steps are nicely illustrated in tutorials and solutions.
-After creating all these components, the controller compiles the model on a server and the simulator shows a nice 3D visualization of the parking process.
-The second task is to run between cones to pass maneuverability test. To solve the task, we can use just two modules:
-1. A Module which controls the speed of the car.
-2. A Module which controls the steering angle of the car.
-
-<img src="https://git.rwth-aachen.de/monticore/EmbeddedMontiArc/utilities/demonstrator/raw/presentation1007/paper/img/controller04.svg" alt="drawing" width="600px" height="500px"/>
-
-The velocity module controls a speed of the car don't allow to drive too fast to be able to react on the cones. And the steering module reacts on cones by changing the directions of driving.
-We are using the side left forward and side right forward sensors to measure distances to cones. When these sensors have passed a cone, we assume that it is time to start the car rotation in opposite direction. Pretty simple!
 To prepare a simulator environment for a tutorial, a configuration file is used.  The configuration defines the initial position of the car, objects on the track and their positions.
 To check the possible solution, which has been implemented by a student, a comparison of the trajectories is involved. Each tutorial has a bunch of files, which includes: description of a tutorial, solution description, already implemented controller, environment configuration file and sample trajectory for the tutorial.
 
@@ -60,6 +44,28 @@ A standard sequence of steps is the following:
 5. When the simulator displays the ready state, it means that you may run a visualization execution. If the solution contains errors, a student receives an error message with description.
 6. It's possible to restart the simulation process, add some noise to the sensors to emulate more natural measurements, or specify the period of the simulation process. 
 7. After the execution, the current trajectory is compared with the sample solution and the student is notified whether he passed the test or not.
+
+### Solution for Example 1 (Parking Scenario)
+
+There is an interface for the simulator which is given. It has 8 sensors to measure distances to objects, velocity,  steering angle, acceleration, a position of the car and execution time. Now we have to invent other modules and connect it in the way to solve our task. In this particular example, we use three components which are responsible for different actions during the parking process. 
+1. A module which controls the velocity of the car depends on the current action(e.g. parking, searching a parking place).
+2. A module which looking for a gap between cars for the parking.
+3. A module which controls a steering angle of the car during the parking process.
+
+<img src="https://git.rwth-aachen.de/monticore/EmbeddedMontiArc/utilities/demonstrator/raw/presentation1007/paper/img/controller03.svg" alt="drawing" width="1000px" height="500px"/>
+
+The velocity controller has three states. The first one is activated when the car is looking for a place for parking. The second one, when the car is moving back during a parking process. And the third one, when it is moving forward to get closer to the front car.
+The controller, which is looking for a parking place, uses side sensors to find the gap between cars and the point where to stop and to begin the parking process.
+The idea of the parking controller is that the car is going back until it reached a certain point, changing an angle of the car. The back and side sensors are involved in this process. Then the car stops when the critical distance is reached and get closer to the front car. All these steps are nicely illustrated in tutorials and solutions.
+After creating all these components, the controller compiles the model on a server and the simulator shows a nice 3D visualization of the parking process.
+The second task is to run between cones to pass maneuverability test. To solve the task, we can use just two modules:
+1. A Module which controls the speed of the car.
+2. A Module which controls the steering angle of the car.
+
+<img src="https://git.rwth-aachen.de/monticore/EmbeddedMontiArc/utilities/demonstrator/raw/presentation1007/paper/img/controller04.svg" alt="drawing" width="600px" height="500px"/>
+
+The velocity module controls a speed of the car don't allow to drive too fast to be able to react on the cones. And the steering module reacts on cones by changing the directions of driving.
+We are using the side left forward and side right forward sensors to measure distances to cones. When these sensors have passed a cone, we assume that it is time to start the car rotation in opposite direction. Pretty simple!
 
 ![alt text](img/screen-simulator.png)
 ![alt text](img/screen-task.png)
