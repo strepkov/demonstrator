@@ -16,21 +16,60 @@ The first task is to carry out parallel parking between two cars, and the last t
 
 Thereby the following requirements should be met:
 
-(R1) Das Auto baut keinen Unfall während des Parkvorgangs
+(P1) Das Auto baut keinen Unfall während des Parkvorgangs
 
-(R2) Am Ende des Parkvorgangs steht das Auto senkrecht zum Bordstein
+(P2) Am Ende des Parkvorgangs steht das Auto senkrecht zum Bordstein
 
-(R3) Abstand zum vorderen und zum hinteren Auto soll ungefähr gleich sein
+(P3) Abstand zum vorderen und zum hinteren Auto soll ungefähr gleich sein
 
-(R4) Das Auto soll nur 3 Züge zum Einparken brauchen (sowie bei deinem Bild)
+(P4) Das Auto soll nur 3 Züge zum Einparken brauchen (sowie bei deinem Bild)
 
 
 ### Elk Test Tutorial
 
 TODO: Write down here the requirements of the Elk Test
 
+(E1) ....
+
+(E2) ....
+
 To prepare a simulator environment for a tutorial, a configuration file is used.  The configuration defines the initial position of the car, objects on the track and their positions.
 To check the possible solution, which has been implemented by a student, a comparison of the trajectories is involved. Each tutorial has a bunch of files, which includes: description of a tutorial, solution description, already implemented controller, environment configuration file and sample trajectory for the tutorial.
+
+## Existing Solutions with Tutorial Character
+
+In this section we present how tutorials are met by other tool vendors for their languages.
+
+### Rust
+https://doc.rust-lang.org/book/second-edition/ch03-01-variables-and-mutability.html
+
+### Microsoft Z3 Solver
+https://rise4fun.com/z3/tutorial
+
+### Octave Online 
+https://octave-online.net/
+
+### Wolfram Alpha
+https://www.wolframalpha.com/examples/
+
+### TypeScript Playground
+http://www.typescriptlang.org/play/
+
+TODO: Try out the tutorials for you, and then write down the properties you like about the tutorial.
+These properties we will derive as requirements for our Tooling.
+
+These are only examples (please change it and adapt it)
+
+(R1) It can be tried out online and you can load nearly done examples per one click into the editor
+
+(R2) Syntax-Highlighting is good
+
+(R3) Examples are small code snippets, need only max. 20 Minutes to read a part of the tutorial
+> This means we must split up our driving controller into different small scenarios
+
+(R4) ....
+
+
 
 ## Architecture
 To create the playground, the seven most important components are linked: 
