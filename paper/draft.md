@@ -1,47 +1,48 @@
 # Teaching playground for EmbeddedMontiArc language.
-> our domain is also embeddedmontiarc.com, it is important since MontiArc and EmbeddedMontiArc are different tools
 
 ## Abstract
 Self-driving vehicles are a very important part of our future. To inspire students to be involved in the 
 future technology we invented a web-playground which allows creating controllers for a simulator and 
-almost instantly see the result in 3D. We believe that visualization will motivate students and make the studying process more attractive 
-due to gamification. 
-Besides that, they are going to study how to work with C&C model language - MontiArc, to achieve the best results in short terms.
+almost instantly see the result in 3D environment. We believe that visualization will motivate students and make the studying process more attractive 
+due to gamification. Besides that, they are going to study how to work with C&C model language - EmbeddedMontiArc, to achieve the best results in short terms.
 
 ## Running example
-We are going to show two examples of tutorials in which a controller, for given tasks, will be created. 
-The first task is to carry out parallel parking between two cars, and the last task is to sucessfully pass the elk test.
+We are going to show two examples of tutorials in which a controller, for given tasks, will be created. The first task is to carry out parallel parking between two cars, and the last task is to successfully pass the elk test.
 
 ### Parking Tutorial
 
 Thereby the following requirements should be met:
 
-(P1) Das Auto baut keinen Unfall während des Parkvorgangs
-
-(P2) Am Ende des Parkvorgangs steht das Auto senkrecht zum Bordstein
-
-(P3) Abstand zum vorderen und zum hinteren Auto soll ungefähr gleich sein
-
-(P4) Das Auto soll nur 3 Züge zum Einparken brauchen (sowie bei deinem Bild)
-
+(P1) The car does not get into an accident during Parking  
+(P2) At the end of the parking process, the car is parallel to a curb  
+(P3) Distances to the front and to the rear car should be about the same  
+(P4) The car should do only 3 steps to park (as well as shown in the picture)
 
 ### Elk Test Tutorial
 
-TODO: Write down here the requirements of the Elk Test
+(E1) The car does not drive into cones during the test  
+(E2) It should drive on the shortest path, be as closer as possible to cones  
+(E3) It must not leave the testing area and violate a track boundaries  
+(E4) The start and end positions are specified  
+(E5) The car has to drive between every two cones (shown in the picture)  
 
-(E1) ....
+Each tutorial is like a module, it has all required elements inside the package. It comprise a bunch of files, which includes:  
+1. Description of the tutorial, this is actually the text which students are reading to understand the task and find some useful hints and recommendations for the implementation.
+2. Solution description, gives a detailed specification how to solve the current task and displays a working code solution.
+3. Sample controller, the controller which has been implemented in advance and pass the current test.
+4. Environment configuration file, which contains all important objects with their positions.  
+5. Sample trajectory, it is used to check implemented by the student solution.
 
-(E2) ....
+To prepare the simulator environment for tutorials, a configuration file is used. The configuration defines an initial position of the car. For each tutorial the position specified depends on the task and an area on the track where an action is going to happen. Also in the configuration are specified objects on the track and their positions. It is really convenient to have configurations for different tutorials, because it gives flexibility during the preparation tutorial process and simplified the building new ones.  
 
-To prepare a simulator environment for a tutorial, a configuration file is used.  The configuration defines the initial position of the car, objects on the track and their positions.
-To check the possible solution, which has been implemented by a student, a comparison of the trajectories is involved. Each tutorial has a bunch of files, which includes: description of a tutorial, solution description, already implemented controller, environment configuration file and sample trajectory for the tutorial.
+<!-- To check the possible solution, which has been implemented by a student, a comparison of the trajectories is involved. -->
 
 ## Existing Solutions with Tutorial Character
 
-In this section we present how tutorials are met by other tool vendors for their languages.
+In this section we present how tutorials are met by other tool vendors for their languages. We have taken in consideration different tutorials from different areas.
 
 ### Rust
-https://doc.rust-lang.org/book/second-edition/ch03-01-variables-and-mutability.html
+Rust is a very popular programming language the prevalence of which is growing every day. It has really nice tutorial which describes language constructs with gradually increasing complexity. It has really nice index, where users can easily jump from one topic to another almost instantly and then just go back. They use highlighted ares to show some code examples, which facilitate understanding of the presented material.
 
 ### Microsoft Z3 Solver
 https://rise4fun.com/z3/tutorial
@@ -83,7 +84,7 @@ To create the playground, the seven most important components are linked:
 
 ![alt text](img/architecture.png)
 
-## How to use it and how it is work
+## How to use it and how it works
 Students are going to use the web-playground to understand how to work with C&C models languages like MontiArc. The main idea of the playground to increase interest in the learning process using a gaming form of the tutorials. There are several simple steps in the learning process: 
 1. The first tutorial is a task which already has a solution but the idea behind that to show the main constructions and principles of the language and the playground.
 2. Next tutorials have tasks with increasing complexity and every time there is some hint, which motivates students to use particular constructions.
