@@ -106,6 +106,15 @@ Thoroughly analyzed the projects described above, we have derived the following 
 > Below the table you write for each requirement a paragraph comparing (R1) for all tools; write a parapgraph comparing (R2) -> just take a look how we did it in Section 4
 
 ## Architecture
+> say something general about the architecture, that we EmbeddedMontiArc is already developed as self-containing services based on JAR files, therefore
+> on the server-side services from the EmbeddedMontiArcStudio can be selected and integrated.
+> but the server must handle multiple users at the same time, and the server must do the messaging from the backend to the front-end
+> you can also say that the 3d simulator of EmbeddedMontiArc which can import open-street map data is written in Java, and if we would
+> simulate the execution on the server the server could not handle multiple users, therefore for this lap you create a new car simulator in typescript
+> so that the tutorial user has a fluent user-experience, ...
+
+> also add the feature that you have a master mode where the master can add obstacles also in the IDE via JSON
+
 To create the playground, the seven most important components are linked: 
 1. IDE for MontiArc language, it helps to write components easier, reveals the errors and shows incoming and outgoing ports of the components.
 2. Web-server, it receives the requests for compiling the MontiArc models and sends back a finished controller,  packs and extracts models, controls the compilation process, providing an error handling for users.
@@ -118,6 +127,8 @@ To create the playground, the seven most important components are linked:
 ![alt text](img/architecture.png)
 
 ## How to use it and how it works
+> add more text! The paper may have bullet points, but not only. It must be normal text written in paragraphs
+
 Students are going to use the web-playground to understand how to work with C&C models languages like MontiArc. The main idea of the playground to increase interest in the learning process using a gaming form of the tutorials. There are several simple steps in the learning process: 
 1. The first tutorial is a task which already has a solution but the idea behind that to show the main constructions and principles of the language and the playground.
 2. Next tutorials have tasks with increasing complexity and every time there is some hint, which motivates students to use particular constructions.
@@ -135,6 +146,8 @@ A standard sequence of steps is the following:
 7. After the execution, the current trajectory is compared with the sample solution and the student is notified whether he passed the test or not.
 
 ### Solution for Example 1 (Parking Scenario)
+
+> also add some textual EmbeddedMontiArc models of the solution and describe the solution
 
 There is an interface for the simulator which is given. It has 8 sensors to measure distances to objects, velocity,  steering angle, acceleration, a position of the car and execution time. Now we have to invent other modules and connect it in the way to solve our task. In this particular example, we use three components which are responsible for different actions during the parking process. 
 1. A module which controls the velocity of the car depends on the current action(e.g. parking, searching a parking place).
@@ -155,6 +168,12 @@ The second task is to run between cones to pass maneuverability test. To solve t
 
 The velocity module controls a speed of the car don't allow to drive too fast to be able to react on the cones. And the steering module reacts on cones by changing the directions of driving.
 We are using the side left forward and side right forward sensors to measure distances to cones. When these sensors have passed a cone, we assume that it is time to start the car rotation in opposite direction. Pretty simple!
+
+### Solution for Example 2 (Elk Test)
+
+> describe here what is different than from the solution in 1
+
+## Conclusion
 
 ![alt text](img/screen-simulator.png)
 ![alt text](img/screen-task.png)
