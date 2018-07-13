@@ -36,7 +36,8 @@ We are going to show two examples of tutorials in which a controller, for given 
 ### Parking Tutorial
 
 > you cannot just mention the requirements, you need to put a story around it
-> say why we 
+> say that parking is used everywhere and there are standard solutions how to do it (see your picture below)
+> therefore parking is very good suited
 
 Thereby the following requirements should be met:
 
@@ -46,6 +47,12 @@ Thereby the following requirements should be met:
 (P4) The car should do only 3 steps to park (as well as shown in the picture)
 
 ### Elk Test Tutorial
+
+> describe something about the elk test, e.g. summerize the text from wikipedia
+> https://de.wikipedia.org/wiki/Elchtest
+> > Der Elchtest bietet durch seine großen, konstanten Gassenbreiten einen weiten Spielraum für die Lenkstrategie des Fahrers. Der Verband der Automobilindustrie (VDA) hat deshalb einen Ausweichtest entworfen, bei dem die Gassenbreiten von der Fahrzeugbreite abhängig sind. Weiter ist vorgeschrieben, in der ersten Gasse Gas wegzunehmen. Dieses Manöver wurde inzwischen unter der Bezeichnung VDA-Spurwechseltest in die internationale Norm ISO 3888-2 übernommen.[1] Es ist Bestandteil der Erprobung der Fahreigenschaften neuer Fahrzeuge. Mit einem speziellen Ladeaufsatz wird der Elchtest teilweise auch bei LKWs durchgeführt.
+
+Ein mit ESP ausgerüstetes Fahrzeug ist bei Ausweichtests wie dem Elchtest wesentlich stabiler als ein Fahrzeug ohne ESP. Seit November 2011 müssen alle neuen Pkw- und Nutzfahrzeugmodelle, die in der Europäischen Union zugelassen werden, mit ESP ausgerüstet sein. Seit 2014 gilt dies für alle Neufahrzeuge, auch wenn die Baureihe selbst schon seit einigen Jahren auf dem Markt ist.
 
 (E1) The car does not drive into cones during the test  
 (E2) It should drive on the shortest path, be as closer as possible to cones  
