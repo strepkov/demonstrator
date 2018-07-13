@@ -24,9 +24,19 @@ due to gamification. Besides that, they are going to study how to work with C&C 
 > and that we have no tutorial to teach them step-by-step the c&C paradigm by using our language
 
 ## Running example
+> say that the aim is to create a controller for a self-driving car,
+> and since it is so complex we divided the large tutorial
+> into smaller tutorials based on user-stories (which is borrowed from the agile development manifest)
+> the smaller user stories allow the modeler to get faster feedback, and that the students can start with
+> simple scenarios and have a success feeling
+> in this paper we will present the two tutorials parking and elk test
+
 We are going to show two examples of tutorials in which a controller, for given tasks, will be created. The first task is to carry out parallel parking between two cars, and the last task is to successfully pass the elk test.
 
 ### Parking Tutorial
+
+> you cannot just mention the requirements, you need to put a story around it
+> say why we 
 
 Thereby the following requirements should be met:
 
