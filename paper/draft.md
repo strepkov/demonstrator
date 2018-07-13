@@ -67,6 +67,10 @@ Thoroughly analyzed the projects described above, we have derived the following 
 (R6) Trajectory drawing for better visual perception and visual comparison of results
 >(R7) Integrated testing support (which tutorial has something like this?)
 
+> After you have derived the requirements, please add a table for the requirements and the above playgrounds/tutorial platoforms.
+> As an example take a look at section 4 in http://www.se-rwth.de/publications/Modeling-Architectures-of-Cyber-Physical-Systems.pdf
+> Below the table you write for each requirement a paragraph comparing (R1) for all tools; write a parapgraph comparing (R2) -> just take a look how we did it in Section 4
+
 ## Architecture
 To create the playground, the seven most important components are linked: 
 1. IDE for MontiArc language, it helps to write components easier, reveals the errors and shows incoming and outgoing ports of the components.
