@@ -8,6 +8,21 @@ future technology we invented a web-playground which allows creating controllers
 almost instantly see the result in 3D environment. We believe that visualization will motivate students and make the studying process more attractive 
 due to gamification. Besides that, they are going to study how to work with C&C model language - EmbeddedMontiArc, to achieve the best results in short terms.
 
+## Introduction
+> this is a longer version of the abstract
+> here please add one paragraph for the motivation
+> add also one paragraph what C&C modeling is (general description)
+> ![image](/uploads/152f4ef0140aba85e94c67e8e30f95b4/image.png)
+> http://www.se-rwth.de/publications/Component-and-Connector-Views-in-Practice-An-Experience-Report.pdf
+
+> then also add a paragraph where you describe our EmbeddedMontiArc language (explain that we model textual, 
+> what are ports, what a components, that we also support generics and units)
+
+> write one paragraph that we have already a standalone application, but this means that
+> students needs to download the tooling and cannot try it out directly in the lecture
+> also sharing code is not so easy for the standalone application
+> and that we have no tutorial to teach them step-by-step the c&C paradigm by using our language
+
 ## Running example
 We are going to show two examples of tutorials in which a controller, for given tasks, will be created. The first task is to carry out parallel parking between two cars, and the last task is to successfully pass the elk test.
 
