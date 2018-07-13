@@ -1,12 +1,9 @@
-> do not write MontiArc, use everwhere **Embedded**MontiArc
-
 # Teaching playground for EmbeddedMontiArc language.
 
 ## Abstract
 Self-driving vehicles are a very important part of our future. To inspire students to be involved in the 
 future technology we invented a web-playground which allows creating controllers for a simulator and 
-almost instantly see the result in 3D environment. We believe that visualization will motivate students and make the studying process more attractive 
-due to gamification. Besides that, they are going to study how to work with C&C model language - EmbeddedMontiArc, to achieve the best results in short terms.
+almost instantly see the result in 3D environment. We believe that visualization will motivate students and make the studying process more attractive due to gamification. Besides that, they are going to study how to work with Component and Connector (C&C) model language - EmbeddedMontiArc, to achieve the best results in short terms.
 
 ## Introduction
 > this is a longer version of the abstract
@@ -52,7 +49,6 @@ Thereby the following requirements should be met:
 > https://de.wikipedia.org/wiki/Elchtest
 > > Der Elchtest bietet durch seine großen, konstanten Gassenbreiten einen weiten Spielraum für die Lenkstrategie des Fahrers. Der Verband der Automobilindustrie (VDA) hat deshalb einen Ausweichtest entworfen, bei dem die Gassenbreiten von der Fahrzeugbreite abhängig sind. Weiter ist vorgeschrieben, in der ersten Gasse Gas wegzunehmen. Dieses Manöver wurde inzwischen unter der Bezeichnung VDA-Spurwechseltest in die internationale Norm ISO 3888-2 übernommen.[1] Es ist Bestandteil der Erprobung der Fahreigenschaften neuer Fahrzeuge. Mit einem speziellen Ladeaufsatz wird der Elchtest teilweise auch bei LKWs durchgeführt.
 
-Ein mit ESP ausgerüstetes Fahrzeug ist bei Ausweichtests wie dem Elchtest wesentlich stabiler als ein Fahrzeug ohne ESP. Seit November 2011 müssen alle neuen Pkw- und Nutzfahrzeugmodelle, die in der Europäischen Union zugelassen werden, mit ESP ausgerüstet sein. Seit 2014 gilt dies für alle Neufahrzeuge, auch wenn die Baureihe selbst schon seit einigen Jahren auf dem Markt ist.
 
 (E1) The car does not drive into cones during the test  
 (E2) It should drive on the shortest path, be as closer as possible to cones  
@@ -116,7 +112,7 @@ Thoroughly analyzed the projects described above, we have derived the following 
 > also add the feature that you have a master mode where the master can add obstacles also in the IDE via JSON
 
 To create the playground, the seven most important components are linked: 
-1. IDE for MontiArc language, it helps to write components easier, reveals the errors and shows incoming and outgoing ports of the components.
+1. IDE for EmbeddedMontiArc language, it helps to write components easier, reveals the errors and shows incoming and outgoing ports of the components.
 2. Web-server, it receives the requests for compiling the MontiArc models and sends back a finished controller,  packs and extracts models, controls the compilation process, providing an error handling for users.
 3. EMAM2WASM generator, it gets the model from the web-server and compiles it, generating the web-assembly file, which is a "brain" of the simulator.
 4. A testing toolchain, which provides stream testing for incoming models. The toolchain is consist of EMAM2CPP generator, which generates tests, then the tests are compiled and executed. The output from the stream testing phase could be used to be shown to a user or be the condition for generating the .wasm file.
@@ -129,7 +125,7 @@ To create the playground, the seven most important components are linked:
 ## How to use it and how it works
 > add more text! The paper may have bullet points, but not only. It must be normal text written in paragraphs
 
-Students are going to use the web-playground to understand how to work with C&C models languages like MontiArc. The main idea of the playground to increase interest in the learning process using a gaming form of the tutorials. There are several simple steps in the learning process: 
+Students are going to use the web-playground to understand how to work with C&C models languages like EmbeddedMontiArc. The main idea of the playground to increase interest in the learning process using a gaming form of the tutorials. There are several simple steps in the learning process: 
 1. The first tutorial is a task which already has a solution but the idea behind that to show the main constructions and principles of the language and the playground.
 2. Next tutorials have tasks with increasing complexity and every time there is some hint, which motivates students to use particular constructions.
 3. The visualization of the process gives the feeling of the language and understanding of the binding between writing the code and real actions which were caused by the written code.
@@ -147,19 +143,111 @@ A standard sequence of steps is the following:
 
 ### Solution for Example 1 (Parking Scenario)
 
-> also add some textual EmbeddedMontiArc models of the solution and describe the solution
+To start working on the solution we have to know the way how to communicate with the car to achieve the desired behavior. For this purposes, there is an interface for the simulator which is given. It has 8 sensors to measure distances to objects, velocity, steering angle, acceleration, a position of the car and execution time. You can see from the example, that ports have units and ranges.
+> What advantages give us units and ranges? 
 
-There is an interface for the simulator which is given. It has 8 sensors to measure distances to objects, velocity,  steering angle, acceleration, a position of the car and execution time. Now we have to invent other modules and connect it in the way to solve our task. In this particular example, we use three components which are responsible for different actions during the parking process. 
+```
+component MainController{
+    ports 
+        in Q(0m:200m) fl,                   //front left sensor with range from 0 meters to 200 meters
+        in Q(0m:200m) fr,                   //front right sensor
+        in Q(0m:200m) slf,                  //side left front sensor
+        in Q(0m:200m) slb,                  //side left back sensor
+        in Q(0m:200m) srf,                  //side right front sensor
+        in Q(0m:200m) srb,                  //side right back sensor
+        in Q(0m:200m) bl,                   //back left sensor
+        in Q(0m:200m) br,                   //back right sensor
+
+        in Q(0s:oos) time,                  //simulation time from 0s to infinity
+        in Q(0m/s:25m/s) velocity,          //car velocity
+
+        in Q(-200m:200m) x,                 //car position X
+        in Q(-200m:200m) y,                 //car position Y
+
+        out Q(-2m/s^2:2m/s^2) acceleration, //car acceleration 
+        out Q(-180°:180°) steering,         //car steering
+        out B status;                       //whether the simulation is still running
+
+```
+When the interface is already defined we can start working on our components. It is needed to invent other modules and connect it, in the way to solve our task. In this particular example, we use three components which are responsible for different actions during the parking process. 
 1. A module which controls the velocity of the car depends on the current action(e.g. parking, searching a parking place).
 2. A module which looking for a gap between cars for the parking.
 3. A module which controls a steering angle of the car during the parking process.
 
+When we have decided which component is responsible for what, it is necessary to understand which ports, each of the components, will be used and then connect all these components together. Of course during experiments with components you can change your mind about ports, which you require to solve the task. Then just reconnect them in the way like you need.
+
+```
+    instance VelocityController velocityController;
+
+    connect velocity->velocityController.velocity;
+    connect velocityController.acceleration->acceleration;
+
+    instance SearchParkingPlaceController searchParkingPlaceController;
+
+    connect slf->searchParkingPlaceController.frs;
+    connect slb->searchParkingPlaceController.brs;
+    connect searchParkingPlaceController.foundPlace->velocityController.reverseMove;
+    
+    instance ParkingController parkingController;
+    
+    connect bl->parkingController.bl;
+    connect br->parkingController.br;
+    connect fr->parkingController.fr;
+    connect fl->parkingController.fl;
+    connect slf->parkingController.slf;
+    connect slb->parkingController.slb;
+    connect parkingController.moveForward->velocityController.moveForward;
+    connect parkingController.steeringAngle->steering;
+    connect parkingController.status->status;
+    connect searchParkingPlaceController.foundPlace->parkingController.reverseMove;
+    
+}
+```
+Reading the list of connections in a textual representation it is hard to imagine all these communications and easy to make a mistake. To improve the visual perception of the interconnections we are using special generator which produce a diagram. On the diagram you can see how the ports are interconnected and how the components interact with each other. 
+
 <img src="https://git.rwth-aachen.de/monticore/EmbeddedMontiArc/utilities/demonstrator/raw/presentation1007/paper/img/controller03.svg" alt="drawing" width="1000px" height="500px"/>
 
-The velocity controller has three states. The first one is activated when the car is looking for a place for parking. The second one, when the car is moving back during a parking process. And the third one, when it is moving forward to get closer to the front car.
-The controller, which is looking for a parking place, uses side sensors to find the gap between cars and the point where to stop and to begin the parking process.
-The idea of the parking controller is that the car is going back until it reached a certain point, changing an angle of the car. The back and side sensors are involved in this process. Then the car stops when the critical distance is reached and get closer to the front car. All these steps are nicely illustrated in tutorials and solutions.
-After creating all these components, the controller compiles the model on a server and the simulator shows a nice 3D visualization of the parking process.
+Then we should begin with the components implementation. We will show just one of them to give a rough idea how it looks like.
+```
+component VelocityController {
+	port                                    
+		in Q(0m/s : 25m/s) velocity,
+		in B reverseMove,
+		in B moveForward,
+		out Q(-2m/s^2:2m/s^2) acceleration; 
+
+	implementation Math{                    
+
+    	if (velocity > 1 m/s)           // this statement controls the speed of the car
+    	    acceleration = 0m/s^2;      // if the speed faster then defined then it have no acceleration
+    	else
+    		acceleration = 1m/s^2;
+        end
+        
+        if reverseMove                  // if the car moves back then acceleration has to be -0.5 m/s^2
+        	acceleration = -0.5 m/s^2;
+        end
+        
+        if (velocity < -0.5 m/s)
+        	acceleration = 0m/s^2;
+        end
+        
+        if (reverseMove && moveForward) // the acceleration if car moves forward again
+            acceleration = 0.5 m/s^2;
+        end
+        
+        if (reverseMove && moveForward && (velocity > 0.5 m/s))
+            acceleration = 0m/s^2;
+        end
+        
+	}
+}
+```
+In this example we can see the incoming and outgoing ports for the component and an implementation of a logic. The velocity controller has three states. The first one is activated when the car is looking for a place for parking. The second one, when the car is moving back during a parking process. And the third one, when it is moving forward to get closer to the front car. For remaining controllers we will explain only the logic. The controller, which is looking for a parking place, uses side sensors to find the gap between cars and the point where to stop and to begin the parking process. The idea of the parking controller is that the car is going back until it reached a certain point, changing an angle of the car. The back and side sensors are involved in this process. Then the car stops when the critical distance is reached and get closer to the front car. All these steps are nicely illustrated in tutorials and solutions.
+After creating all these components, the controller compiles the model on a server and the simulator shows a nice 3D visualization of the parking process. If it is done correctly the trajectories have to coincide and the solution will be considered like acceptable.
+
+### Solution for Example 2 (Elk Test)
+
 The second task is to run between cones to pass maneuverability test. To solve the task, we can use just two modules:
 1. A Module which controls the speed of the car.
 2. A Module which controls the steering angle of the car.
@@ -168,8 +256,6 @@ The second task is to run between cones to pass maneuverability test. To solve t
 
 The velocity module controls a speed of the car don't allow to drive too fast to be able to react on the cones. And the steering module reacts on cones by changing the directions of driving.
 We are using the side left forward and side right forward sensors to measure distances to cones. When these sensors have passed a cone, we assume that it is time to start the car rotation in opposite direction. Pretty simple!
-
-### Solution for Example 2 (Elk Test)
 
 > describe here what is different than from the solution in 1
 
