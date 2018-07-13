@@ -90,6 +90,10 @@ Thoroughly analyzed the projects described above, we have derived the following 
 > Below the table you write for each requirement a paragraph comparing (R1) for all tools; write a parapgraph comparing (R2) -> just take a look how we did it in Section 4
 
 ## Architecture
+
+A software architecture refers to the high level structures of a software system. The selection of a suitable architecture is very important on the initial design stage. In our case, EmbeddedMontiArc is already developed as self-containing services based on .jar files. Due to the derived requirement R3, we have to develop a web-based application. Therefore on the server-side, some services, from the EmbeddedMontiArcStudio, can be selected and integrated. But still one server-side component is missing. The server must handle multiple users at the same time, and the server must do the messaging from the back-end to the front-end. Students should get a response from the server, to receive compiled controller or just fix errors with can appear during the compilation process. The EmbeddedMontiArcStudio has its own 3D simulator, which has lots of power features. But it has some weaknesses, which do not allow us to use it in our case. It can not handle multiple users, it requires powerful computer, it has to be installed, which contradicts the requirements.
+
+
 > say something general about the architecture, that we EmbeddedMontiArc is already developed as self-containing services based on JAR files, therefore
 > on the server-side services from the EmbeddedMontiArcStudio can be selected and integrated.
 > but the server must handle multiple users at the same time, and the server must do the messaging from the backend to the front-end
