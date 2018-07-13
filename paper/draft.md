@@ -35,8 +35,6 @@ Each tutorial is like a module, it has all required elements inside the package.
 
 To prepare the simulator environment for tutorials, a configuration file is used. The configuration defines an initial position of the car. For each tutorial the position specified depends on the task and an area on the track where an action is going to happen. Also in the configuration are specified objects on the track and their positions. It is really convenient to have configurations for different tutorials, because it gives flexibility during the preparation tutorial process and simplified the building new ones.  
 
-<!-- To check the possible solution, which has been implemented by a student, a comparison of the trajectories is involved. -->
-
 ## Existing Solutions with Tutorial Character
 
 In this section we present how tutorials are met by other tool vendors for their languages. We have taken in consideration different tutorials from different areas.
@@ -56,20 +54,18 @@ Wolfram Alpha is a very powerful tool, which works by using expert-level knowled
 ### TypeScript Playground
 TypeScript is a typed superset of JavaScript. It has a clean and simple playground which shows the difference and benefits of TypeScript over JavaScript. It has preloaded examples which actually show this difference and a user can see distinction in the direct comparison. What, again, gives the better understanding and facilitates further analysis(R7).
 
-<!-- TODO: Try out the tutorials for you, and then write down the properties you like about the tutorial. -->
+### Swift Playgrounds
+Swift Playgrounds has been created for teaching the Swift language in a game form. You can create small programs that instantly show the results of the code that you write. From the right side of the screen is shown a 3D world where an action is happen. The tutorials are pretty simple but the concept is very interesting. They have automatic verification of the correctness of an implemented solution in the 3D environment. To produce many diverse game oriented tutorials, it would be convenient to have simple 3D models importing which can use different models from various 3D editors.
+
 Thoroughly analyzed the projects described above, we have derived the following list of requirements for our tool:
 
-(R1) The tool must have 3D visualization for demonstration purposes
-(R2) It has to have simple, clean and intuitive interface
-(R3) It should work on any operation system and without installation 
-(R4) Automatic verification of obtained results should be implemented (which tutorial has something like this?)
-(R5) Integrated testing support (which tutorial has something like this?)
-(R6) Import and use existing 3D models for the simulator to simplify the process of creation new tutorials (which tutorial has something like this?)
-(R7) Trajectory drawing for better visual perception and visual comparison of results
-
-<!-- (R1) It can be tried out online and you can load nearly done examples per one click into the editor
-(R2) Syntax-Highlighting is good
-(R3) Examples are small code snippets, need only max. 20 Minutes to read a part of  -->
+(R1) The tool must have 3D visualization for demonstration purposes  
+(R2) It has to have simple, clean and intuitive interface  
+(R3) It should work on any operation system and without installation  
+(R4) Automatic verification of obtained results should be implemented  
+(R5) Import and use existing 3D models for the simulator to simplify the process of creation new tutorials  
+(R6) Trajectory drawing for better visual perception and visual comparison of results
+>(R7) Integrated testing support (which tutorial has something like this?)
 
 ## Architecture
 To create the playground, the seven most important components are linked: 
