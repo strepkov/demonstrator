@@ -21,22 +21,13 @@ almost instantly see the result in 3D environment. We believe that visualization
 > and that we have no tutorial to teach them step-by-step the c&C paradigm by using our language
 
 ## Running example
-> say that the aim is to create a controller for a self-driving car,
-> and since it is so complex we divided the large tutorial
-> into smaller tutorials based on user-stories (which is borrowed from the agile development manifest)
-> the smaller user stories allow the modeler to get faster feedback, and that the students can start with
-> simple scenarios and have a success feeling
-> in this paper we will present the two tutorials parking and elk test
 
-We are going to show two examples of tutorials in which a controller, for given tasks, will be created. The first task is to carry out parallel parking between two cars, and the last task is to successfully pass the elk test.
+The final aim is to create a controller for a self-driving car. But the problem here is that the task is to complex. We have borrowed the idea from the agile development manifest to divide the large task into small ones. The small tutorials are based on the user-stories which allow getting faster feedback for students. Implementing simple tutorials and learning the basics of the language, students gain an experience in solving important tasks of which the controller for the self-driving car consists. Extremely hard to solve the big and complex task in one step, due to this reason, the dividing of the task is important. Successfully solved scenarios give important success feeling which motivates students.
+The running example presents the process of creating controllers that solve given small but common tasks. To achieve the goal we have to understand the key aspects of the tasks. It helps to find which components we need to be able to find the solution. We are going to present two examples of tutorials in which controllers, for given tasks, will be created. The first task is to carry out parallel parking between two cars, and the last task is to successfully pass the elk test. To understand where we should start, let us dive into details of the tutorials.
 
 ### Parking Tutorial
 
-> you cannot just mention the requirements, you need to put a story around it
-> say that parking is used everywhere and there are standard solutions how to do it (see your picture below)
-> therefore parking is very good suited
-
-Thereby the following requirements should be met:
+The parallel parking is that you do everyday, if you have a car, or will do when you have it. But it is not so easy to perform this maneuver for an inexperienced driver. Because of this, there is a standard solution for that(see your picture below). The most interesting point in this example for us, like a people who is going to use C&C language, that this maneuver consists of several independent steps. Then we may build components and delegate the tasks to each of them, in the way that each component solves only one simple task. To manage the maneuver we have to perform the following steps: find place, go back putting the car in the space between the cars and drive forward aligning the car relative to the curb. During the parking process the given requirements should be met:
 
 (P1) The car does not get into an accident during Parking  
 (P2) At the end of the parking process, the car is parallel to a curb  
@@ -45,10 +36,7 @@ Thereby the following requirements should be met:
 
 ### Elk Test Tutorial
 
-> describe something about the elk test, e.g. summerize the text from wikipedia
-> https://de.wikipedia.org/wiki/Elchtest
-> > Der Elchtest bietet durch seine großen, konstanten Gassenbreiten einen weiten Spielraum für die Lenkstrategie des Fahrers. Der Verband der Automobilindustrie (VDA) hat deshalb einen Ausweichtest entworfen, bei dem die Gassenbreiten von der Fahrzeugbreite abhängig sind. Weiter ist vorgeschrieben, in der ersten Gasse Gas wegzunehmen. Dieses Manöver wurde inzwischen unter der Bezeichnung VDA-Spurwechseltest in die internationale Norm ISO 3888-2 übernommen.[1] Es ist Bestandteil der Erprobung der Fahreigenschaften neuer Fahrzeuge. Mit einem speziellen Ladeaufsatz wird der Elchtest teilweise auch bei LKWs durchgeführt.
-
+Another test that we want to introduce is elk test. It is performed to determine how well a certain vehicle evades a suddenly appearing obstacle. These days, the test is performed by major automaker, because it proves the ability of a car to maneuver on average speed (60 km/h) without losing the control of the car. In our context, this test gives the feeling how the car responses on the objects on the track and how maneuverable it can be, depends on a speed. To pass the elk test the following requirements should be met:
 
 (E1) The car does not drive into cones during the test  
 (E2) It should drive on the shortest path, be as closer as possible to cones  
@@ -108,6 +96,8 @@ Thoroughly analyzed the projects described above, we have derived the following 
 > you can also say that the 3d simulator of EmbeddedMontiArc which can import open-street map data is written in Java, and if we would
 > simulate the execution on the server the server could not handle multiple users, therefore for this lap you create a new car simulator in typescript
 > so that the tutorial user has a fluent user-experience, ...
+
+
 
 > also add the feature that you have a master mode where the master can add obstacles also in the IDE via JSON
 
