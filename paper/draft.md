@@ -15,10 +15,7 @@ almost instantly see the result in 3D environment. We believe that visualization
 > then also add a paragraph where you describe our EmbeddedMontiArc language (explain that we model textual, 
 > what are ports, what a components, that we also support generics and units)
 
-> write one paragraph that we have already a standalone application, but this means that
-> students needs to download the tooling and cannot try it out directly in the lecture
-> also sharing code is not so easy for the standalone application
-> and that we have no tutorial to teach them step-by-step the c&C paradigm by using our language
+There is already exists the standalone simulator, which takes into account a lot of factors like a weather, it can use OpenStreetMap, and even has an own extensible physics engine. The issue here is that students have to download the simulator and then install it. If they have to do all these steps directly on the lecture it would be not the best experience due to the size of the simulator and the required computation resources. Also code sharing between the standalone application and e.g. separate tutorial is not the most convenient. Besides that at the moment, there is no tutorial for the existing simulator which can teach step-by-step the C&C paradigm by using EmbeddedMontiArc language. Because of the explained reasons, it was decided to develop a completely new simulator, which takes into account fewer details during the simulation. While it can manage all basic actions and use a full version of the existing language EmbeddedMontiArc.
 
 ## Running example
 
