@@ -226,7 +226,7 @@ After creating all these components, the controller compiles the model on a serv
 
 ### Solution for Example 2 (Elk Test)
 
-In this solution we have to use similar principles like in the previous one. Use the interface firstly and then connect the elements and implement them. The main difference between the parking test and this task, that we want to give the feeling how the car responds on the objects on the track and how maneuverable it can be. The task is to run between cones to pass maneuverability test. To solve the task, we can use just two modules:
+In this solution, we have to use similar principles as in the previous one. Use the interface firstly and then connect the elements and implement them. The main difference between the parking test and this task, that we want to give the feeling of the car responds on the objects on the track and how maneuverable it can be. The task is to run between cones to pass maneuverability test. To solve the task, we can use just two modules:
 1. A Module which controls the speed of the car.
 2. A Module which controls the steering angle of the car.
 
