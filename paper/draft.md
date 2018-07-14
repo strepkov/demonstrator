@@ -91,21 +91,11 @@ Thoroughly analyzed the projects described above, we have derived the following 
 
 ## Architecture
 
-A software architecture refers to the high level structures of a software system. The selection of a suitable architecture is very important on the initial design stage. In our case, EmbeddedMontiArc is already developed as self-containing services based on .jar files. Due to the derived requirement R3, we have to develop a web-based application. Therefore on the server-side, some services, from the EmbeddedMontiArcStudio, can be selected and integrated. But still one server-side component is missing. The server must handle multiple users at the same time, and the server must do the messaging from the back-end to the front-end. Students should get a response from the server, to receive compiled controller or just fix errors with can appear during the compilation process. The EmbeddedMontiArcStudio has its own 3D simulator, which has lots of power features. But it has some weaknesses, which do not allow us to use it in our case. It can not handle multiple users, it requires powerful computer, it has to be installed, which contradicts the requirements.
+A software architecture refers to the high-level structures of a software system. The selection of a suitable architecture is very important at the initial design stage. In our case, EmbeddedMontiArc is already developed as self-containing services based on .jar files. Due to the derived requirement R3, we have to develop a web-based application. Therefore on the server-side, some services, from EmbeddedMontiArcStudio, can be selected and integrated. But still, one server-side component is missing. The server must handle multiple users at the same time, and the server must do the messaging from the back-end to the front-end. Students should get a response from the server, to receive compiled controller or just fix errors which can appear during the compilation process. The EmbeddedMontiArcStudio has its own 3D simulator, which has a lot of powerful features. But it has some weaknesses, which do not allow us to use it in our case. It can not handle multiple users, requires a powerful computer and has to be installed. It contradicts the requirements. Then we decided to develop a new simulator, which satisfies our requirements. For implementation, we have picked TypeScript, which is the better version of JavaScript, because it has typed. The simulator which is working on the front-end gives much smoother and fluent experience for a user. Therefore we are using a fully autonomous front-end for the simulator and back-end during the preparation phase of the controller for the simulator. Then we went even further and decided to use WebAssembly for the controller. web assembly is a new type of code that runs in modern web browsers — it is a low-level assembly-like language with a compact binary format that runs with near-native performance and provides languages such as C/C++ so that they can run on the web. It is very well suited to our task due to the fact, that we use EmbeddedMontiArc generator which converts the code to C++. Especially for this purpose, the EmbeddedMontiArc to WebAssembly converter was developed. The architecture more clearly and fully is shown in the figure.
 
+![alt text](img/architecture.png)
 
-> say something general about the architecture, that we EmbeddedMontiArc is already developed as self-containing services based on JAR files, therefore
-> on the server-side services from the EmbeddedMontiArcStudio can be selected and integrated.
-> but the server must handle multiple users at the same time, and the server must do the messaging from the backend to the front-end
-> you can also say that the 3d simulator of EmbeddedMontiArc which can import open-street map data is written in Java, and if we would
-> simulate the execution on the server the server could not handle multiple users, therefore for this lap you create a new car simulator in typescript
-> so that the tutorial user has a fluent user-experience, ...
-
-
-
-> also add the feature that you have a master mode where the master can add obstacles also in the IDE via JSON
-
-To create the playground, the seven most important components are linked: 
+To clarify the goal of each component which is shown in the picture, we will consider the seven most important components that are linked together: 
 1. IDE for EmbeddedMontiArc language, it helps to write components easier, reveals the errors and shows incoming and outgoing ports of the components.
 2. Web-server, it receives the requests for compiling the MontiArc models and sends back a finished controller,  packs and extracts models, controls the compilation process, providing an error handling for users.
 3. EMAM2WASM generator, it gets the model from the web-server and compiles it, generating the web-assembly file, which is a "brain" of the simulator.
@@ -114,7 +104,7 @@ To create the playground, the seven most important components are linked:
 6. A simulator, it receives a compiled model from the server and instantiates it directly in the browser. Then the controller is used to process data from sensors, which located on the car.
 7. A Trajectory builder and comparator. It builds in real time a trajectory of the car movements and does a comparison between a sample trajectory and generated one. The comparator allows having some deviation from the sample trajectory.
 
-![alt text](img/architecture.png)
+In this composition of components, we are reusing some of them from the previous and already successful development and implement the new ones, which allow us to accomplish our goal in the most efficient and optimal way.
 
 ## How to use it and how it works
 > add more text! The paper may have bullet points, but not only. It must be normal text written in paragraphs
