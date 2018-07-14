@@ -77,17 +77,30 @@ Swift Playgrounds has been created for teaching the Swift language in a game for
 
 Thoroughly analyzed the projects described above, we have derived the following list of requirements for our tool:
 
-(R1) The tool must have 3D visualization for demonstration purposes  
-(R2) It has to have simple, clean and intuitive interface  
-(R3) It should work on any operation system and without installation  
+(R1) 3D visualization for demonstration purposes  
+(R2) Simple, clean and intuitive interface  
+(R3) Work on any operating system and without installation  
 (R4) Automatic verification of obtained results should be implemented  
 (R5) Import and use existing 3D models for the simulator to simplify the process of creation new tutorials  
 (R6) Trajectory drawing for better visual perception and visual comparison of results
->(R7) Integrated testing support (which tutorial has something like this?)
+(R7) Integrated testing support
 
-> After you have derived the requirements, please add a table for the requirements and the above playgrounds/tutorial platoforms.
-> As an example take a look at section 4 in http://www.se-rwth.de/publications/Modeling-Architectures-of-Cyber-Physical-Systems.pdf
-> Below the table you write for each requirement a paragraph comparing (R1) for all tools; write a parapgraph comparing (R2) -> just take a look how we did it in Section 4
+The table summarizes the comparison between the all considered tutorials.
+
+|    | Z3 Solver | Octave online | Wolfram Alpha | TypeScript PG | Swift PG | Rust | EMAM PG |
+|:--:|:---------:|:-------------:|:-------------:|:-------------:|:--------:|:----:|:-------:|
+| R1 |           |       +       |       +       |               |     +    |      |    +    |
+| R2 |     +     |       +       |       +       |       +       |     +    |   +  |    +    |
+| R3 |     +     |       +       |       +       |       +       |          |      |    +    |
+| R4 |           |               |               |               |     +    |      |    +    |
+| R5 |           |               |               |               |          |      |    +    |
+| R6 |           |               |       +       |               |     +    |      |    +    |
+| R7 |           |               |               |               |          |      |    +    |
+
+Let us take a closer look at the difference between the tutorials regarding to the derived requirements.  
+**(R1) 3D visualization for demonstration purposes:** Three considered tutorials have a 3D visualization. The Octave online has a possibility to generate plots and graphics for given data. The Wolfram Alpha has a very powerful tool which can generate 3D models and you can even interact with them and see the changes in a real time. Whereas the Swift Playground has the most advanced 3D world which is like a part of the tutorial and result presentation.  
+**(R2) Simple, clean and intuitive interface:** This is the only requirement which all tutorial are satisfied. We believe that it is very important to have an understandable and clear interface which does not distract from the educational process.  
+**(R3) Work on any operating system and without installation:**
 
 ## Architecture
 
