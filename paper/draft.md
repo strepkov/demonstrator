@@ -36,7 +36,7 @@ The parallel parking is that you do everyday, if you have a car, or will do when
 
 ### Elk Test Tutorial
 
-Another test that we want to introduce is elk test. It is performed to determine how well a certain vehicle evades a suddenly appearing obstacle. These days, the test is performed by major automaker, because it proves the ability of a car to maneuver on average speed (60 km/h) without losing the control of the car. In our context, this test gives the feeling how the car responses on the objects on the track and how maneuverable it can be, depends on a speed. To pass the elk test the following requirements should be met:
+Another test that we want to introduce is elk test. It is performed to determine how well a certain vehicle evades a suddenly appearing obstacle. These days, the test is performed by major automaker, because it proves the ability of a car to maneuver on average speed (60 km/h) without losing the control of the car. In our context, this test gives the feeling how the car responds on the objects on the track and how maneuverable it can be, depends on a speed. To pass the elk test the following requirements should be met:
 
 (E1) The car does not drive into cones during the test  
 (E2) It should drive on the shortest path, be as closer as possible to cones  
@@ -107,28 +107,22 @@ To clarify the goal of each component which is shown in the picture, we will con
 In this composition of components, we are reusing some of them from the previous and already successful development and implement the new ones, which allow us to accomplish our goal in the most efficient and optimal way.
 
 ## How to use it and how it works
-> add more text! The paper may have bullet points, but not only. It must be normal text written in paragraphs
 
-Students are going to use the web-playground to understand how to work with C&C models languages like EmbeddedMontiArc. The main idea of the playground to increase interest in the learning process using a gaming form of the tutorials. There are several simple steps in the learning process: 
-1. The first tutorial is a task which already has a solution but the idea behind that to show the main constructions and principles of the language and the playground.
-2. Next tutorials have tasks with increasing complexity and every time there is some hint, which motivates students to use particular constructions.
-3. The visualization of the process gives the feeling of the language and understanding of the binding between writing the code and real actions which were caused by the written code.
-4. The process of writing tests shows the benefits of test-driven development and understanding the importance of independent testing of the components.
-
+Students are going to use the web-playground to understand how to work with C&C models languages like EmbeddedMontiArc. The main idea of the playground to increase interest in the learning process using a gamification of the tutorials. There are several simple steps in the learning process. The first tutorial is a task which already has a solution but the idea behind that to show the main constructions and principles of the language and the playground. Next tutorials have tasks with increasing complexity and every time there is some hint, which motivates students to use particular constructions. The visualization of the process gives the feeling of the language and understanding of the binding between writing the code and real actions which were caused by the written code. The process of writing tests shows the benefits of test-driven development and understanding the importance of independent testing of the components.
 The process of using the web-playground is very simple. Students don't have to install any applications on the computer and it is possible to use it from any platform, whether it is Mac, Windows or Linux. Only one important condition has to be satisfied - to have a "fresh" version of a browser. IDE, tutorial, visualization are located in one window and has a very intuitive interface.
 A standard sequence of steps is the following:
 1. Open the web-playground in a browser.
 2. Read a tutorial
 3. Write code with tests
 4. Send a model controller to the server, to execute tests and compile the controller.
-5. When the simulator displays the ready state, it means that you may run a visualization execution. If the solution contains errors, a student receives an error message with description.
+5. When the simulator displays the ready state, it means that you can run a visualization execution. If the solution contains errors, the student receives an error message with a description.
 6. It's possible to restart the simulation process, add some noise to the sensors to emulate more natural measurements, or specify the period of the simulation process. 
 7. After the execution, the current trajectory is compared with the sample solution and the student is notified whether he passed the test or not.
+The studying process is built on a concept from simple to complex. Doing the tutorials one by one, students get closer to the main goal of the creation of the controller for a self-driving car.
 
 ### Solution for Example 1 (Parking Scenario)
 
-To start working on the solution we have to know the way how to communicate with the car to achieve the desired behavior. For this purposes, there is an interface for the simulator which is given. It has 8 sensors to measure distances to objects, velocity, steering angle, acceleration, a position of the car and execution time. You can see from the example, that ports have units and ranges.
-> What advantages give us units and ranges? 
+To start working on the solution we have to know the way how to communicate with the car to achieve the desired behavior. For this purposes, there is an interface for the simulator which is given. It has 8 sensors to measure distances to objects, velocity, steering angle, acceleration, a position of the car and execution time. You can see from the example, that ports have units and ranges. The ranges give an advantage during the testing period and possibility to use a variety of the units, depending on the particular case, whether it is km/h or m/s.
 
 ```
 component MainController{
@@ -232,16 +226,13 @@ After creating all these components, the controller compiles the model on a serv
 
 ### Solution for Example 2 (Elk Test)
 
-The second task is to run between cones to pass maneuverability test. To solve the task, we can use just two modules:
+In this solution we have to use similar principles like in the previous one. Use the interface firstly and then connect the elements and implement them. The main difference between the parking test and this task, that we want to give the feeling how the car responds on the objects on the track and how maneuverable it can be. The task is to run between cones to pass maneuverability test. To solve the task, we can use just two modules:
 1. A Module which controls the speed of the car.
 2. A Module which controls the steering angle of the car.
 
 <img src="https://git.rwth-aachen.de/monticore/EmbeddedMontiArc/utilities/demonstrator/raw/presentation1007/paper/img/controller04.svg" alt="drawing" width="600px" height="500px"/>
 
-The velocity module controls a speed of the car don't allow to drive too fast to be able to react on the cones. And the steering module reacts on cones by changing the directions of driving.
-We are using the side left forward and side right forward sensors to measure distances to cones. When these sensors have passed a cone, we assume that it is time to start the car rotation in opposite direction. Pretty simple!
-
-> describe here what is different than from the solution in 1
+The velocity module controls a speed of the car don't allow to drive too fast to be able to react on the cones. And the steering module reacts on cones by changing the directions of driving. We are using the side left forward and side right forward sensors to measure distances to cones. When these sensors have passed a cone, we assume that it is time to start the car rotation in opposite direction. Pretty simple, but we can see how the speed influence on the car maneuverability.
 
 ## Conclusion
 
