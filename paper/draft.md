@@ -298,8 +298,7 @@ The steering module reacts on cones by changing the directions of driving. We ar
 
 <img src="https://git.rwth-aachen.de/monticore/EmbeddedMontiArc/utilities/demonstrator/raw/presentation1007/paper/img/controller04.svg" alt="drawing" width="600px" height="500px"/>
 
-> what I am also missing is the way how you figure out when a tutorial has passed. Tell me something about the trajectory! Also add some paragraph how the trajectory helps to
-> find errors. your first controller also did not work (then we added the vector field and you found the error), please add here some "model based reporting" techniques.
+We have missed here, it is a verification of the solution. How we actually know that the solution, which has been implemented by the student, is correct? The trajectory builder and checker comes into play. We are using the sample trajectory, which had been included in the solution pack, to compare with the solution from the student. The comparison is done in the way, that we admit some deviation from the sample solution because we understand that the probability that the student has produced the same controller as we have is pretty small. Also, the trajectory helps to find some inconspicuous errors which you can overlook. e.g. the car changes the steering angle every execution step and from some camera's perspective you can not observe it, but you can easily see that the trajectory not straight. Another technique that helps to detect errors is a creating in each point the vector which indicates the force direction. It gives the best results in errors detection and respectively increase the speed of the controller development.
 
 ## Conclusion
 > todo: write some text here
