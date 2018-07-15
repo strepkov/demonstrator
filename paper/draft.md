@@ -293,11 +293,21 @@ In this solution, we have to use similar principles as in the previous one. Use 
 1. A Module which controls the speed of the car.
 2. A Module which controls the steering angle of the car.
 
+> please add here more text about the implementation of the components: what algorithm do you use to stear?
+
+> what I am also missing here is a simple unit test, we say that is a thing which only our tool can; and that we want to teach students test-driven modeling.
+> So how does a nice test looks like. Please add a code snippet of stream test, for a component you already presented here before. And then explain how it works here.
+>
+> what I am also missing is the way how you figure out when a tutorial has passed. Tell me something about the trajectory! Also add some paragraph how the trajectory helps to
+> find errors. your first controller also did not work (then we added the vector field and you found the error), please add here some "model based reporting" techniques.
+
 <img src="https://git.rwth-aachen.de/monticore/EmbeddedMontiArc/utilities/demonstrator/raw/presentation1007/paper/img/controller04.svg" alt="drawing" width="600px" height="500px"/>
 
 The velocity module controls a speed of the car don't allow to drive too fast to be able to react on the cones. And the steering module reacts on cones by changing the directions of driving. We are using the side left forward and side right forward sensors to measure distances to cones. When these sensors have passed a cone, we assume that it is time to start the car rotation in opposite direction. Pretty simple, but we can see how the speed influence on the car maneuverability.
 
 ## Conclusion
+> todo: write some text here
+
 
 ![alt text](img/screen-simulator.png)
 ![alt text](img/screen-task.png)
