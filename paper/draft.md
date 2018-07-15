@@ -1,3 +1,7 @@
+> we need to add what the community has from our paper: We provide nice students tutorials and solutions for C&C Models (the tutorial and the domain solution is nearly
+> lanuage independent) and therefore the models and solutions provided in our paper can be used for other C&C languages; also for their analysis (e.g. requirement mapping
+> to C&C models, ...)
+
 # Teaching playground for EmbeddedMontiArc language.
 
 ## Abstract
