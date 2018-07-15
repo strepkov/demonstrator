@@ -151,6 +151,8 @@ To clarify the goal of each component which is shown in the picture, we will con
 
 In this composition of components, we are reusing some of them from the previous and already successful development and implement the new ones, which allow us to accomplish our goal in the most efficient and optimal way.
 
+> where is here your administration tool for handling multiple users?
+
 ## How to use it and how it works
 
 Students are going to use the web-playground to understand how to work with C&C models languages like EmbeddedMontiArc. The main idea of the playground to increase interest in the learning process using a gamification of the tutorials. There are several simple steps in the learning process. The first tutorial is a task which already has a solution but the idea behind that to show the main constructions and principles of the language and the playground. Next tutorials have tasks with increasing complexity and every time there is some hint, which motivates students to use particular constructions. The visualization of the process gives the feeling of the language and understanding of the binding between writing the code and real actions which were caused by the written code. The process of writing tests shows the benefits of test-driven development and understanding the importance of independent testing of the components.
