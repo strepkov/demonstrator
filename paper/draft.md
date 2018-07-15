@@ -52,6 +52,16 @@ To prepare the simulator environment for tutorials, a configuration file is used
 
 In this section we present how tutorials are met by other tool vendors for their languages. We have taken in consideration different tutorials from different areas.
 
+## Simulink
+> sorry that I forgot that, but this our most related work, as Simulink also models C&C models
+> we must definitevely add this https://de.mathworks.com/help/simulink/examples.html#d2e486 to our table
+> can you please take a look at it, and also say what you like at the tutorial
+>
+> what I find positive: they also have videos how to do it step for step, they explain the solution
+>
+> what I find they do not have: they have no method to validate whether the students solution is correct, and they do not encourage the students to try it out by themself
+> you only copy the solution of them
+
 ### Rust
 Rust is a very popular programming language the prevalence of which is growing every day. It has a consistent tutorial which describes language constructs with gradually increasing complexity. It has the informative and structured index, where users can easily jump from one topic to another almost instantly and then just go back to the place where he was reading before. They use highlighted ares to show some code examples, which facilitate understanding of presented materials.
 
