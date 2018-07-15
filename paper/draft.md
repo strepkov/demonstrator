@@ -26,7 +26,8 @@ The parallel parking is that you do everyday, if you have a car, or will do when
 
 ### Elk Test Tutorial
 
-Another test that we want to introduce is elk test. It is performed to determine how well a certain vehicle evades a suddenly appearing obstacle. These days, the test is performed by major automaker, because it proves the ability of a car to maneuver on average speed (60 km/h) without losing the control of the car. In our context, this test gives the feeling how the car responds on the objects on the track and how maneuverable it can be, depends on a speed. To pass the elk test the following requirements should be met:
+Another test that we want to introduce is elk test. It is performed to determine how well a certain vehicle evades a suddenly appearing obstacle. 
+These days, the test is performed by major automotive OEMs, because it proves the ability of a car to maneuver on average speed (60 km/h) without losing the control of the car. In our context, this test gives the feeling how the car responds on the objects on the track and how maneuverable it can be, depends on a speed. To pass the elk test the following requirements should be met:
 
 (E1) The car does not drive into cones during the test  
 (E2) It should drive on the shortest path, be as closer as possible to cones  
