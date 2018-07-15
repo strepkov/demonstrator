@@ -177,7 +177,15 @@ The studying process is built on a concept from simple to complex. Doing the tut
 
 ### Solution for Example 1 (Parking Scenario)
 
-To start working on the solution we have to know the way how to communicate with the car to achieve the desired behavior. For this purposes, there is an interface for the simulator which is given. It has 8 sensors to measure distances to objects, velocity, steering angle, acceleration, a position of the car and execution time. You can see from the example, that ports have units and ranges. The ranges give an advantage during the testing period and possibility to use a variety of the units, depending on the particular case, whether it is km/h or m/s.
+To start working on the solution we have to know the way how to communicate with the car to achieve the desired behavior. 
+For this purposes, there is an interface for the simulator which is given. 
+It has 8 sensors to measure distances to objects, velocity, steering angle, acceleration, a position of the car and execution time. 
+
+> Maybe you add there a car picture with all sensors and where they are
+> something like this: ![image](/uploads/b4270b769e5decf8cfc7ac011001dd78/image.png)
+> but please adapt the picutre to all of your sensors (speed sensors etc.) you just can add
+
+You can see from the example, that ports have units and ranges. The ranges give an advantage during the testing period and possibility to use a variety of the units, depending on the particular case, whether it is km/h or m/s.
 
 ```
 component MainController{
