@@ -301,7 +301,8 @@ The steering module reacts on cones by changing the directions of driving. We ar
 We have missed here, it is a verification of the solution. How we actually know that the solution, which has been implemented by the student, is correct? The trajectory builder and checker comes into play. We are using the sample trajectory, which had been included in the solution pack, to compare with the solution from the student. The comparison is done in the way, that we admit some deviation from the sample solution because we understand that the probability that the student has produced the same controller as we have is pretty small. Also, the trajectory helps to find some inconspicuous errors which you can overlook. e.g. the car changes the steering angle every execution step and from some camera's perspective you can not observe it, but you can easily see that the trajectory not straight. Another technique that helps to detect errors is a creating in each point the vector which indicates the force direction. It gives the best results in errors detection and respectively increase the speed of the controller development.
 
 ## Conclusion
-> todo: write some text here
+
+In this paper, we have analyzed the existing tutorials in various fields. The purpose was to find the most important features, which have an influence on the studying process, and even discover the weaknesses and try to overcome them. Then we have figured out the most suitable architecture, which is using the already implemented solutions, what decrease the amount of work, and at the same time does not influence negatively on the user experience. Then was shown how to use the tutorial and demonstrated two interesting real-world examples, which present the main concepts and reveal important integrated features like stream testing and result verification.
 
 
 ![alt text](img/screen-simulator.png)
