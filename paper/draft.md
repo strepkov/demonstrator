@@ -163,7 +163,12 @@ A standard sequence of steps is the following:
 3. Write code with tests
 4. Send a model controller to the server, to execute tests and compile the controller.
 5. When the simulator displays the ready state, it means that you can run a visualization execution. If the solution contains errors, the student receives an error message with a description.
+
 6. It's possible to restart the simulation process, add some noise to the sensors to emulate more natural measurements, or specify the period of the simulation process. 
+> please sell the noise better! The noise helps the students to work with imperfect worlds (noise through sun, rain) or just every hardware component has only a certain 
+> accuracy. here it is really important that students learn the difference between plain software engineering (which mostly has no uncertenities as it does not interact
+with an real environment) and software systems engineering (which only works with interaction and its enviornment)
+
 7. After the execution, the current trajectory is compared with the sample solution and the student is notified whether he passed the test or not.
 The studying process is built on a concept from simple to complex. Doing the tutorials one by one, students get closer to the main goal of the creation of the controller for a self-driving car.
 
