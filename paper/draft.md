@@ -61,14 +61,7 @@ To prepare the simulator environment for tutorials, a configuration file is used
 In this section we present how tutorials are met by other tool vendors for their languages. We have taken in consideration different tutorials from different areas.
 
 ## Simulink
-> sorry that I forgot that, but this our most related work, as Simulink also models C&C models
-> we must definitevely add this https://de.mathworks.com/help/simulink/examples.html#d2e486 to our table
-> can you please take a look at it, and also say what you like at the tutorial
->
-> what I find positive: they also have videos how to do it step for step, they explain the solution
->
-> what I find they do not have: they have no method to validate whether the students solution is correct, and they do not encourage the students to try it out by themself
-> you only copy the solution of them
+Simulink is a block diagram environment for various domain simulation and Model-Based Design. It also involves C&C models into the modeling process. They have plenty of tutorials in many different areas with detailed description and videos on solving it which describes it step-by-step. But the problem here, that they don't have methods for validating the correctness of the user's solution and does not encourage the users to try it out by themselves, just copy the sample solution.
 
 ### Rust
 Rust is a very popular programming language the prevalence of which is growing every day. It has a consistent tutorial which describes language constructs with gradually increasing complexity. It has the informative and structured index, where users can easily jump from one topic to another almost instantly and then just go back to the place where he was reading before. They use highlighted ares to show some code examples, which facilitate understanding of presented materials.
@@ -80,12 +73,7 @@ Z3 is a state-of-the art theorem prover from Microsoft. They provide similar exp
 Octave Online is web-playground fot a high-level language Octave, which is primarily intended for numerical computations. It has a simple and intuitive interface despite the complexity of the internal implementation. It provides directly in a browser fast execution with errors handling. Even if you do complex computations it is not needed to install any software on the PC. Everything works out of the box.
 
 ### Wolfram Alpha
-Wolfram Alpha is a very powerful tool, which works by using expert-level knowledge and algorithms to automatically answer questions, do analysis and generate reports. It has one very interesting and useful feature, which provide the interactive visualization of the given data. The idea behind that is that you can "feel" how one or another parameter influences on the final result. It promote a better understanding of dependencies between the components or elements of the system.
-> we need to add some sentences about the mathematical stuff wolfram alpha supports: https://www.wolframalpha.com/examples/mathematics/geometry/
-> they have nice matrix operations and calculations as we also use in our embedded math language to describe atomic components
-> they can even do more as solving linear equations, this means they would allow to specify the behavior of controllers, and then by solving the equations they synthesize the controller
-> we cannot synthesize the controller yet; we must explicitely write down the mathematical relationships and their intermediate calculations
-
+Wolfram Alpha is a very powerful tool, which works by using expert-level knowledge and algorithms to automatically answer questions, do analysis and generate reports. It has nice matrix operations and calculations as the EmbeddedMontiArcMath language has, to describe atomic components. It can do even more as solving linear equations, it allows to specify the behavior of controllers, and then by solving the equations they synthesize the controller. Furthermore, it has one very interesting and useful feature, which provide the interactive visualization of the given data. The idea behind that is that you can "feel" how one or another parameter influence on the final result. It promises a better understanding of the dependencies between the components or elements of the system.
 
 ### TypeScript Playground
 TypeScript is a typed superset of JavaScript. It has a clean and simple playground which shows the difference and benefits of TypeScript over JavaScript. It has preloaded examples which actually show this difference and a user can see distinction in the direct comparison. What, again, gives the better understanding and facilitates further analysis(R7).
@@ -106,28 +94,24 @@ Thoroughly analyzed the projects described above, we have derived the following 
 The table summarizes the comparison between the all considered tutorials.
 (+ support, P partially support)
 
-|    | Z3 Solver | Octave online | Wolfram Alpha | TypeScript PG | Swift PG | Rust | EMAM PG |
-|:--:|:---------:|:-------------:|:-------------:|:-------------:|:--------:|:----:|:-------:|
-| R1 |     -     |       +       |       +       |       -       |     +    |   -  |    +    |
-| R2 |     +     |       +       |       +       |       +       |     +    |   +  |    +    |
-| R3 |     +     |       +       |       +       |       +       |     -    |   +  |    +    |
-| R4 |     -     |       -       |       -       |       -       |     +    |   -  |    +    |
-| R5 |     -     |       -       |       -       |       -       |     -    |   -  |    +    |
-| R6 |     -     |       -       |       P       |       -       |     P    |   -  |    +    |
-| R7 |     -     |       -       |       -       |       -       |     -    |   -  |    +    |
+|    | Z3 Solver | Octave online | Wolfram Alpha | TypeScript PG | Swift PG | Rust | Simulink | EMAM PG |
+|:--:|:---------:|:-------------:|:-------------:|:-------------:|:--------:|:----:|:--------:|:-------:|
+| R1 |     -     |       +       |       +       |       -       |     +    |   -  |     +    |    +    |
+| R2 |     +     |       +       |       +       |       +       |     +    |   +  |     +    |    +    |
+| R3 |     +     |       +       |       +       |       +       |     -    |   +  |     -    |    +    |
+| R4 |     -     |       -       |       -       |       -       |     +    |   -  |     +    |    +    |
+| R5 |     -     |       -       |       -       |       -       |     -    |   -  |     +    |    +    |
+| R6 |     -     |       -       |       P       |       -       |     P    |   -  |     P    |    +    |
+| R7 |     -     |       -       |       -       |       -       |     -    |   -  |     +    |    +    |
 
 Let us take a closer look at the difference between the tutorials regarding to the derived requirements.  
-**(R1) 3D visualization for demonstration purposes:** Three considered tutorials have a 3D visualization. The Octave online has a possibility to generate plots and graphics for given data. The Wolfram Alpha has a very powerful tool which can generate 3D models and you can even interact with them and see the changes in a real time. Whereas the Swift Playground has the most advanced 3D world which is like a part of the tutorial and result presentation.  
+**(R1) 3D visualization for demonstration purposes:** Four considered tutorials have a 3D visualization. The Octave online has a possibility to generate plots and graphics for given data. The Wolfram Alpha has a very powerful tool which can generate 3D models and you can even interact with them and see the changes in a real time. Whereas the Swift Playground has the most advanced 3D world which is like a part of the tutorial and result presentation. The Simulink has an opportunity to build nice 3D models which involved in the simulation process, but the difference is that a user has to build everything himself.   
 **(R2) Simple, clean and intuitive interface:** This is the only requirement which all tutorial are satisfied. We believe that it is very important to have an understandable and clear interface which does not distract from the educational process.  
-**(R3) Work on any operating system and without installation:** 
-All examined tutorials have web-implementation and work without installation, except the Swift tutorial, which has only iOS realization.  
-> Simulink does not work online; MATLAB the basic
-> technology behind it works partially online.
-
-**(R4) Automatic verification of obtained results:** Only one among the examined tutorials has a gaming base verification of a solution correctness. It causes additional interest in the studying process, and can be the motivation to keep solving the tasks, by analogy with computer games.  
-**(R5) Import and use existing 3D models for the simulation:** None of the tutorials have a feasibility to create tutorials quickly and efficiently, using the previously created models and configurations. An example of reusing a 3D object can be a cone that is used in many exercises. This feature, in our opinion, simplifies the process of creating new tutorials and decrease the time which has to be invested in the creation process.  
-**(R6) Displaying the object's trajectory:** Wolfram Alpha and Swift PG, we could say, partially support this feature in case that you can see the whole process of movement of the object from the very beginning to the end. But we decided to improve the concept and add the separate window which permanently displays a traversed route of the object, for better visual perception and visual comparison of results. In our case the object is a car.  
-**(R7) Integrated testing support:** None of the tutorials have integrated testing options. Due to the specificity of our tutorial, the tests, for us, play an important role. Writing the streaming test for a component we can be sure that it reacts properly to the incoming data. Tests make the components more reliable and robust. Because of the using the C&C language, it is great to be sure that each component of a composed model behaves correctly.  
+**(R3) Work on any operating system and without installation:** Almost all examined tutorials have web-implementation and work without installation, except the Swift tutorial and Simulink. The Swift tutorial has only iOS realization. The Simulink does not work on the Web too, only the MathLab, which has partial web-implementation.  
+**(R4) Automatic verification of obtained results:** Only one among the examined tutorials, the Swift tutorial, has a gaming base verification of a solution correctness. It causes additional interest in the studying process, and can be the motivation to keep solving the tasks, by analogy with computer games. Whereas the Simulink gives you possibility to do it, but it is more like feature which can be implemented.
+**(R5) Import and use existing 3D models for the simulation:** Only the Simulink has feasibility to import 3D models. It helps to create tutorials quickly and efficiently, by using the previously created models and configurations. An example of reusing a 3D object can be a cone that is used in many exercises. This feature, in our opinion, simplifies the process of creating new tutorials and decrease the time which has to be invested in the creation process.  
+**(R6) Displaying the object's trajectory:** Wolfram Alpha, Swift PG and Simulink, we could say, partially support this feature in case that you can see the whole process of movement of the object from the very beginning to the end. But we decided to improve the concept and add the separate window which permanently displays a traversed route of the object, for better visual perception and visual comparison of results. In our case the object is a car.  
+**(R7) Integrated testing support:** Only the Simulink has integrated testing options. Due to the specificity of our tutorial, the tests, for us, play an important role. Writing the streaming test for a component we can be sure that it reacts properly to the incoming data. Tests make the components more reliable and robust. Because of the using the C&C language, it is great to be sure that each component of a composed model behaves correctly.  
 Taking into account all these derived requirements we going to start working on the architecture.
 
 ## Architecture
