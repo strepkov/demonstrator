@@ -153,15 +153,7 @@ A standard sequence of steps is the following:
 3. Write code with tests
 4. Send a model controller to the server, to execute tests and compile the controller.
 5. When the simulator displays the ready state, it means that you can run a visualization execution. If the solution contains errors, the student receives an error message with a description.
-
-6. It's possible to restart the simulation process, add some noise to the sensors to emulate more natural measurements, or specify the period of the simulation process. 
-
-> please sell the noise better! The noise helps the students to work with imperfect worlds (noise through sun, rain) or just every hardware component has only a certain 
-> accuracy. here it is really important that students learn the difference between plain software engineering (which mostly has no uncertenities as it does not interact
-> with an real environment) and software systems engineering (which only works with interaction and its enviornment)
-> Also there the students learn that a controller for embedded systems must be robust; the car must continue to drive (it cannot stop on a train intersection suddenly);
-> where as in other areas the error handling must not so robust as it is ok to just throw an error message and stop the program.
-
+6. It's possible to restart the simulation process, add some noise to the sensors to emulate more natural measurements, or specify the period of the simulation process. The noise helps students to feel, the influence of the imperfect environment (through a boiling weather or rain) or just a hardware component which has only a certain accuracy. Students learn the difference between plain software engineering (which mostly has no uncertainties) and software systems engineering (which works by interaction with the environment). Also, a controller for embedded systems must be robust, it is another finding that students can learn. A car must continue driving even if it has some inaccuracies in measurements or not critical errors.
 7. After the execution, the current trajectory is compared with the sample solution and the student is notified whether he passed the test or not.
 The studying process is built on a concept from simple to complex. Doing the tutorials one by one, students get closer to the main goal of the creation of the controller for a self-driving car.
 
