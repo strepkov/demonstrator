@@ -142,7 +142,7 @@ because it is typed. The simulator which is working on the front-end gives much 
 
 To clarify the goal of each component which is shown in the picture, we will consider the seven most important components that are linked together: 
 1. IDE for EmbeddedMontiArc language, it helps to write components easier, reveals the errors and shows incoming and outgoing ports of the components.
-2. Web-server, it receives the requests for compiling the MontiArc models and sends back a finished controller,  packs and extracts models, controls the compilation process, providing an error handling for users.
+2. Web-server, it receives the requests for compiling the EmbeddedMontiArc models and sends back a finished controller,  packs and extracts models, controls the compilation process, providing an error handling for users.
 3. EMAM2WASM generator, it gets the model from the web-server and compiles it, generating the web-assembly file, which is a "brain" of the simulator.
 4. A testing toolchain, which provides stream testing for incoming models. The toolchain is consist of EMAM2CPP generator, which generates tests, then the tests are compiled and executed. The output from the stream testing phase could be used to be shown to a user or be the condition for generating the .wasm file.
 5. SVG generator, it generates a picture of the components and connections for better readability. Users can easier find errors using the schema of components.
