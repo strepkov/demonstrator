@@ -73,6 +73,11 @@ Octave Online is web-playground fot a high-level language Octave, which is prima
 
 ### Wolfram Alpha
 Wolfram Alpha is a very powerful tool, which works by using expert-level knowledge and algorithms to automatically answer questions, do analysis and generate reports. It has one very interesting and useful feature, which provide the interactive visualization of the given data. The idea behind that is that you can "feel" how one or another parameter influences on the final result. It promote a better understanding of dependencies between the components or elements of the system.
+> we need to add some sentences about the mathematical stuff wolfram alpha supports: https://www.wolframalpha.com/examples/mathematics/geometry/
+> they have nice matrix operations and calculations as we also use in our embedded math language to describe atomic components
+> they can even do more as solving linear equations, this means they would allow to specify the behavior of controllers, and then by solving the equations they synthesize the controller
+> we cannot synthesize the controller yet; we must explicitely write down the mathematical relationships and their intermediate calculations
+
 
 ### TypeScript Playground
 TypeScript is a typed superset of JavaScript. It has a clean and simple playground which shows the difference and benefits of TypeScript over JavaScript. It has preloaded examples which actually show this difference and a user can see distinction in the direct comparison. What, again, gives the better understanding and facilitates further analysis(R7).
