@@ -1,14 +1,4 @@
-> we need to add what the community has from our paper: We provide nice students tutorials and solutions for C&C Models (the tutorial and the domain solution is nearly
-> lanuage independent) and therefore the models and solutions provided in our paper can be used for other C&C languages; also for their analysis (e.g. requirement mapping
-> to C&C models, ...)
-> 
-> please check at the previous ModComp workshops all papers there (only abstract and pictures), and see if there are papers where we can build on (e.g. provide new C&C examples,
-> have similar problems, they raise questions we can answer). This is important that our paepr has some beneficts for this community to get it accepted.
-> And if cite their papers, then they say yes we are interested in the community and others work and we are not only interested in our own work.
-> * http://www.mrtc.mdh.se/ModComp14/
-> * http://www.mrtc.mdh.se/ModComp15/
-> * http://www.mrtc.mdh.se/ModComp16/
-> * http://www.mrtc.mdh.se/ModComp17/
+We believe, that the community can benefit from out paper. We provide nice tutorials for students and solutions for C&C models. Due to our modular architecture, the tutorials and the domain solutions is nearly language independent. Therefore the models and solutions provided in our paper can be used for other C&C languages and also for their analysis (e.g. requirement mapping to C&C models). The light-weight 3D simulator which works entirely in a browser can be used for other projects to visualize the various scenarios. Using our experience in C&C modeling and related fields, we are happy to share our knowledge and offer our help to community members.
 
 # Teaching playground for EmbeddedMontiArc language.
 
