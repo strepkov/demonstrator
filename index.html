@@ -206,42 +206,42 @@
 			// Add the cone on the track
 			var coneLoader = new THREE.ObjectLoader();
 			
-			// The cone hear the car
-			coneLoader.load('models/cone.json', function ( object ) {
-				scene.add( object );
-				object.position.x = 4;
-				object.position.y = 0.3;
-				object.position.z = -97;
+			// // The cone hear the car
+			// coneLoader.load('models/cone.json', function ( object ) {
+			// 	scene.add( object );
+			// 	object.position.x = 4;
+			// 	object.position.y = 0.3;
+			// 	object.position.z = -97;
 
-				var obj2 = object.clone();
-				scene.add(obj2);
-				obj2.position.x -=6;
+			// 	var obj2 = object.clone();
+			// 	scene.add(obj2);
+			// 	obj2.position.x -=6;
 				
-			}, onProgress, onError );
+			// }, onProgress, onError );
 
-			coneLoader.load('models/cone.json', function ( object ) {
-				scene.add( object );		// 1, -75
-				object.position.x = 1;
-				object.position.y = 0.3;
-				object.position.z = -75;
+			// coneLoader.load('models/cone.json', function ( object ) {
+			// 	scene.add( object );		// 1, -75
+			// 	object.position.x = 1;
+			// 	object.position.y = 0.3;
+			// 	object.position.z = -75;
 
-				var obj2 = object.clone(); 	// 1, -50
-				scene.add(obj2);
-				obj2.position.z +=25;
+			// 	var obj2 = object.clone(); 	// 1, -50
+			// 	scene.add(obj2);
+			// 	obj2.position.z +=25;
 
-				var obj3 = obj2.clone(); 	// 1, -25
-				scene.add(obj3);
-				obj3.position.z +=25;
+			// 	var obj3 = obj2.clone(); 	// 1, -25
+			// 	scene.add(obj3);
+			// 	obj3.position.z +=25;
 
-				var obj4 = obj3.clone();	// 1, 0
-				scene.add(obj4);
-				obj4.position.z +=25;
+			// 	var obj4 = obj3.clone();	// 1, 0
+			// 	scene.add(obj4);
+			// 	obj4.position.z +=25;
 
-				var obj5 = obj4.clone();	// 1, 25
-				scene.add(obj5);
-				obj5.position.z +=25;
+			// 	var obj5 = obj4.clone();	// 1, 25
+			// 	scene.add(obj5);
+			// 	obj5.position.z +=25;
 				
-			}, onProgress, onError );
+			// }, onProgress, onError );
 
 			// Load the Car Object here
 			var carLoader = new THREE.AssimpJSONLoader();
